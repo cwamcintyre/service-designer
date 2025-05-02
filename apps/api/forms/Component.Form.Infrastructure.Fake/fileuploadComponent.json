@@ -1,0 +1,62 @@
+{
+  "formId": "fileuploadComponent",
+  "title": "Component Test - File Upload",
+  "description": "Please fill out this form.",
+  "currentPage": 1,
+  "totalPages": 1,
+  "startPage": "upload-any-attachments",
+  "pages": [
+      {
+          "pageId": "upload-any-attachments",
+          "title": "",
+          "components": [
+              {
+                  "questionId": "q16",
+                  "type": "fileupload",
+                  "label": "Upload any attachments",
+                  "name": "upload_any_attachments",
+                  "hint": "Only upload documents that explain what you have already entered in this form. For example, spreadsheets.",
+                  "labelIsPageTitle": true,
+                  "fileOptions": 
+                  {
+                    "uploadEndpoint": "http://localhost:7170/api/upload",
+                    "acceptedFormats": [
+                        "pdf",
+                        "doc",
+                        "docx",
+                        "xls",
+                        "xlsx",
+                        "csv",
+                        "jpg",
+                        "jpeg",
+                        "png",
+                        "zip"
+                    ]
+                  }
+              }
+          ],
+          "nextPageId": "summary"
+      },
+      {
+          "pageId": "summary",
+          "title": "Check your answers before sending your application",
+          "pageType": "summary",
+          "components": [
+              {
+                  "type": "summary"
+              },
+              {
+                  "type": "html",
+                  "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+              }
+          ]
+      }
+  ],
+  "submission": {
+      "method": "POST",
+      "endpoint": "http://localhost:7163/api/v1/submit",
+      "headers": {
+          "Content-Type": "application/json"
+      }
+  }
+}

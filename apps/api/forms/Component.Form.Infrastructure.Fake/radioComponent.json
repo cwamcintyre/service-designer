@@ -1,0 +1,57 @@
+{
+    "formId": "radioComponent",
+    "title": "Component Test - Radio",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "chatgpt-made-me",
+    "pages": [
+        {
+            "pageId": "chatgpt-made-me",
+            "components": [
+                {
+                    "questionId": "7",
+                    "type": "radio",
+                    "label": "You wake up and realize you've been transported into a video game world! You can only choose ONE special ability. Which one do you pick?",
+                    "name": "which_superpower",
+                    "options": [
+                        { "label": "Infinite Sprint", "value": "Infinite Sprint - You never get tired and you can run forever at top speed!" },
+                        { "label": "Inventory Magic", "value": "Inventory Magic - You can store anything in a limitless weightless backpack!" },
+                        { "label": "Save & Load", "value": "Save & Load - You can save your progress in life and reload if things go wrong!" },
+                        { "label": "Charisma Maxed", "value": "Charisma Maxed - Everyone likes you instantly and you always win arguments!" }
+                    ],
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "Data.which_superpower != null && Data.which_superpower.Trim() != \"\" ",
+                            "errorMessage": "Select an option"
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

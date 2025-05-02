@@ -1,0 +1,45 @@
+{
+    "formId": "incorrectPageHandlerTest",
+    "title": "Component Test - Text",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "what-is-your-name",
+    "pages": [
+        {
+            "pageType": "default",
+            "pageId": "what-is-your-name",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "THIS DOES NOT EXIST",
+                    "label": "What is your name?",
+                    "name": "unknown_component_name",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

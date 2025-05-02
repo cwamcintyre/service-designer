@@ -1,0 +1,45 @@
+{
+    "formId": "phonenumberComponent",
+    "title": "Component Test - Phone Number",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "what-is-your-phone",
+    "pages": [
+        {
+            "pageId": "what-is-your-phone",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "phonenumber",
+                    "label": "What is your phone number?",
+                    "hint": "UK numbers are in the format 01234 567890",
+                    "name": "what_is_your_phone_number",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

@@ -1,0 +1,71 @@
+{
+  "detailsPage": {
+    "title": "Case details: {name}",
+    "sections": [
+      {
+        "title": "Individual details",
+        "components": [
+          {
+            "type": "detailList",
+            "fields": [
+              {
+                "label": "Name",
+                "type": "text",
+                "name": "name"
+              },
+              {
+                "label": "Birth Date",
+                "name": "dateOfBirth",
+                "type": "date"
+              },
+              {
+                "label": "Trading Details",
+                "name": "tradingDetails",
+                "type": "text"
+              },
+              {
+                "label": "Postcode",
+                "name": "postCode",
+                "type": "text"
+              }
+            ]    
+          },
+          {
+            "type": "html",
+            "content": "<div class=\"govuk-inset-text\"> The individual details may have changed since the insolvency and therefore might not reflect the person's current address or occupation. </div>"
+          }
+        ]
+      },
+      {
+        "title": "Address",
+        "components": [
+          {
+            "type": "detailList",
+            "fields": [
+              {
+                "label": "Street",
+                "type": "text",
+                "name": "street"
+              },
+              {
+                "label": "City",
+                "type": "text",
+                "name": "city"
+              },
+              {
+                "label": "State",
+                "type": "text",
+                "name": "state"
+              },
+              {
+                "label": "Zip Code",
+                "type": "text",
+                "name": "zipCode"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "forms-api",
+  "private": true,
+  "scripts": {
+    "dev": "dotnet watch run --project Component.Form.WebAPI",
+    "build": "dotnet build",
+    "lint": "dotnet format",
+    "test": "dotnet test"
+  }
+}

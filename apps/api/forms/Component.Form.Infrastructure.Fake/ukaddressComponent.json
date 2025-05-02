@@ -1,0 +1,44 @@
+{
+    "formId": "ukaddressComponent",
+    "title": "Component Test - UK Address",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "what-is-your-address",
+    "pages": [
+        {
+            "pageId": "what-is-your-address",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "ukaddress",
+                    "label": "What is your address?",
+                    "name": "what_is_your_address",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

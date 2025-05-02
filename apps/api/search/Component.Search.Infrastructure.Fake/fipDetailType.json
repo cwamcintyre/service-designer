@@ -1,0 +1,97 @@
+{
+  "detailsPage": {
+    "title": "Case details: {firstName} {lastName}",
+    "sections": [
+      {
+        "title": "Insolvency practitioner details",
+        "components": [
+          {
+            "type": "detailList",
+            "fields": [
+              {
+                "label": "First Name",
+                "type": "text",
+                "name": "firstName"
+              },
+              {
+                "label": "Last Name",
+                "type": "text",
+                "name": "lastName"
+              },
+              {
+                "label": "Company",
+                "type": "text",
+                "name": "company"
+              },
+              {
+                "label": "Address",
+                "type": "text",
+                "name": "address"
+              },
+              {
+                "label": "Postcode",
+                "type": "text",
+                "name": "postCode"
+              },
+              {
+                "label": "Telephone",
+                "type": "text",
+                "name": "telephone"
+              },
+              {
+                "label": "Fax",
+                "type": "text",
+                "name": "fax"
+              },
+              {
+                "label": "Email",
+                "type": "text",
+                "name": "email"
+              },
+              {
+                "label": "IP Number",
+                "type": "text",
+                "name": "ipNumber"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Authorising body",
+        "components": [
+          {
+            "type": "detailList",
+            "fields": [
+              {
+                "label": "IP Name",
+                "type": "text",
+                "name": "ipName"
+              },
+              {
+                "label": "Website",
+                "type": "text",
+                "name": "website"
+              },
+              {
+                "label": "Address",
+                "type": "text",
+                "name": "address"
+              },
+              {
+                "label": "Telephone Number",
+                "type": "text",
+                "name": "telephoneNumber"
+              },
+              {
+                "label": "Fax Number",
+                "type": "text",
+                "name": "faxNumber"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "searchPage": {
+    "searchTypeId": "eiir",
+    "title": "Search results",
+    "description": "<p class=\"govuk-body\">Your search returned <span class=\"govuk-!-font-weight-bold\">{total}</span> records. These may include individuals with an alias or a previous name which matches your search criteria.If you expected to see a name in the register and it is not there, <a href=\"https://www.insolvencydirect.bis.gov.uk/ExternalOnlineForms/GeneralEnquiry.aspx\">tell the Insolvency Service</a>.</p><p class=\"govuk-body\">Select a <span class=\"govuk-!-font-weight-bold\">Name</span> link to view the relevant case details.</p>", 
+    "columns": [
+      {
+        "label": "Name",
+        "name": "name",
+        "type": "string",
+        "sortable": true,
+        "clickable": true
+      },
+      {
+        "label": "Birth Date",
+        "name": "dateOfBirth",
+        "type": "date",
+        "sortable": true,
+        "clickable": false
+      },
+      {
+        "label": "Trading Details",
+        "name": "tradingDetails",
+        "type": "text",
+        "sortable": true,
+        "clickable": false
+      },
+      {
+        "label": "Postcode",
+        "name": "postCode",
+        "type": "text",
+        "sortable": true,
+        "clickable": false
+      }
+    ],
+    "filters": [
+      {
+        "name": "Name",
+        "type": "text",
+        "label": "Search by name"
+      },
+      {
+        "name": "Date of Birth",
+        "type": "dateRange",
+        "label": "Select date range"
+      }
+    ]
+  }
+}

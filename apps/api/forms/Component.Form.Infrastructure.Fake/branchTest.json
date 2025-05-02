@@ -1,0 +1,133 @@
+{
+    "formId": "test",
+    "title": "Monty Pythons Flying Form",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 7,
+    "startPage": "do-you-want-to-fill-in-this-form",
+    "pages": [
+        {
+            "pageId": "what-is-your-name",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "What is your name?",
+                    "name": "what_is_your_name",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr2",
+                            "expression": "Data.what_is_your_name != null && Data.what_is_your_name.Trim() != \"\" ",
+                            "errorMessage": "Enter your name"
+                        }                        
+                    ]
+                }
+            ],
+            "nextPageId": "do-you-want-branch-a"
+        },
+        {
+            "pageId": "do-you-want-branch-a",
+            "pageType": "default",
+            "components": [
+                {
+                    "questionId": "0",
+                    "type": "yesno",
+                    "label": "Do you want to go to branch A?",
+                    "name": "do_you_want_branch_a",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "Data.do_you_want_branch_a != null && Data.do_you_want_branch_a.Trim() != \"\" ",
+                            "errorMessage": "Select yes or no"
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+                {
+                    "id": "c1",
+                    "expression": "Data.do_you_want_branch_a == \"no\"",
+                    "nextPageId": "branch-b"
+                }
+            ],
+            "nextPageId": "branch-a"
+        },
+        {
+            "pageId": "branch-a",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "What do you think of branch A?",
+                    "name": "what_do_you_think_of_branch_a",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr3",
+                            "expression": "Data.what_do_you_think_of_branch_a != \"INVALID\"",
+                            "errorMessage": "Thats not right."
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "branch-b",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "What do you think of branch B?",
+                    "name": "what_do_you_think_of_branch_b",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "branch-b-subsequent-q"
+        },
+        {
+            "pageId": "branch-b-subsequent-q",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "Does the previous page link still work if I'm on branch B?",
+                    "name": "does_it_still_work",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [                
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "http://localhost:7163/api/v1/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

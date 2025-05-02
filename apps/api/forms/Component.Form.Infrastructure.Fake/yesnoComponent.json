@@ -1,0 +1,70 @@
+{
+    "formId": "yesnoComponent",
+    "title": "Component Test - Yes/No",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "do-you-want-to-fill-in-this-form",
+    "pages": [
+        {
+            "pageId": "do-you-want-to-fill-in-this-form",
+            "components": [
+                {
+                    "questionId": "0",
+                    "type": "yesno",
+                    "label": "Do you want to fill in this form?",
+                    "name": "do_you_want_to_fill_in_this_form",
+                    "labelIsPageTitle": true,
+                    "hint": "If you say no, you'll see the stop page",
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "Data.do_you_want_to_fill_in_this_form != null && Data.do_you_want_to_fill_in_this_form.Trim() != \"\" ",
+                            "errorMessage": "Select yes or no"
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+                {
+                    "id": "c1",
+                    "expression": "Data.do_you_want_to_fill_in_this_form == \"no\"",
+                    "nextPageId": "stop"
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        },
+        {
+            "pageId": "stop",
+            "pageType": "stop",
+            "title": "Then you don't have to :)",
+            "components": [
+                {
+                    "type": "html",
+                    "content": "<p class=\"govuk-body\">Ok no worries. Hope you have a nice day!</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

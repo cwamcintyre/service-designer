@@ -1,0 +1,359 @@
+{
+    "formId": "test",
+    "title": "Monty Pythons Flying Form",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 7,
+    "startPage": "do-you-want-to-fill-in-this-form",
+    "pages": [
+        {
+            "pageId": "do-you-want-to-fill-in-this-form",
+            "pageType": "default",
+            "components": [
+                {
+                    "questionId": "0",
+                    "type": "yesno",
+                    "label": "Do you want to fill in this form?",
+                    "name": "do_you_want_to_fill_in_this_form",
+                    "labelIsPageTitle": true,
+                    "hint": "If you say no, you'll see the stop page",
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "Data.do_you_want_to_fill_in_this_form != null && Data.do_you_want_to_fill_in_this_form.Trim() != \"\" ",
+                            "errorMessage": "Select yes or no"
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+                {
+                    "id": "c1",
+                    "expression": "Data.do_you_want_to_fill_in_this_form == \"no\"",
+                    "nextPageId": "stop"
+                }
+            ],
+            "nextPageId": "what-is-your-name"
+        },
+        {
+            "pageId": "what-is-your-name",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "What is your name?",
+                    "name": "what_is_your_name",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr2",
+                            "expression": "Data.what_is_your_name != null && Data.what_is_your_name.Trim() != \"\" ",
+                            "errorMessage": "Enter your name"
+                        },
+                        {
+                            "id": "vr3",
+                            "expression": "Data.what_is_your_name != \"BOB\"",
+                            "errorMessage": "We all know that Bob is not your real name. Please provide your real name."
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "tasks-repeat"
+        },
+        {
+            "$type": "Component.Form.Model.PageHandler.InlineRepeatingPageSection, Component.Form.Model",
+            "pageId": "tasks-repeat",
+            "title": "",
+            "pageType": "inlineRepeating",
+            "repeatKey": "tasks",
+            "summaryLabel": "Tasks",
+            "repeatingPages": [                
+                {
+                    "pageId": "what-do-you-want-to-do-today",
+                    "title": "",
+                    "repeatStart": true,
+                    "components": [
+                        {
+                            "questionId": "1",
+                            "type": "text",
+                            "label": "What are you going to do today?",
+                            "name": "what_are_you_going_to_do_today",
+                            "labelIsPageTitle": true,
+                            "validationRules": [
+                                {
+                                    "id": "vr2",
+                                    "expression": "Data.tasks[RepeatIndex].what_are_you_going_to_do_today != null && Data.tasks[RepeatIndex].what_are_you_going_to_do_today.Trim() != \"\" ",
+                                    "errorMessage": "Enter what you are going to do today"
+                                }
+                            ]
+                        }
+                    ],
+                    "nextPageId": "how-long-will-it-take"
+                },                
+                {
+                    "pageId": "how-long-will-it-take",
+                    "title": "",
+                    "components": [
+                        {
+                            "questionId": "1",
+                            "type": "text",
+                            "label": "How long will it take?",
+                            "name": "how_long_will_it_take",
+                            "labelIsPageTitle": true,
+                            "validationRules": [
+                                {
+                                    "id": "vr2",
+                                    "expression": "Data.tasks[RepeatIndex].how_long_will_it_take != null && Data.tasks[RepeatIndex].how_long_will_it_take.Trim() != \"\" ",
+                                    "errorMessage": "Enter how long it will take"
+                                },
+                                {
+                                    "id": "vr2",
+                                    "expression": "Data.tasks[RepeatIndex].how_long_will_it_take != null && Data.tasks[RepeatIndex].how_long_will_it_take.Trim() != \"TOO LONG\" ",
+                                    "errorMessage": "It can't take too long, try again.."
+                                },
+                                {
+                                    "id": "vr2",
+                                    "expression": "Data.tasks[RepeatIndex].how_long_will_it_take != null && Data.tasks[RepeatIndex].how_long_will_it_take.Trim() != \"FOREVER\" ",
+                                    "errorMessage": "If it'll never happen then leave it.."
+                                }
+                            ]
+                        }
+                    ],
+                    "nextPageId": "do-you-want-to-add-another-task"
+                },
+                {
+                    "pageId": "do-you-want-to-add-another-task",
+                    "title": "",
+                    "repeatEnd": true,
+                    "components": [
+                        {
+                            "questionId": "1",
+                            "type": "yesno",
+                            "label": "Do you want to add another task?",
+                            "name": "do_you_want_to_add_another_task",
+                            "labelIsPageTitle": true,
+                            "validationRules": [
+                                {
+                                    "id": "vr2",
+                                    "expression": "Data.tasks[RepeatIndex].do_you_want_to_add_another_task != null && Data.tasks[RepeatIndex].do_you_want_to_add_another_task.Trim() != \"\" ",
+                                    "errorMessage": "Select yes or no"
+                                }
+                            ]
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "id": "c1",
+                            "expression": "Data.tasks[RepeatIndex].do_you_want_to_add_another_task == \"yes\"",
+                            "nextPageId": "what-do-you-want-to-do-today"
+                        }
+                    ],
+                    "nextPageId": "what-is-your-address"
+                }
+            ],
+            "nextPageId": "what-is-your-address"
+        },
+        {
+            "pageId": "what-is-your-address",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "ukaddress",
+                    "label": "What is your address?",
+                    "name": "what_is_your_address",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "what-is-your-email"
+        },
+        {
+            "pageId": "what-is-your-email",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "email",
+                    "label": "What is your email address?",
+                    "name": "what_is_your_email",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "what-is-your-phone"
+        },
+        {
+            "pageId": "what-is-your-phone",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "phonenumber",
+                    "label": "What is your phone number?",
+                    "hint": "UK numbers are in the format 01234 567890",
+                    "name": "what_is_your_phone_number",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "give-me-a-date"
+        },
+        {
+            "pageId": "give-me-a-date",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "dateparts",
+                    "label": "Give me a date. Any date.",
+                    "name": "give_me_a_date",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "give-me-another-date"
+        },
+        {
+            "pageId": "give-me-another-date",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "dateparts",
+                    "label": "Give me another date (optional)",
+                    "name": "give_me_another_date",
+                    "labelIsPageTitle": true,
+                    "optional": true
+                }
+            ],
+            "nextPageId": "what-is-your-quest"
+        },
+        {
+            "pageId": "what-is-your-quest",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "2",
+                    "type": "select",
+                    "label": "What is your quest?",
+                    "options": [
+                        { "label": "To find the holy grail", "value": "To find the holy grail" },
+                        { "label": "To become a knight", "value": "To become a knight" },
+                        { "label": "To allow claimants to edit their redundancy claim", "value": "To allow claimants to edit their redundancy claim" },
+                        { "label": "To do nothing", "value": "To do nothing" }
+                    ],
+                    "name": "what_is_your_quest",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "conditions": [
+                {
+                    "id": "c2",
+                    "expression" : "Data.what_is_your_quest != null && Data.what_is_your_quest != \"To allow claimants to edit their redundancy claim\"",
+                    "nextPageId": "why-dont-you-want-to-help-claimants"
+                }
+            ],   
+            "nextPageId": "chatgpt-made-me"
+        },
+        {
+            "pageId": "why-dont-you-want-to-help-claimants",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "7",
+                    "type": "multilineText",
+                    "label": "Why don't you want to help claimants edit their redundancy claim?",
+                    "name": "why_not_help_claimants",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "chatgpt-made-me"
+        },
+        {
+            "pageId": "chatgpt-made-me",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "7",
+                    "type": "radio",
+                    "label": "You wake up and realize you’ve been transported into a video game world! You can only choose ONE special ability. Which one do you pick?",
+                    "name": "which_superpower",
+                    "options": [
+                        { "label": "Infinite Sprint", "value": "Infinite Sprint – You never get tired, and you can run forever at top speed!" },
+                        { "label": "Inventory Magic", "value": "Inventory Magic – You can store anything in a limitless, weightless backpack!" },
+                        { "label": "Save & Load", "value": "Save & Load – You can save your progress in life and reload if things go wrong!" },
+                        { "label": "Charisma Maxed", "value": "Charisma Maxed – Everyone likes you instantly, and you always win arguments!" }
+                    ],
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "what-is-your-favourite-colour"
+        },
+        {
+            "pageId": "what-is-your-favourite-colour",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "3",
+                    "type": "checkbox",
+                    "label": "Which of these colours do you like?",
+                    "name": "what_is_your_favourite_colour",
+                    "labelIsPageTitle": true,
+                    "options": [
+                        { "label": "Red", "value": "Red" },
+                        { "label": "Blue", "value": "Blue" },
+                        { "label": "Green", "value": "Green" },
+                        { "label": "Yellow", "value": "Yellow" },
+                        { "label": "Pink", "value": "Pink" },
+                        { "label": "Black", "value": "Black" },
+                        { "label": "White", "value": "White" },
+                        { "label": "Purple", "value": "Purple" },
+                        { "label": "Orange", "value": "Orange" },
+                        { "label": "Brown", "value": "Brown" },
+                        { "label": "Grey", "value": "Grey" },
+                        { "label": "Other", "value": "Other" }
+                    ],
+                    "validationRules": [
+                        {
+                            "id": "vr4",
+                            "expression": "Data.what_is_your_favourite_colour != null && Data.what_is_your_favourite_colour.Trim() != \"\" ",
+                            "errorMessage": "Select at least one colour"
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [                
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        },
+        {
+            "pageId": "stop",
+            "pageType": "stop",
+            "title": "Then you dont have to :)",
+            "components": [
+                {                    
+                    "type": "html",
+                    "content": "<p class=\"govuk-body\">Ok no worries. Hope you have a nice day!</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "http://localhost:7163/api/v1/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

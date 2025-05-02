@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Component.Core.Application\Component.Core.Application.csproj" />
+    <ProjectReference Include="..\Component.Search.Model\Component.Search.Model.csproj" />
+  </ItemGroup>
+
+</Project>

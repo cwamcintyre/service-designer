@@ -1,0 +1,44 @@
+{
+    "formId": "emailComponent",
+    "title": "Component Test - Email",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "what-is-your-email",
+    "pages": [
+        {
+            "pageId": "what-is-your-email",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "email",
+                    "label": "What is your email address?",
+                    "name": "what_is_your_email",
+                    "labelIsPageTitle": true
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

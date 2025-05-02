@@ -1,0 +1,33 @@
+{
+  "searchIndexPage": {
+    "searchTypeId": "example",
+    "title": "Search the Individual Insolvency Register",
+    "searchType": "simpleWithRelatedContent",
+    "description": "<p class=\"govuk-body\">Search the Individual Insolvency Register to find details of individuals who are subject to bankruptcy restrictions or debt relief restrictions.</p>",
+    "indexFields": [
+      {
+        "name": "name",
+        "type": "text",
+        "label": "Name of individual or trading name",
+        "placeholder": "Enter name"
+      }
+    ],
+    "relatedContent": {
+      "title": "Related content",
+      "items": [
+        {
+          "title": "Get help from the Insolvency Service",
+          "url": "https://www.gov.uk/get-help-insolvency-service"
+        },
+        {
+          "title": "Find out more about bankruptcy and insolvency",
+          "url": "https://www.gov.uk/browse/tax/court-claims-debt-bankruptcy"
+        },
+        {
+          "title": "Give feedback about the Individual Insolvency Register",
+          "url": "https://www.insolvencydirect.bis.gov.uk/ExternalOnlineForms/GeneralEnquiry.aspx"
+        }
+      ]
+    }
+  }
+}

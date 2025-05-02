@@ -1,0 +1,62 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+*.lock
+*.env
+node_modules/
+dist/
+build/
+.vscode/
+.idea/
+*.iml
+
+# React
+*.cache/
+*.next/
+out/
+coverage/
+public/static/
+yarn-error.log
+npm-debug.log
+.eslintcache
+
+# C#
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.mdb
+*.exe
+*.dll
+*.app
+*.log
+*.vs/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+*.pytest_cache/
+.tox/
+*.coverage
+.coverage.*
+.cache/
+*.mypy_cache/
+*.pyre/
+*.ruff_cache/
+
+# Turbo
+.turbo

@@ -1,0 +1,51 @@
+{
+    "formId": "multilineTextComponent",
+    "title": "Component Test - Multiline Text",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 1,
+    "startPage": "why-dont-you-want-to-help-claimants",
+    "pages": [
+        {
+            "pageId": "why-dont-you-want-to-help-claimants",
+            "components": [
+                {
+                    "questionId": "7",
+                    "type": "multilineText",
+                    "label": "Why don't you want to help claimants edit their redundancy claim?",
+                    "name": "why_not_help_claimants",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "Data.why_not_help_claimants != null && Data.why_not_help_claimants.Trim() != \"\" ",
+                            "errorMessage": "Enter your reason"
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "https://api.example.com/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

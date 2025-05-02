@@ -1,0 +1,8 @@
+# Ignore everything
+**/*
+
+# Allow only the src folder
+!src/
+
+# Allow the requirements.in file
+!requirements.in
