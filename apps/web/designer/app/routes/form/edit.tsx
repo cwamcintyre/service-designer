@@ -9,7 +9,7 @@ import useFormStore, { type FormState } from '@/store/formStore';
 import useFormFlowStore, { type FormFlowState } from '@/store/formFlowStore';
 import { type Node } from '@xyflow/react';
 import { useEffect, useState, useRef } from 'react';
-import type { Form } from '~/store/formTypes';
+import type { Form } from '@model/formTypes';
 import { useNavigate } from "react-router";
 import formUtil from '@/util/formUtil';
 import {

@@ -1,4 +1,4 @@
-import { type Component, type ValidationRule } from '../../store/formTypes';
+import { type Component, type ValidationRule } from '@model/formTypes';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";

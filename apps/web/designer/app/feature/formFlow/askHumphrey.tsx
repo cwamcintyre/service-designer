@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { type Form } from "@/store/formTypes";
+import { type Form } from "@model/formTypes";
 import axios from 'axios';
 import { set } from 'react-hook-form';
 

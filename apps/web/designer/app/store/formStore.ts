@@ -5,7 +5,7 @@ import {
     type Condition, 
     type ValidationRule, 
     type Submission 
-} from './formTypes';
+} from '@model/formTypes';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
 import formUtil from '@/util/formUtil';

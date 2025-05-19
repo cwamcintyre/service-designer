@@ -1,6 +1,6 @@
-export default function GDSButton({ text }: { text: string }) {
+export default function GDSButton({ text, type = "button" }: { text: string, type?: "button" | "submit" }) {
     return (
-        <button className="govuk-button" type="button">
+        <button className="govuk-button" type={type}>
             {text}
         </button>
     );

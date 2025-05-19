@@ -1,5 +1,5 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
-import type { Form } from "@/store/formTypes";
+import type { Form } from "@model/formTypes";
 import {
   ReactFlow,
   Controls,

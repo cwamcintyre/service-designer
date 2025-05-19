@@ -1,4 +1,3 @@
-import { type Component, type Condition } from '@/store/formTypes';
 import { SplitPane } from '@rexxars/react-split-pane';
 import { useState, useEffect, useRef, use } from "react";
 import FormEditor from '../../feature/formPageCrud/formEditor';
@@ -6,7 +5,6 @@ import FormPreview from '../..//feature/formPageCrud/formPreview';
 import useFormStore, { type FormState } from "../../store/formStore";
 import { useShallow } from "zustand/react/shallow";
 import { useNavigate } from "react-router";
-import { type Page } from '../../store/formTypes';
 import formUtil from '@/util/formUtil';
 import useWindowWidth from '@/util/windowWidth';
 import ActionOverlay from '@/feature/common/actionOverlay';

@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from 'react';
 import { type Node } from '@xyflow/react';
-import { type Form as FormData, type Page } from "@/store/formTypes";
+import { type Form as FormData, type Page } from "@model/formTypes";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFieldArray, useForm } from 'react-hook-form';

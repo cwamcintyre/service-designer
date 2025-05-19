@@ -1,4 +1,4 @@
-import { type Option } from '../../store/formTypes';
+import { type Option } from '@model/formTypes';
 
 export default function GDSRadio({ key, name, label, hint, labelIsPageTitle, options }:
     { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, options: Option[] | undefined}) {

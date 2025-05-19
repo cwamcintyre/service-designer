@@ -1,4 +1,4 @@
-import type { Form as FormData } from "@/store/formTypes";
+import type { Form as FormData } from "@model/formTypes";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

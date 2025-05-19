@@ -17,7 +17,8 @@
     "paths": {
       "~/*": ["./app/*"],
       "@/*": ["./app/*"],
-      "@gds/*": ["../../../packages/ui/gds/*"]
+      "@gds/*": ["../../../packages/ui/gds/*"],
+      "@model/*": ["../../../packages/model/*"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,

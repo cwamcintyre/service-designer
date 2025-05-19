@@ -1,4 +1,4 @@
-import { type Page, type Form as FormData } from '../../store/formTypes';
+import { type Page, type Form as FormData } from '@model/formTypes';
 import ComponentEditor from './componentEditor';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

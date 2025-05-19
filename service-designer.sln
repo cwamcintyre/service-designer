@@ -28,14 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Component.Form.Model.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Component.Form.WebAPI", "apps\api\forms\Component.Form.WebAPI\Component.Form.WebAPI.csproj", "{A35BFC18-1590-C6A9-E821-850567FD2AA9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "search", "search", "{A23735A3-517E-31CB-4263-24FE968E63DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Component.Search.Application", "apps\api\search\Component.Search.Application\Component.Search.Application.csproj", "{F2538419-11A7-CCD4-9BB7-6B6E0F03B9EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Component.Search.Infrastructure.Fake", "apps\api\search\Component.Search.Infrastructure.Fake\Component.Search.Infrastructure.Fake.csproj", "{C20DF4A3-0197-D5EA-5E82-F005E0DEDDEC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Component.Search.Model", "apps\api\search\Component.Search.Model\Component.Search.Model.csproj", "{60438800-4CD1-2522-B290-A83D3EA1ECCC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

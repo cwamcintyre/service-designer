@@ -1,4 +1,4 @@
-import { type Component, type Option } from '../../store/formTypes';
+import { type Component, type Option } from '@model/formTypes';
 import { z } from "zod";
 import { nanoid } from 'nanoid';
 import { zodResolver } from "@hookform/resolvers/zod";

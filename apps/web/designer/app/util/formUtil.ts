@@ -1,5 +1,5 @@
 import Dagre from '@dagrejs/dagre';
-import { type Form } from '@/store/formTypes';
+import { type Form } from '@model/formTypes';
 import { nanoid } from 'nanoid';
 import {
     type Edge,

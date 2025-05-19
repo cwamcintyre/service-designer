@@ -1,4 +1,4 @@
-import { type Page } from '../../store/formTypes';
+import { type Page } from '@model/formTypes';
 import GDSInput from '@gds/GDSInput';
 import GDSButton from '@gds/GDSButton';
 import GDSTextarea from '@gds/GDSTextarea';
@@ -7,7 +7,7 @@ import GDSSelect from '@gds/GDSSelect';
 import GDSCheckbox from '@gds/GDSCheckbox';
 import GDSYesNo from '@gds/GDSYesNo';
 import GDSUKAddress from '@gds/GDSUKAddress';
-import GDSSummary from '@gds/GDSSummary';
+import GDSSummaryExample from '@gds/GDSSummaryExample';
 
 export default function FormPreview({page}: {page: Page | undefined}) {
   return (
@@ -39,19 +39,19 @@ export default function FormPreview({page}: {page: Page | undefined}) {
                 switch (component.type) {
                     case 'text':    
                         return (                        
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} />
                         );
                     case 'email':
                         return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} autocomplete='email' />
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} autocomplete='email' />
                         );
                     case 'number':
                         return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} inputmode='numeric' />
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} inputmode='numeric' />
                         );
                     case 'phonenumber':
                         return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} autocomplete='tel' />
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} autocomplete='tel' />
                         );
                     case 'multilineText':
                         return (
@@ -83,7 +83,7 @@ export default function FormPreview({page}: {page: Page | undefined}) {
                         );
                     case 'summary':
                         return (
-                            <GDSSummary key={component.questionId} />
+                            <GDSSummaryExample key={component.questionId} />
                         );
                     default:
                         return <p key={component.questionId} className="govuk-body">Component type not supported</p>;

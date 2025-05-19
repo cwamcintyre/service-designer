@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@gds/*": ["../../../packages/ui/gds/*"]
+      "@gds/*": ["../../../packages/ui/gds/*"],
+      "@model/*": ["../../../packages/model/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

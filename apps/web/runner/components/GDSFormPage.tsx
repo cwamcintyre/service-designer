@@ -1,0 +1,68 @@
+'use server';
+
+import GDSInput from '@gds/GDSInput';
+import GDSTextarea from '@gds/GDSTextarea';
+import GDSRadio from '@gds/GDSRadio';
+import GDSSelect from '@gds/GDSSelect';
+import GDSCheckbox from '@gds/GDSCheckbox';
+import GDSYesNo from '@gds/GDSYesNo';
+import GDSUKAddress from '@gds/GDSUKAddress';
+
+export default async function GDSFormPage({ page, backLink }: { page: any, backLink: string }) {
+    return (
+        <>
+            { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }
+            {page?.title ? <h1 className="govuk-heading-xl">{page?.title}</h1> : null }
+            {page?.components && page?.components.map((component: any) => {
+                switch (component.type) {
+                    case 'text':    
+                        return (                        
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={component.errors} value={component.answer} />
+                        );
+                    case 'email':
+                        return (
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} autocomplete='email' errors={component.errors} value={component.answer} />
+                        );
+                    case 'number':
+                        return (
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} inputmode='numeric' errors={component.errors} value={component.answer} />
+                        );
+                    case 'phonenumber':
+                        return (
+                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} autocomplete='tel' errors={component.errors} value={component.answer} />
+                        );
+                    case 'multilineText':
+                        return (
+                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                        );
+                    case 'radio':
+                        return (
+                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                        );
+                    case 'checkbox':
+                        return (
+                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                        );
+                    case 'select':
+                        return (
+                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                        );
+                    case 'yesno':
+                        return (
+                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                        );
+                    case 'ukaddress': 
+                        return (
+                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                        );
+                    case 'html':
+                        return (
+                            <div key={component.questionId} dangerouslySetInnerHTML={{ __html: component.content ? component.content: "" }} />
+                        );
+                    default:
+                        return <p key={component.questionId} className="govuk-body">Component type not supported</p>;
+                }
+            })}                                
+        </>
+    )
+}

@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import type { Component } from "@/store/formTypes";
+import type { Component } from "@model/formTypes";
 import useFormStore, { type FormState } from '@/store/formStore';
 import { useShallow } from 'zustand/react/shallow';
 

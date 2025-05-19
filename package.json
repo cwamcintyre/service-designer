@@ -4,7 +4,7 @@
   "packageManager": "npm@10.8.2",
   "workspaces": [
     "apps/*/*"
-  ], 
+  ],
   "scripts": {
     "turbo": "turbo",
     "dev": "turbo run dev --parallel",
@@ -13,6 +13,12 @@
     "test": "turbo run test"
   },
   "devDependencies": {
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "turbo": "^1.10.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "govuk-frontend": "^5.10.0"
   }
 }
