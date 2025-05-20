@@ -3,7 +3,7 @@
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
 import GDSFormPage from '@/components/GDSFormPage';
-import formService from '@/services/formServices';
+import applicationService from '@/services/applicationService';
 
 export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
         
@@ -13,8 +13,8 @@ export default async function FormPage({ params, searchParams }: { params: { for
     // Access query parameters
     const step = searchParams.step;
 
-    const form = await formService.getForm(formId);        
-    const page = form.pages.find((page: any) => page.pageId === pageId);
+    const form = await applicationService.getApplication(await applicationService.getApplicationId(), pageId, step);
+    const page = form.application.pages.find((page: any) => page.pageId === pageId);
 
     if (!page || typeof page.pageType !== 'string') {
         console.error("Page or page type is invalid");
@@ -23,8 +23,8 @@ export default async function FormPage({ params, searchParams }: { params: { for
 
     const backLink = "";
 
-    setSharedState({ serviceTitle: form.title });
-    LogHandler.debug("Form Title: ", form.title);
+    setSharedState({ serviceTitle: form.application.title });
+    LogHandler.debug("Form Title: ", form.application.title);
 
     return (
         <>

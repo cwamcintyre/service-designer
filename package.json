@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-    "govuk-frontend": "^5.10.0"
+    "govuk-frontend": "^5.10.0",
+    "isolated-vm": "^5.0.4"
   }
 }

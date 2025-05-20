@@ -1,7 +1,7 @@
 'use server'
 
 import { nanoid } from 'nanoid';
-import formService from '@/services/formServices';
+import applicationService from '@/services/applicationService';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { formId: string } }) {
@@ -11,10 +11,10 @@ export async function GET(req: Request, { params }: { params: { formId: string }
     const applicationId = nanoid();
 
     // Fetch the form details
-    const form = await formService.getForm(formId);
+    const startPageId = await applicationService.startApplication(applicationId, formId);
 
     // Create a response with a cookie and redirect
-    const response = NextResponse.redirect(`${process.env.BASE_URL}/form/${formId}/${form.startPage}`);
+    const response = NextResponse.redirect(`${process.env.BASE_URL}/form/${formId}/${startPageId}`, 302);
 
     response.cookies.set('applicationId', applicationId, {
         httpOnly: true, // Prevent client-side access

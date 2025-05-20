@@ -2,11 +2,9 @@
 
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
-import formService from '@/services/formServices';
 import applicationService from '@/services/applicationService';
 import GDSSummaryComponent from '@/components/GDSSummaryComponent';
 import GDSButtonLink from '@gds/GDSButtonLink';
-import { addDataToForm } from '@/app/utils/formHandler';
 
 export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
         
@@ -16,36 +14,29 @@ export default async function FormPage({ params, searchParams }: { params: { for
     // Access query parameters
     const step = searchParams.step;
 
-    const form = await formService.getForm(formId);        
-    const page = form.pages.find((page: any) => page.pageId === pageId);
-
     const applicationId = await applicationService.getApplicationId();
     if (!applicationId) {
         console.error("Application ID not found");
         return new Response("Application ID not found", { status: 400 });
     }
 
-    const backLink = "";
+    const applicationResponse = await applicationService.getApplication(applicationId, pageId, step);
+    if (!applicationResponse) {
+        console.error("Application not found");
+        return new Response("Application not found", { status: 404 });
+    }
 
-    setSharedState({ serviceTitle: form.title });
-    LogHandler.debug("Form Title: ", form.title);
-
-    const summaryPage = form.pages.find((page) => page.pageId === pageId);
+    const summaryPage = applicationResponse.application.pages.find((page) => page.pageId === pageId);
 
     if (!summaryPage) {
         console.error("Summary page not found");
         return new Response("Summary page not found", { status: 404 });
     }
 
-    const data = await formService.getFormData(applicationId.value);
+    const backLink = applicationResponse.previousExtraData ? `/form/${formId}/${applicationResponse.previousPageId}/${applicationResponse.previousExtraData}` : 
+                                                          applicationResponse.previousPageId ? `/form/${formId}/${applicationResponse.previousPageId}` : "";
 
-    if (!data) {
-        console.error("Form data not found");
-        return new Response("Form data not found", { status: 404 });
-    }
-
-    addDataToForm(form, data);
-    LogHandler.debug("Form Data: ", data);
+    setSharedState({ serviceTitle: applicationResponse.application.title });
 
     return (
         <>
@@ -57,7 +48,7 @@ export default async function FormPage({ params, searchParams }: { params: { for
                 switch (component.type) {
                     case 'summary':
                         return (
-                            <GDSSummaryComponent formId={form.formId} pages={form.pages} />
+                            <GDSSummaryComponent formId={applicationResponse.application.formId} pages={applicationResponse.application.pages} />
                         );
                     case 'html':
                         return (
@@ -68,7 +59,7 @@ export default async function FormPage({ params, searchParams }: { params: { for
                 }
             })}
 
-            <GDSButtonLink href={`/api/form/submit/${form.formId}/${applicationId}`} className="govuk-button" text={"Accept and send"} />
+            <GDSButtonLink href={`/api/form/submit/${applicationResponse.application.formId}/${applicationId}`} className="govuk-button" text={"Accept and send"} />
         </>
     );
 }

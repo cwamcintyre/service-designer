@@ -57,6 +57,7 @@ export type Form = {
 };
 
 export interface Application extends Form {
+    id: string;
     applicantId: string;
     status: string;
     createdAt: Date;

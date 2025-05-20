@@ -3,20 +3,16 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
         inputmode?: "text" | "search" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined }) {
 
     let ariaDescribedBy = "";
+    let containerClassName = "govuk-form-group";
+    let inputClassName = "govuk-input";
+
     if (hint) {
         ariaDescribedBy = `${name}-hint`;
     }
-    if (errors.length > 0) {
-        ariaDescribedBy += ` ${name}-error`;
-    }
-
-    let containerClassName = "govuk-form-group";
-    if (errors.length > 0) {
-        containerClassName += " govuk-form-group--error";
-    }
     
-    let inputClassName = "govuk-input";
-    if (errors.length > 0) {
+    if (errors?.length > 0) {
+        ariaDescribedBy += ` ${name}-error`;
+        containerClassName += " govuk-form-group--error";
         inputClassName += " govuk-input--error";
     }
 
@@ -39,7 +35,7 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
                 {hint}
             </div> : null}
             
-            {errors.length > 0 ?
+            {errors?.length > 0 ?
             <p id={`${name}-error`} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>
                 {errors.map((error, index) => (

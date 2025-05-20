@@ -12,13 +12,18 @@ export class StartApplicationController {
     }
 
     public async put(request: Request, response: Response): Promise<void> {
+        console.log("StartApplicationController: starting application");
+        console.log(`StartApplicationController: ${JSON.stringify(request.body)}`);
+
         const startApplicationRequest: StartApplicationRequest = {
             ...request.body
         };
         const result = await this.useCase.execute(startApplicationRequest);
         if (result) {
-            response.status(201).send();
+            console.log(`StartApplicationController: application started with ID ${startApplicationRequest.applicantId}`);
+            response.status(201).send(result);
         } else {
+            console.log(`StartApplicationController: failed to start application`);
             response.status(400).send();
         }
     }

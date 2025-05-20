@@ -1,6 +1,0 @@
-@Component.Form.WebAPI_HostAddress = http://localhost:5123
-
-GET {{Component.Form.WebAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

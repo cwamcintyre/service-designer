@@ -15,10 +15,14 @@ export class ProcessController {
         const processRequest: ProcessFormRequest = {
             ...request.body
         };
+        console.log("ProcessController: processing form");
+        console.log(`ProcessController: ${JSON.stringify(processRequest)}`);
         const result = await this.useCase.execute(processRequest);
         if (result) {
-            response.status(201).send();
+            console.log(`ProcessController: form processed for applicant ${processRequest.applicantId}`);
+            response.status(200).send(result);
         } else {
+            console.log(`ProcessController: failed to process form`);
             response.status(400).send();
         }
     }

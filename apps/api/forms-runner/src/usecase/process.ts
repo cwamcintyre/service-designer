@@ -1,6 +1,7 @@
 import { AppTypes } from '@/ioc/appTypes';
 import { type ProcessFormRequest, type ProcessFormResponse } from '@model/runnerApiTypes';
 import { requestResponse } from '@clean/useCaseInterfaces';
+import { PageHandlerFactory } from '@/utils/pageHandler/pageHandlerFactory';
 import { type Application } from '@model/formTypes';
 import { type ApplicationStore } from '@/usecase/shared/infrastructure/applicationStore';
 import { inject, injectable } from 'inversify';
@@ -22,6 +23,29 @@ export class ProcessFormUseCase implements requestResponse<ProcessFormRequest, P
                 throw new Error(`Application with ID ${request.applicantId} not found.`);
             }
 
+            const { applicantId, pageId, formData } = request;
+            this.response = { nextPageId: '', extraData: '' };
+            
+            const page = application.pages.find((p) => p.pageId === pageId);
+
+            if (!page) {
+                throw new Error(`Page with ID ${pageId} not found in application ${applicantId}.`);
+            }
+
+            if (!page.pageType) {
+                throw new Error(`Page type is undefined for page ID ${pageId} in application ${applicantId}.`);
+            }
+            const pageHandler = PageHandlerFactory.For(page.pageType);
+            const processErrors = await pageHandler.Process(application, pageId, formData);
+            
+            if (processErrors) {
+                this.response = { nextPageId: page.pageId, nextPageType: page.pageType, extraData: request.extraData };
+            }
+            else {
+                this.response = await pageHandler.GetNextPageId(application, pageId);
+            }
+
+            this.applicationStore.updateApplication(application);
 
             return this.response;
         } catch (error) {

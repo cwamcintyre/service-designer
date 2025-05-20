@@ -3,11 +3,10 @@ import { GDSSummaryList, GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GD
 
 export default function GDSSummaryComponent({ formId, pages }: { formId: string, pages: Page[] }) {
     return (
-        <GDSSummaryList>
-            <GDSSummaryRow>
+        <GDSSummaryList>            
             {pages.map((page) => {
                 return (
-                    <>
+                    <GDSSummaryRow>
                         {page.components && page.components.map((component) => {
                             switch (component.type) {
                                 case 'text':
@@ -24,16 +23,15 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>{component.answer || 'Not provided'}</GDSSummaryAnswer>
                                             <GDSSummaryActions>
-                                                <a href={`/form/change/${formId}/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></a>
+                                                <a href={`/form/change/${formId}/${page.pageId}`} className="govuk-link">Change<span className="govuk-visually-hidden">{component.label}</span></a>
                                             </GDSSummaryActions>
                                         </>
                                     );
                             }
                         })}
-                    </>
+                    </GDSSummaryRow>
                 )
             })}
-            </GDSSummaryRow>
         </GDSSummaryList>
     )
 }

@@ -6,6 +6,7 @@ import swaggerJsDoc from 'swagger-jsdoc';
 import { container } from '@/ioc/container';
 import { ProcessController } from '~/adapters/controllers/process';
 import { StartApplicationController } from '~/adapters/controllers/start';
+import { GetApplicationController } from './adapters/controllers/get';
 //import { ProcessChangeController } from '~/adapters/controllers/processChange';
 
 const dotenv = require('dotenv');
@@ -27,10 +28,23 @@ app.use(express.json());
 
 const processController = container.get<ProcessController>(ProcessController);
 const startController = container.get<StartApplicationController>(StartApplicationController);
+const getApplicationController = container.get<GetApplicationController>(GetApplicationController);
 //container.get<ProcessChangeController>(ProcessChangeController);
 
 app.get('/api/application/health', (req: Request, res: Response) => {
   res.status(200).send('OK');
+});
+
+app.get('/api/application/:applicantId/:pageId/:extraData', (req: Request, res: Response) => {
+  const { applicantId, pageId, extraData } = req.params;
+  req.params.extraData = extraData || ''; // Handle missing extraData parameter
+  getApplicationController.put(req, res);
+});
+
+app.get('/api/application/:applicantId/:pageId', (req: Request, res: Response) => {
+  const { applicantId, pageId } = req.params;
+  req.params.extraData = ''; // Default extraData to an empty string
+  getApplicationController.put(req, res);
 });
 
 app.put('/api/application/start', startController.put.bind(startController));
