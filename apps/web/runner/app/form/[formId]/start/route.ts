@@ -5,7 +5,7 @@ import applicationService from '@/app/services/applicationService';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { formId: string } }) {
-    const { formId } = params;
+    const { formId } = await params;
 
     // Set up the form session
     const applicationId = nanoid();

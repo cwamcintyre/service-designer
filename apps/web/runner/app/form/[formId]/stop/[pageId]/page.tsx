@@ -8,10 +8,10 @@ import applicationService from '@/app/services/applicationService';
 export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
         
     // Access the dynamic route parameter
-    const { formId, pageId } = params;
+    const { formId, pageId } = await params;
 
     // Access query parameters
-    const step = searchParams.step;
+    const step = await searchParams.step;
 
     const form = await applicationService.getApplication(await applicationService.getApplicationId(), pageId, step);
     const page = form.application.pages.find((page: any) => page.pageId === pageId);

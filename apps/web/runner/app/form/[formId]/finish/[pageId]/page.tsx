@@ -9,10 +9,10 @@ import GDSButtonLink from '@gds/GDSButtonLink';
 export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
         
     // Access the dynamic route parameter
-    const { formId, pageId } = params;
+    const { formId, pageId } = await params;
 
     // Access query parameters
-    const step = searchParams.step;
+    const step = await searchParams.step;
 
     const applicationId = await applicationService.getApplicationId();
     if (!applicationId) {
