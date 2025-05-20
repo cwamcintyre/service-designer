@@ -1,5 +1,5 @@
 export default function GDSInput({key, name, label, hint, labelIsPageTitle, errors, value, autocomplete = "off", inputmode = "text" }: 
-    {key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean, errors: string[], value: string | undefined, autocomplete?: string , 
+    {key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean, errors?: string[], value: string | undefined, autocomplete?: string , 
         inputmode?: "text" | "search" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined }) {
 
     let ariaDescribedBy = "";
@@ -10,7 +10,7 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
         ariaDescribedBy = `${name}-hint`;
     }
     
-    if (errors?.length > 0) {
+    if ((errors ?? []).length > 0) {
         ariaDescribedBy += ` ${name}-error`;
         containerClassName += " govuk-form-group--error";
         inputClassName += " govuk-input--error";
@@ -35,10 +35,10 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
                 {hint}
             </div> : null}
             
-            {errors?.length > 0 ?
+            {(errors ?? []).length > 0 ?
             <p id={`${name}-error`} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>
-                {errors.map((error, index) => (
+                {(errors ?? []).map((error, index) => (
                     <span key={index}>{error}</span>
                 ))}
             </p>

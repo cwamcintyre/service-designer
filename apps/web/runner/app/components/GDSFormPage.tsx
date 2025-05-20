@@ -1,5 +1,7 @@
 'use server';
 
+import { type Component } from '@model/formTypes';
+
 import GDSInput from '@gds/GDSInput';
 import GDSTextarea from '@gds/GDSTextarea';
 import GDSRadio from '@gds/GDSRadio';
@@ -13,7 +15,7 @@ export default async function GDSFormPage({ page, backLink }: { page: any, backL
         <>
             { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }
             {page?.title ? <h1 className="govuk-heading-xl">{page?.title}</h1> : null }
-            {page?.components && page?.components.map((component: any) => {
+            {page?.components && page?.components.map((component: Component) => {
                 switch (component.type) {
                     case 'text':    
                         return (                        

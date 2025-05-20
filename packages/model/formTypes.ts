@@ -21,7 +21,7 @@ export type Component = {
     content?: string; // For components like "html"
     options?: Option[];
     answer?: any;
-    errors?: string[];
+    errors?: string[] | undefined;
 };
 
 export type Condition = {
