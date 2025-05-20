@@ -9,13 +9,13 @@ export default function GDSYesNo({ key, name, label, hint, labelIsPageTitle, ans
                 {hint ? <div id={`${name}-hint`} className="govuk-hint">{hint}</div> : null}
                 <div className="govuk-radios govuk-radios--inline" data-module="govuk-radios">
                     <div className="govuk-radios__item">
-                        <input className="govuk-radios__input" id={`${name}-yes`} name={name} type="radio" value="yes" checked={answer === 'yes'} />
+                        <input className="govuk-radios__input" id={`${name}-yes`} name={name} type="radio" value="yes" defaultChecked={answer === 'yes'} />
                         <label className="govuk-label govuk-radios__label" htmlFor={`${name}-yes`}>
                             Yes
                         </label>
                     </div>
                     <div className="govuk-radios__item">
-                        <input className="govuk-radios__input" id={`${name}-no`} name={name} type="radio" value="no" checked={answer === 'no'} />
+                        <input className="govuk-radios__input" id={`${name}-no`} name={name} type="radio" value="no" defaultChecked={answer === 'no'} />
                         <label className="govuk-label govuk-radios__label" htmlFor={`${name}-no`}>
                             No
                         </label>

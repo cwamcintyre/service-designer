@@ -19,7 +19,7 @@ export default function GDSCheckbox({ key, name, label, hint, labelIsPageTitle, 
                             name={name} 
                             type="checkbox" 
                             value={option.value} 
-                            checked={option.value === answer} 
+                            defaultChecked={option.value === answer} 
                         />
                         <label className="govuk-label govuk-checkboxes__label" htmlFor={option.value}>
                         {option.label}

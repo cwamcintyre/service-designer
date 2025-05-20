@@ -12,7 +12,7 @@ export default function GDSRadio({ key, name, label, hint, labelIsPageTitle, opt
                 <div className="govuk-radios" data-module="govuk-radios">
                     {options && options.map((option) => (
                         <div className="govuk-radios__item" key={option.value}>
-                            <input className="govuk-radios__input" id={option.value} name={name} type="radio" value={option.value} checked={option.value === answer} />
+                            <input className="govuk-radios__input" id={option.value} name={name} type="radio" value={option.value} defaultChecked={option.value === answer} />
                             <label className="govuk-label govuk-radios__label" htmlFor={option.value}>
                             {option.label}
                             </label>
