@@ -1,5 +1,5 @@
-export default function GDSTextarea({ key, name, label, hint, labelIsPageTitle }: 
-    { key: string; name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean }) {
+export default function GDSTextarea({ key, name, label, hint, labelIsPageTitle, answer }: 
+    { key: string; name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean; answer?: string }) {
     return (
         <div className="govuk-form-group" key={key}>
             {labelIsPageTitle ? (
@@ -18,7 +18,7 @@ export default function GDSTextarea({ key, name, label, hint, labelIsPageTitle }
                     {hint}
                 </div>
             ) : null}
-            <textarea className="govuk-textarea" id={name} name={name} rows={5} />
+            <textarea className="govuk-textarea" id={name} name={name} rows={5} defaultValue={answer} />
         </div>
     );
 }   

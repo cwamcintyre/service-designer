@@ -56,6 +56,14 @@ export type Form = {
     isCreated: boolean;
 };
 
+export type UKAddress = {
+    addressLine1?: string;
+    addressLine2?: string;
+    town?: string;
+    county?: string;
+    postcode?: string;
+}
+
 export interface Application extends Form {
     id: string;
     applicantId: string;

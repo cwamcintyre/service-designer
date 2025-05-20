@@ -1,7 +1,7 @@
 import { type Option } from '@model/formTypes';
 
-export default function GDSRadio({ key, name, label, hint, labelIsPageTitle, options }:
-    { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, options: Option[] | undefined}) {
+export default function GDSRadio({ key, name, label, hint, labelIsPageTitle, options, answer }:
+    { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, options: Option[] | undefined, answer?: string }) {
     return (
         <div className="govuk-form-group">
             <fieldset className="govuk-fieldset" aria-describedby={hint ? `${name}-hint` : undefined}>
@@ -12,7 +12,7 @@ export default function GDSRadio({ key, name, label, hint, labelIsPageTitle, opt
                 <div className="govuk-radios" data-module="govuk-radios">
                     {options && options.map((option) => (
                         <div className="govuk-radios__item" key={option.value}>
-                            <input className="govuk-radios__input" id={option.value} name={name} type="radio" value={option.value} />
+                            <input className="govuk-radios__input" id={option.value} name={name} type="radio" value={option.value} checked={option.value === answer} />
                             <label className="govuk-label govuk-radios__label" htmlFor={option.value}>
                             {option.label}
                             </label>

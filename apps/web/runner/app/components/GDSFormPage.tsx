@@ -33,27 +33,27 @@ export default async function GDSFormPage({ page, backLink }: { page: any, backL
                         );
                     case 'multilineText':
                         return (
-                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
                         );
                     case 'radio':
                         return (
-                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
                         );
                     case 'checkbox':
                         return (
-                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
                         );
                     case 'select':
                         return (
-                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
+                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
                         );
                     case 'yesno':
                         return (
-                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
                         );
                     case 'ukaddress': 
                         return (
-                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
                         );
                     case 'html':
                         return (
