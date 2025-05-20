@@ -1,5 +1,6 @@
 import { type Page } from '@model/formTypes'
-import { GDSSummaryList, GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions } from '@gds/GDSSummary'
+import { GDSSummaryList, GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '@gds/GDSSummary'
+import GDSLink from '@gds/GDSLink'
 
 export default function GDSSummaryComponent({ formId, pages }: { formId: string, pages: Page[] }) {
     return (
@@ -23,7 +24,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>{component.answer || 'Not provided'}</GDSSummaryAnswer>
                                             <GDSSummaryActions>
-                                                <a href={`/form/change/${formId}/${page.pageId}`} className="govuk-link">Change<span className="govuk-visually-hidden">{component.label}</span></a>
+                                                <GDSLink href={`/form/change/${formId}/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
                                         </>
                                     );
@@ -39,7 +40,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                                 {component.answer?.postcode ? <p>{component.answer?.postcode}</p> : null}
                                             </GDSSummaryAnswer>
                                             <GDSSummaryActions>
-                                                <a href={`/form/change/${formId}/${page.pageId}`} className="govuk-link">Change<span className="govuk-visually-hidden">{component.label}</span></a>
+                                                <GDSLink href={`/form/change/${formId}/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
                                         </>
                                     );
