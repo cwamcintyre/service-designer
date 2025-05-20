@@ -1,6 +1,6 @@
 'use server';
 
-import applicationService from '@/services/applicationService';
+import applicationService from '@/app/services/applicationService';
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { NextResponse } from 'next/server';
 
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
             redirectUrl = `${baseUrl}/form/${formId}/stop/${processResult.nextPageId}`;
         }
         else if (processResult.nextPageType === "summary") {
-            redirectUrl = `${baseUrl}/form/${formId}/summary/${processResult.nextPageId}`;
+            redirectUrl = `${baseUrl}/form/${formId}/finish/${processResult.nextPageId}`;
         }
     }
 

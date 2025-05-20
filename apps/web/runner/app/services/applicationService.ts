@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { GetApplicationResponse } from '@model/runnerApiTypes';
+import { GetApplicationResponse, ProcessApplicationResponse } from '@model/runnerApiTypes';
 
 const applicationService = {
     getApplicationId: async () => {
@@ -44,7 +44,7 @@ const applicationService = {
         const data = await result.json();
         return data;
     },
-    processApplication: async (applicantId: string, pageId: string, formData: any): Promise<GetApplicationResponse> => {
+    processApplication: async (applicantId: string, pageId: string, formData: any): Promise<ProcessApplicationResponse> => {
         const result = await fetch(`${process.env.FORM_API}/application`, {
             method: 'POST',
             headers: {

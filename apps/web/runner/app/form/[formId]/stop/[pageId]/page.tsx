@@ -2,8 +2,8 @@
 
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
-import GDSFormPage from '@/components/GDSFormPage';
-import applicationService from '@/services/applicationService';
+import GDSFormPage from '@/app/components/GDSFormPage';
+import applicationService from '@/app/services/applicationService';
 
 export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
         

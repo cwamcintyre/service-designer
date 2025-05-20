@@ -22,14 +22,14 @@ export type GetApplicationResponse = {
     previousPageId?: string;
 }
 
-export type ProcessFormRequest = {
+export type ProcessApplicationRequest = {
     applicantId: string;
     pageId: string;
     formData: Record<string, any>;
     extraData?: string;
 }
 
-export type ProcessFormResponse = {
+export type ProcessApplicationResponse = {
     nextPageId?: string;
     nextPageType?: string;
     extraData?: string;

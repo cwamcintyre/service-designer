@@ -1,18 +1,18 @@
 import { AppTypes } from '@/ioc/appTypes';
-import { ProcessFormUseCase } from '~/usecase/process';
-import { ProcessFormRequest, ProcessFormResponse } from '@model/runnerApiTypes';
+import { ProcessApplicationUseCase } from '~/usecase/process';
+import { ProcessApplicationRequest, ProcessApplicationResponse } from '@model/runnerApiTypes';
 import { type Request, type Response } from 'express';
 import { inject, injectable } from 'inversify';
 
 @injectable()
 export class ProcessController {
-    private useCase: ProcessFormUseCase;
-    constructor(@inject(AppTypes.ProcessUseCase) useCase: ProcessFormUseCase) {
+    private useCase: ProcessApplicationUseCase;
+    constructor(@inject(AppTypes.ProcessUseCase) useCase: ProcessApplicationUseCase) {
         this.useCase = useCase; 
     }
 
     public async post(request: Request, response: Response): Promise<void> {
-        const processRequest: ProcessFormRequest = {
+        const processRequest: ProcessApplicationRequest = {
             ...request.body
         };
         console.log("ProcessController: processing form");

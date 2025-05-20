@@ -17,7 +17,7 @@ import { ProcessController } from "~/adapters/controllers/process";
 import { StartApplicationController } from "~/adapters/controllers/start";
 import { GetApplicationController } from "~/adapters/controllers/get";
 
-import { ProcessFormUseCase } from "@/usecase/process";
+import { ProcessApplicationUseCase } from "@/usecase/process";
 import { StartApplicationUseCase } from "~/usecase/start";
 import { GetApplicationUseCase } from "~/usecase/get";
 //import { ProcessChangeUseCase } from "~/usecase/processChange";
@@ -27,7 +27,7 @@ const container = new Container();
 container.bind<ApplicationStore>(AppTypes.ApplicationStore).to(CosmosApplicationStore).inSingletonScope();
 container.bind<FormStore>(AppTypes.FormStore).to(CosmosFormStore).inSingletonScope();
 
-container.bind<requestResponse<ProcessFormRequest, ProcessFormResponse>>(AppTypes.ProcessUseCase).to(ProcessFormUseCase).inTransientScope();    
+container.bind<requestResponse<ProcessFormRequest, ProcessFormResponse>>(AppTypes.ProcessUseCase).to(ProcessApplicationUseCase).inTransientScope();    
 container.bind<requestResponse<StartApplicationRequest, StartApplicationResponse>>(AppTypes.StartApplicationUseCase).to(StartApplicationUseCase).inTransientScope();
 container.bind<requestResponse<GetApplicationRequest, GetApplicationResponse>>(AppTypes.GetApplicationUseCase).to(GetApplicationUseCase).inTransientScope();
 

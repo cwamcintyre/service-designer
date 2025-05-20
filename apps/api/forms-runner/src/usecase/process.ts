@@ -1,5 +1,5 @@
 import { AppTypes } from '@/ioc/appTypes';
-import { type ProcessFormRequest, type ProcessFormResponse } from '@model/runnerApiTypes';
+import { type ProcessApplicationRequest, type ProcessApplicationResponse } from '@model/runnerApiTypes';
 import { requestResponse } from '@clean/useCaseInterfaces';
 import { PageHandlerFactory } from '@/utils/pageHandler/pageHandlerFactory';
 import { type Application } from '@model/formTypes';
@@ -7,16 +7,16 @@ import { type ApplicationStore } from '@/usecase/shared/infrastructure/applicati
 import { inject, injectable } from 'inversify';
 
 @injectable()
-export class ProcessFormUseCase implements requestResponse<ProcessFormRequest, ProcessFormResponse> {
-    public request: ProcessFormRequest;
-    public response: ProcessFormResponse;
+export class ProcessApplicationUseCase implements requestResponse<ProcessApplicationRequest, ProcessApplicationResponse> {
+    public request: ProcessApplicationRequest;
+    public response: ProcessApplicationResponse;
 
     constructor(@inject(AppTypes.ApplicationStore) public applicationStore: ApplicationStore) {
         this.request = { applicantId: '', pageId: '', formData: {} };
         this.response = { nextPageId: '', extraData: '' };
     }
 
-    public async execute(request: ProcessFormRequest): Promise<ProcessFormResponse> {
+    public async execute(request: ProcessApplicationRequest): Promise<ProcessApplicationResponse> {
         try {
             const application = await this.applicationStore.getApplication(request.applicantId);
             if (!application) {

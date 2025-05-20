@@ -1,7 +1,7 @@
 'use server'
 
 import { nanoid } from 'nanoid';
-import applicationService from '@/services/applicationService';
+import applicationService from '@/app/services/applicationService';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { formId: string } }) {

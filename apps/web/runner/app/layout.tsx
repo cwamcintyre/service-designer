@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import GDSInitialiser from "@/components/GDSinitialiser";
+import GDSInitialiser from "@/app/components/GDSinitialiser";
 import { getSharedState } from "@/app/utils/sharedState";
 
 export const metadata: Metadata = {
