@@ -10,8 +10,6 @@ export class DefaultComponentHandler implements ComponentHandler {
             type === 'radio' ||
             type === 'checkbox' ||
             type === 'yesno' ||
-            type === 'email' ||
-            type === 'phonenumber' ||
             type === 'fileupload';
     }
 

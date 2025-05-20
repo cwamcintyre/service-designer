@@ -20,7 +20,7 @@ export type Component = {
     validationRules?: ValidationRule[];
     content?: string; // For components like "html"
     options?: Option[];
-    answer?: string;
+    answer?: any;
     errors?: string[];
 };
 

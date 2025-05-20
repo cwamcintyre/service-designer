@@ -7,7 +7,7 @@ export async function evaluateExpression(
     defaultValue: any = null
 ): Promise<any> {
     try {
-        const unsafeKeywords = /\b(eval|require|process|global)\b/;
+        const unsafeKeywords = /\b(eval|require|process|global|window|import|function|prototype|module)\b/;
         if (unsafeKeywords.test(expression)) {
             throw new Error('Unsafe keywords detected in expression');
         }

@@ -27,6 +27,22 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             </GDSSummaryActions>
                                         </>
                                     );
+                                case 'ukaddress':
+                                    return (
+                                        <>
+                                            <GDSSummaryQuestion text={component.label || 'Untitled'} />
+                                            <GDSSummaryAnswer>
+                                                {component.answer?.addressLine1 ? <p>{component.answer?.addressLine1}</p> : null}
+                                                {component.answer?.addressLine2 ? <p>{component.answer?.addressLine2}</p> : null}
+                                                {component.answer?.town ? <p>{component.answer?.town}</p> : null}
+                                                {component.answer?.county ? <p>{component.answer?.county}</p> : null}
+                                                {component.answer?.postcode ? <p>{component.answer?.postcode}</p> : null}
+                                            </GDSSummaryAnswer>
+                                            <GDSSummaryActions>
+                                                <a href={`/form/change/${formId}/${page.pageId}`} className="govuk-link">Change<span className="govuk-visually-hidden">{component.label}</span></a>
+                                            </GDSSummaryActions>
+                                        </>
+                                    );
                             }
                         })}
                     </GDSSummaryRow>
