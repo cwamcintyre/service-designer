@@ -7,7 +7,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
         <GDSSummaryList>            
             {pages.map((page) => {
                 return (
-                    <GDSSummaryRow>
+                    <GDSSummaryRow key={page.pageId}>
                         {page.components && page.components.map((component) => {
                             switch (component.type) {
                                 case 'text':

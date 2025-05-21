@@ -44,6 +44,7 @@ const applicationService = {
         const data = await result.json();
         return data;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     processApplication: async (applicantId: string, pageId: string, formData: any): Promise<ProcessApplicationResponse> => {
         const result = await fetch(`${process.env.FORM_API}/application`, {
             method: 'POST',
@@ -66,6 +67,7 @@ const applicationService = {
             return data;
         }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     processApplicationChange: async (applicantId: string, pageId: string, formData: any): Promise<ProcessApplicationResponse> => {
         const result = await fetch(`${process.env.FORM_API}/application`, {
             method: 'PATCH',

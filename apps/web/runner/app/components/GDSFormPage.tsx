@@ -1,6 +1,6 @@
 'use server';
 
-import { type Component } from '@model/formTypes';
+import { type Page, type Component } from '@model/formTypes';
 
 import GDSInput from '@gds/GDSInput';
 import GDSTextarea from '@gds/GDSTextarea';
@@ -10,7 +10,7 @@ import GDSCheckbox from '@gds/GDSCheckbox';
 import GDSYesNo from '@gds/GDSYesNo';
 import GDSUKAddress from '@gds/GDSUKAddress';
 
-export default async function GDSFormPage({ page, backLink }: { page: any, backLink: string }) {
+export default async function GDSFormPage({ page, backLink }: { page: Page, backLink: string }) {
     return (
         <>
             { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }

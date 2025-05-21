@@ -82,7 +82,7 @@ export class CosmosApplicationStore implements ApplicationStore {
     async updateApplication(application: Application): Promise<void> {
         try {
             application.updatedAt = new Date(Date.now());
-            await this.getContainer().items.upsert({ id: application.applicantId, ...application });
+            await this.getContainer().items.upsert({ ...application, id: application.applicantId });
             console.log(`Application with ID ${application.applicantId} has been updated.`);
         } catch (error) {
             if (error instanceof Error) {

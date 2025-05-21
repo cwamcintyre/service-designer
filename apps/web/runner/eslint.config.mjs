@@ -10,7 +10,12 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.config({
+    extends: ["next/core-web-vitals", "next/typescript"],
+    rules: {
+      '@next/next/no-html-link-for-pages': 'off' // Disable this rule as this project is supposed to be full SSR
+    },
+  })
 ];
 
 export default eslintConfig;

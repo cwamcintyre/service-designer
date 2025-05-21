@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import applicationService from '@/app/services/applicationService';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { formId: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ formId: string }>}) {
     const { formId } = await params;
 
     // Set up the form session

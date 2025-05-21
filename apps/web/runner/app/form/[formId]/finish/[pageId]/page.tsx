@@ -6,30 +6,31 @@ import applicationService from '@/app/services/applicationService';
 import GDSSummaryComponent from '@/app/components/GDSSummaryComponent';
 import GDSButtonLink from '@gds/GDSButtonLink';
 
-export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
+export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>, searchParams: Promise<Record<string, string>> }) {
         
     // Access the dynamic route parameter
     const { formId, pageId } = await params;
 
     // Access query parameters
-    const step = await searchParams.step;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const step = await searchParams;
 
     const applicationId = await applicationService.getApplicationId();
     if (!applicationId) {
-        console.error("Application ID not found");
+        LogHandler.log("Application ID not found", {});
         return new Response("Application ID not found", { status: 400 });
     }
 
-    const applicationResponse = await applicationService.getApplication(applicationId, pageId, step);
+    const applicationResponse = await applicationService.getApplication(applicationId, pageId, "");
     if (!applicationResponse) {
-        console.error("Application not found");
+        LogHandler.log("Application not found", {});
         return new Response("Application not found", { status: 404 });
     }
 
     const summaryPage = applicationResponse.application.pages.find((page) => page.pageId === pageId);
 
     if (!summaryPage) {
-        console.error("Summary page not found");
+        LogHandler.log("Summary page not found", { applicationId, pageId });
         return new Response("Summary page not found", { status: 404 });
     }
 

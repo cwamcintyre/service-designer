@@ -5,14 +5,15 @@ import { setSharedState } from '@/app/utils/sharedState';
 import GDSFormPage from '@/app/components/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import GDSButton from '@gds/GDSButton';
+import { Page } from '@model/formTypes';
 
-export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
+export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>; searchParams: Promise<Record<string, string>> }) {
         
     // Access the dynamic route parameter
     const { formId, pageId } = await params;
 
     // Access query parameters
-    const step = await searchParams.step;
+    const step = await searchParams;
 
     const applicationId = await applicationService.getApplicationId();
     if (!applicationId) {
@@ -21,8 +22,8 @@ export default async function FormPage({ params, searchParams }: { params: { for
     }
 
     console.log(`Application ID: ${applicationId}`);
-    const applicationResponse = await applicationService.getApplication(applicationId, pageId, step);
-    const page = applicationResponse.application.pages.find((page: any) => page.pageId === pageId);
+    const applicationResponse = await applicationService.getApplication(applicationId, pageId, "");
+    const page = applicationResponse.application.pages.find((page: Page) => page.pageId === pageId);
 
     if (!page || typeof page.pageType !== 'string') {
         console.error("Page or page type is invalid");

@@ -4,17 +4,19 @@ import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
 import GDSFormPage from '@/app/components/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
+import { Page } from '@model/formTypes';
 
-export default async function FormPage({ params, searchParams }: { params: { formId: string, pageId: string }; searchParams: any }) {
+export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>, searchParams: Promise<Record<string, string>> }) {
         
     // Access the dynamic route parameter
-    const { formId, pageId } = await params;
+    const { pageId } = await params;
 
     // Access query parameters
-    const step = await searchParams.step;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const step = await searchParams;
 
-    const form = await applicationService.getApplication(await applicationService.getApplicationId(), pageId, step);
-    const page = form.application.pages.find((page: any) => page.pageId === pageId);
+    const form = await applicationService.getApplication(await applicationService.getApplicationId(), pageId, "");
+    const page = form.application.pages.find((page: Page) => page.pageId === pageId);
 
     if (!page || typeof page.pageType !== 'string') {
         console.error("Page or page type is invalid");

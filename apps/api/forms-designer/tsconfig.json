@@ -15,7 +15,8 @@
       "@clean/*": ["../../../packages/clean/*"],
     },
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist", // Output directory for compiled files
   },
   "include": ["src/**/*"], // Include all TypeScript files in the src folder
   "exclude": ["node_modules", "dist"] // Exclude node_modules and dist folders
