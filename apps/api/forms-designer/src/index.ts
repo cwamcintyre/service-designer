@@ -1,5 +1,5 @@
-import 'reflect-metadata';
 import { Request, Response } from 'express';
+import 'reflect-metadata';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 

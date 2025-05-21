@@ -4,9 +4,9 @@
   "description": "Forms API for the Service Designer Runner",
   "main": "index.js",
   "scripts": {
-    "start": "node -r tsconfig-paths/register dist/index.js",
+    "start": "node -r tsconfig-paths/register dist/apps/api/forms-runner/src/index.js",
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/index.ts",
-    "build": "tsc",
+    "build": "tsc && cp tsconfig.json dist\\apps\\api\\forms-runner\\",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },

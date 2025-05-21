@@ -1,0 +1,7 @@
+.turbo
+.env
+.next
+.vscode
+.react-router
+node_modules
+venv
