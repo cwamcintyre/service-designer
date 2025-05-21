@@ -1,0 +1,9 @@
+{
+  "name": "designer-chat",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": ".\\venv\\Scripts\\activate && powershell .\\run-api.ps1",
+    "build": "echo 'No build step for Python'",
+    "start": ".\\venv\\Scripts\\activate && powershell .\\run-api.ps1"
+  }
+}
