@@ -1,6 +1,7 @@
 import { PageHandler } from '@/utils/pageHandler/interfaces';
 import { ComponentHandlerFactory } from '@/utils/componentHandler/componentHandlerFactory';
 import { meetsCondition } from '@/utils/expressionUtils';
+import { getAllDataFromApplication } from '@/utils/applicationUtils';
 import { Application } from '@model/formTypes';
 
 export class DefaultPageHandler implements PageHandler {
@@ -38,7 +39,7 @@ export class DefaultPageHandler implements PageHandler {
                 throw new Error(`Component name is undefined for component ID ${component.questionId}.`);
             }
 
-            const validationResult = await componentHandler.Validate(component, this.GetAllDataFromApplication(application));
+            const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
             if (validationResult.length > 0) {
                 hasErrors = true;
                 component.errors = validationResult;
@@ -58,7 +59,7 @@ export class DefaultPageHandler implements PageHandler {
             throw new Error(`Page with ID ${pageId} not found.`);
         }
 
-        const { metCondition, nextPageId } = await meetsCondition(page, this.GetAllDataFromApplication(application));
+        const { metCondition, nextPageId } = await meetsCondition(page, getAllDataFromApplication(application));
         if (metCondition) {
             const nextPage = application.pages.find(p => p.pageId === nextPageId);
             return { nextPageId, nextPageType: nextPage?.pageType, extraData: undefined };
@@ -68,19 +69,41 @@ export class DefaultPageHandler implements PageHandler {
         return { nextPageId: page.nextPageId, nextPageType: nextPage?.pageType, extraData: undefined };
     }
 
-    WalkToNextInvalidOrUnfilledPage(): string {
-        throw new Error('Method not implemented.');
-    }
+    async WalkToNextInvalidOrUnfilledPage(application: Application, currentPageId: string, extraData: string,): Promise<{ pageId: string, pageType: string, stop: boolean }> {
 
-    private GetAllDataFromApplication(application: Application): { [key: string]: any } {
-        const allData: { [key: string]: any } = {};
-        for (const page of application.pages) {
-            for (const component of page.components) {
-                if (component.name) {
-                    allData[component.name] = component.answer;
-                }
+        const page = application.pages.find(p => p.pageId === currentPageId);
+        if (!page) {
+            throw new Error(`Page with ID ${currentPageId} not found.`);
+        }
+
+        for (const component of page.components) {
+        
+            if (!component.type) {
+                throw new Error(`Component type is undefined for component ID ${component.questionId}.`);
+            }
+        
+            if (component.type === 'html') {
+                // Skip HTML components
+                continue;
+            }
+
+            // check whether the answer is empty. If so, we need to stop here.
+            if (component.answer === undefined || component.answer === null || component.answer === "") {
+                return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
+            }
+            
+            const componentHandler = ComponentHandlerFactory.For(component.type);
+            if (!componentHandler) {
+                throw new Error(`No handler found for component type ${component.type}.`);
+            }
+
+            const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
+            if (validationResult.length > 0) {
+                return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
             }
         }
-        return allData;
+
+        const nextPageResult = await this.GetNextPageId(application, currentPageId);
+        return { pageId: nextPageResult.nextPageId || "", pageType: nextPageResult.nextPageType || "", stop: false };
     }
 }

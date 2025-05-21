@@ -24,7 +24,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>{component.answer || 'Not provided'}</GDSSummaryAnswer>
                                             <GDSSummaryActions>
-                                                <GDSLink href={`/form/change/${formId}/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                                <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
                                         </>
                                     );
@@ -40,7 +40,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                                 {component.answer?.postcode ? <p>{component.answer?.postcode}</p> : null}
                                             </GDSSummaryAnswer>
                                             <GDSSummaryActions>
-                                                <GDSLink href={`/form/change/${formId}/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                                <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
                                         </>
                                     );

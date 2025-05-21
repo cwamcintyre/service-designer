@@ -1,10 +1,23 @@
 import { Application, Page } from '@model/formTypes'
 import { PageHandlerFactory } from './pageHandler/pageHandlerFactory'
+import { application } from 'express';
 
 type PreviousPageModel = {
     pageId: string;
     extraData?: string;
     forceRedirect?: boolean;
+}
+
+export function getAllDataFromApplication(application: Application): { [key: string]: any } {
+    const allData: { [key: string]: any } = {};
+    for (const page of application.pages) {
+        for (const component of page.components) {
+            if (component.name) {
+                allData[component.name] = component.answer;
+            }
+        }
+    }
+    return allData;
 }
 
 export async function calculatePreviousPageId(
@@ -87,6 +100,41 @@ async function calculatePreviousPageRecursive(
         nextPageResult.extraData || "",
         visitedPages
     );
+}
+
+export async function walkToNextInvalidOrUnfilledPage(
+    application: Application,
+    currentPageId: string,
+    extraData: string,
+): Promise<{ pageId: string, pageType: string, stop: boolean }> {
+    const currentPage = application.pages.find(p => p.pageId === currentPageId);
+    if (!currentPage) {
+        throw new Error(`Page with ID ${currentPageId} not found.`);
+    }
+
+    if (currentPage.pageType === 'summary' || currentPage.pageType === 'stop') {
+        return { pageId: currentPageId, pageType: currentPage.pageType, stop: true };
+    }
+
+    if (!currentPage.pageType) {
+        throw new Error("Page type is undefined");
+    }
+    const pageHandler = PageHandlerFactory.For(currentPage.pageType);
+    if (!pageHandler) {
+        throw new Error(`No handler found for page type ${currentPage.pageType}`);
+    }
+
+    const walkResult = await pageHandler.WalkToNextInvalidOrUnfilledPage(
+        application,
+        currentPageId,
+        extraData
+    );
+
+    if (!walkResult.stop) {
+        return walkToNextInvalidOrUnfilledPage(application, walkResult.pageId, extraData);
+    }
+
+    return walkResult;
 }
 
 class Stack {

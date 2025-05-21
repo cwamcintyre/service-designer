@@ -66,6 +66,28 @@ const applicationService = {
             return data;
         }
     },
+    processApplicationChange: async (applicantId: string, pageId: string, formData: any): Promise<ProcessApplicationResponse> => {
+        const result = await fetch(`${process.env.FORM_API}/application`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                applicantId,
+                pageId,
+                formData,
+            }),
+        });
+
+        if (result.status !== 200) {
+            console.log(`ProcessApplicationChange: ${result.status}`);
+            throw new Error('Failed to process application');
+        }
+        else {
+            const data = await result.json();
+            return data;
+        }
+    }
 }
 
 export default applicationService;

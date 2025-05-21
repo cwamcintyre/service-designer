@@ -7,7 +7,7 @@ import { container } from '@/ioc/container';
 import { ProcessController } from '~/adapters/controllers/process';
 import { StartApplicationController } from '~/adapters/controllers/start';
 import { GetApplicationController } from './adapters/controllers/get';
-//import { ProcessChangeController } from '~/adapters/controllers/processChange';
+import { ProcessChangeController } from '~/adapters/controllers/processChange';
 
 const dotenv = require('dotenv');
 const express = require('express');
@@ -29,7 +29,7 @@ app.use(express.json());
 const processController = container.get<ProcessController>(ProcessController);
 const startController = container.get<StartApplicationController>(StartApplicationController);
 const getApplicationController = container.get<GetApplicationController>(GetApplicationController);
-//container.get<ProcessChangeController>(ProcessChangeController);
+const processChangeController = container.get<ProcessChangeController>(ProcessChangeController);
 
 app.get('/api/application/health', (req: Request, res: Response) => {
   res.status(200).send('OK');
@@ -50,6 +50,8 @@ app.get('/api/application/:applicantId/:pageId', (req: Request, res: Response) =
 app.put('/api/application/start', startController.put.bind(startController));
 
 app.post('/api/application', processController.post.bind(processController));
+
+app.patch('/api/application', processChangeController.patch.bind(processChangeController));
 
 // Swagger configuration
 const swaggerOptions = {
