@@ -1,8 +1,9 @@
 import { Container } from "inversify";
-import { type formStore } from "@/usecase/shared/infrastructure/formStore";
+import { type FormStore } from "@/usecase/shared/infrastructure/formStore";
 import { voidResponse, type requestResponse } from "@clean/useCaseInterfaces";
 import { UpdateFormRequest, type CreateFormRequest, type GetAllFormsResponse, type GetFormResponse } from "@model/designerApiTypes";
 import { CosmosFormStore } from "@/adapters/infrastructureImpl/cosmosFormStore";
+import { DynamoDBFormStore } from "~/adapters/infrastructureImpl/dynamoDbFormStore";
 import { CreateFormUseCase } from "@/usecase/createForm";
 import { CreateFormController } from "@/adapters/controllers/createForm";
 import { GetFormUseCase } from "@/usecase/getForm";
@@ -19,7 +20,7 @@ import { CONTAINER_TYPES } from "@/ioc/appTypes";
 export const container = new Container();
 
 // Bind the CosmosFormStore to the container
-container.bind<formStore>(CONTAINER_TYPES.FormStore).to(CosmosFormStore).inSingletonScope();
+container.bind<FormStore>(CONTAINER_TYPES.FormStore).to(DynamoDBFormStore).inSingletonScope();
 
 // Bind the CreateFormUseCase to the container
 container.bind<requestResponse<CreateFormRequest, boolean>>(CONTAINER_TYPES.CreateFormUseCase).to(CreateFormUseCase);

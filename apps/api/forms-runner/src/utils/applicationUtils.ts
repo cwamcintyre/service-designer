@@ -134,6 +134,7 @@ export async function walkToNextInvalidOrUnfilledPage(
         return walkToNextInvalidOrUnfilledPage(application, walkResult.pageId, extraData);
     }
 
+    // TODO: keep a track of the path and wipe any intermediate data that is not needed...
     return walkResult;
 }
 

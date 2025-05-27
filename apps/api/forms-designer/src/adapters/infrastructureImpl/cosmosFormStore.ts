@@ -1,10 +1,10 @@
 import { injectable } from 'inversify';
-import { formStore } from '@/usecase/shared/infrastructure/formStore';
+import { FormStore } from '@/usecase/shared/infrastructure/formStore';
 import { Form } from '@model/formTypes';
 import { CosmosClient } from '@azure/cosmos';
 
 @injectable()
-export class CosmosFormStore implements formStore {
+export class CosmosFormStore implements FormStore {
     private client: CosmosClient;
     private databaseId: string;
     private containerId: string;

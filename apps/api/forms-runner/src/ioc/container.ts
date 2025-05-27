@@ -9,8 +9,11 @@ import { type FormStore } from "@/usecase/shared/infrastructure/formStore";
 
 import { AppTypes } from "./appTypes";
 
-import { CosmosApplicationStore } from "@/adapters/infrastructureImpl/applicationStore";
+import { CosmosApplicationStore } from "~/adapters/infrastructureImpl/cosmosApplicationStore";
 import { CosmosFormStore } from "@/adapters/infrastructureImpl/cosmosFormStore";
+
+import { DynamoDBApplicationStore } from "~/adapters/infrastructureImpl/dynamodbApplicationStore";
+import { DynamoDBFormStore } from "~/adapters/infrastructureImpl/dynamoDBFormStore";
 
 import { ProcessController } from "~/adapters/controllers/process";
 import { ProcessChangeController } from "~/adapters/controllers/processChange";
@@ -24,8 +27,8 @@ import { ProcessApplicationChangeUseCase } from "~/usecase/processChange";
 
 const container = new Container();
 
-container.bind<ApplicationStore>(AppTypes.ApplicationStore).to(CosmosApplicationStore).inSingletonScope();
-container.bind<FormStore>(AppTypes.FormStore).to(CosmosFormStore).inSingletonScope();
+container.bind<ApplicationStore>(AppTypes.ApplicationStore).to(DynamoDBApplicationStore).inSingletonScope();
+container.bind<FormStore>(AppTypes.FormStore).to(DynamoDBFormStore).inSingletonScope();
 
 container.bind<requestResponse<ProcessApplicationRequest, ProcessApplicationResponse>>(AppTypes.ProcessUseCase).to(ProcessApplicationUseCase).inTransientScope();    
 container.bind<requestResponse<StartApplicationRequest, StartApplicationResponse>>(AppTypes.StartApplicationUseCase).to(StartApplicationUseCase).inTransientScope();
