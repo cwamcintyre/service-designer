@@ -4,9 +4,10 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
+  ScrollRestoration
 } from "react-router";
-
+import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "react-oidc-context";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -17,26 +18,55 @@ export const links: Route.LinksFunction = () => [
   }
 ];
 
+const cognitoAuthConfig = {
+  authority: import.meta.env.VITE_OIDC_CLIENT_AUTHORITY,
+  client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
+  redirect_uri: import.meta.env.VITE_OIDC_CALLBACK,
+  response_type: "code",
+  scope: "phone openid email",
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-      <html lang="en">
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <Meta />
-          <Links />
-        </head>
-        <body>
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </body>
-      </html>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <AuthProvider {...cognitoAuthConfig}>
+      <OidcWrapper />
+    </AuthProvider>
+  );
+}
+
+export function OidcWrapper() {
+  const auth = useAuth();
+  
+  if (auth.isLoading) {
+      return <div>Loading...</div>; // Show a loading indicator while checking authentication
+  }
+
+  if (!auth.isAuthenticated) {
+      auth.signinRedirect(); // Redirect to the OIDC login page
+      return null;
+  }
+
+  return (
+    <Outlet />
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

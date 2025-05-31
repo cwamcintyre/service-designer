@@ -5,4 +5,6 @@ export default [
     route("/form", "routes/form/list.tsx"),
     route("/form/edit/:formId", "routes/form/edit.tsx"),
     route("/form/editPage/:formId/:pageId", "routes/form/editPage.tsx"),
+    route("/oidcCallback", "routes/oidcCallback.tsx"),
+    route("/logout", "routes/logout.tsx"),
 ] satisfies RouteConfig;
