@@ -1,5 +1,5 @@
-export default function GDSInput({key, name, label, hint, labelIsPageTitle, errors, value, autocomplete = "off", inputmode = "text" }: 
-    {key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean, errors?: string[], value: string | undefined, autocomplete?: string , 
+export default function GDSInput({name, label, hint, labelIsPageTitle, errors, value, autocomplete = "off", inputmode = "text" }: 
+    {name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean, errors?: string[], value: string | undefined, autocomplete?: string , 
         inputmode?: "text" | "search" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined }) {
 
     let ariaDescribedBy = "";
@@ -17,7 +17,7 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
     }
 
     return (
-        <div className={containerClassName} key={key}>
+        <div className={containerClassName}>
 
             {labelIsPageTitle ? 
             <h1 className="govuk-label-wrapper">
@@ -45,8 +45,8 @@ export default function GDSInput({key, name, label, hint, labelIsPageTitle, erro
             : null}
             
             { ariaDescribedBy ? 
-                <input className={inputClassName} id={name} name={name} type="text" autoComplete={autocomplete} inputMode={inputmode} aria-describedby={ariaDescribedBy} defaultValue={value} />
-            : <input className={inputClassName} id={name} name={name} type="text" autoComplete={autocomplete} inputMode={inputmode} defaultValue={value} />}
+                <input className={inputClassName} id={name} data-testid={name} name={name} type="text" autoComplete={autocomplete} inputMode={inputmode} aria-describedby={ariaDescribedBy} defaultValue={value} />
+            : <input className={inputClassName} id={name} data-testid={name} name={name} type="text" autoComplete={autocomplete} inputMode={inputmode} defaultValue={value} />}
         </div>
     );
 }

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node -r tsconfig-paths/register dist/apps/api/forms-designer/src/index.js",
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/index.ts",
-    "build": "tsc && cp tsconfig.json dist\\apps\\api\\forms-designer\\",
+    "copy-config": "npx cross-env-shell \"cp tsconfig.json dist\\apps\\api\\forms-designer\\ || copy tsconfig.json dist\\apps\\api\\forms-designer\\ \"",
+    "build": "tsc && npm run copy-config",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },

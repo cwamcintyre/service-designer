@@ -6,9 +6,9 @@ export function GDSSummaryList({ children }: { children: React.ReactNode }) {
     )
 }
 
-export function GDSSummaryRow({ children }: { children: React.ReactNode }) {
+export function GDSSummaryRow({ children, name }: { children: React.ReactNode, name?: string }) {
     return (
-        <div className="govuk-summary-list__row">
+        <div className="govuk-summary-list__row" data-name={name}>
             {children}
         </div>
     )

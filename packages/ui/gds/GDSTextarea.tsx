@@ -1,7 +1,10 @@
-export default function GDSTextarea({ key, name, label, hint, labelIsPageTitle, answer }: 
-    { key: string; name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean; answer?: string }) {
+export default function GDSTextarea({ name, label, hint, labelIsPageTitle, answer, errors }: 
+    { name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean; answer?: string, errors?: string[] }) {
+    const hasError = errors && errors.length > 0;
+    const errorId = `${name}-error`;
+
     return (
-        <div className="govuk-form-group" key={key}>
+        <div className={`govuk-form-group${hasError ? ' govuk-form-group--error' : ''}`} >
             {labelIsPageTitle ? (
                 <h1 className="govuk-label-wrapper">
                     <label className="govuk-label govuk-label--l" htmlFor={name}>
@@ -18,7 +21,21 @@ export default function GDSTextarea({ key, name, label, hint, labelIsPageTitle, 
                     {hint}
                 </div>
             ) : null}
-            <textarea className="govuk-textarea" id={name} name={name} rows={5} defaultValue={answer} />
+            {hasError ? (
+                <p id={errorId} className="govuk-error-message">
+                    <span className="govuk-visually-hidden">Error:</span> {errors[0]}
+                </p>
+            ) : null}
+            <textarea 
+                className={`govuk-textarea${hasError ? ' govuk-textarea--error' : ''}`} 
+                data-testid={name} 
+                name={name} 
+                rows={5} 
+                defaultValue={answer} 
+                aria-describedby={hint ? `${name}-hint` : undefined} 
+                aria-invalid={hasError ? 'true' : undefined} 
+                aria-errormessage={hasError ? errorId : undefined}
+            />
         </div>
     );
-}   
+}

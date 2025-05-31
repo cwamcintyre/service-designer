@@ -2,7 +2,7 @@ import { CONTAINER_TYPES } from '@/ioc/appTypes';
 import { requestResponse } from '@clean/useCaseInterfaces';
 import { type Form } from '@model/formTypes';
 import { type CreateFormRequest } from '@model/designerApiTypes';
-import { type formStore } from '@/usecase/shared/infrastructure/formStore';
+import { type FormStore } from '@/usecase/shared/infrastructure/formStore';
 import { inject, injectable } from 'inversify';
 
 @injectable()
@@ -10,7 +10,7 @@ export class CreateFormUseCase implements requestResponse<CreateFormRequest, boo
     public request: CreateFormRequest;
     public response: boolean;
 
-    constructor(@inject(CONTAINER_TYPES.FormStore) public formStore: formStore) {
+    constructor(@inject(CONTAINER_TYPES.FormStore) public formStore: FormStore) {
         this.request = { form: {} as Form };
         this.response = false;
     }

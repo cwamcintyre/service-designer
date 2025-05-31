@@ -1,0 +1,72 @@
+{
+   "formId": "test-multilineText-component",
+   "isCreated": true,
+   "startPage": "multilineText-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "multilineText123",
+           "validationRules": [
+             {
+               "errorMessage": "Please enter valid text",
+               "id": "1748350944143",
+               "expression": "data.multilineText !== ''"
+             }
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the multiline text component",
+           "name": "multilineText",
+           "label": "Test Multiline Text component",
+           "type": "multilineText"
+         }
+       ],
+       "id": "multilineTextPage",
+       "pageType": "default",
+       "pageId": "multilineText-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests the multiline text component",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-multilineText-component",
+   "title": "Tests multiline text component"
+ }

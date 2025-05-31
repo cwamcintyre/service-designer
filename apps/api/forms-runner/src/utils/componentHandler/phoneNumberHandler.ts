@@ -1,7 +1,7 @@
 import { type Component } from '@model/formTypes';
 import { ComponentHandler } from '@/utils/componentHandler/interfaces';
 import { evaluateExpression } from '../expressionUtils';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberWithError, parsePhoneNumberFromString } from 'libphonenumber-js';
 
 export class PhoneNumberComponentHandler implements ComponentHandler {
 
@@ -17,7 +17,7 @@ export class PhoneNumberComponentHandler implements ComponentHandler {
         if (phoneNumber) {
             const phoneNumberObj = parsePhoneNumberFromString(phoneNumber, 'GB');
             if (!phoneNumberObj || !phoneNumberObj.isValid()) {
-                validationResult.push("Enter a phone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192");
+                validationResult.push("Enter a phone number, like 02010 960 001, 07729 900 982 or +44 808 157 0192");
             }
         }
 
@@ -32,6 +32,10 @@ export class PhoneNumberComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): string | undefined{
-        return component.name ? data[component.name] : undefined;
+        if (component.name) {
+            // For components with a name, return the value from data
+            return data[component.name] || "";
+        }
+        return "";
     }
 }

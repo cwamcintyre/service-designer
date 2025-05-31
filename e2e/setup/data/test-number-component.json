@@ -1,0 +1,67 @@
+{
+   "formId": "test-number-component",
+   "isCreated": true,
+   "startPage": "number-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "number123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the number component",
+           "name": "number",
+           "label": "Test Number component",
+           "type": "number"
+         }
+       ],
+       "id": "numberPage",
+       "pageType": "default",
+       "pageId": "number-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests the number component",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-number-component",
+   "title": "Tests number component"
+ }

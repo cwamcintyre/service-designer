@@ -40,6 +40,7 @@ export class DefaultPageHandler implements PageHandler {
             }
 
             const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
+            console.log(`Validation result for component ${component.questionId}:`, validationResult);
             if (validationResult.length > 0) {
                 hasErrors = true;
                 component.errors = validationResult;

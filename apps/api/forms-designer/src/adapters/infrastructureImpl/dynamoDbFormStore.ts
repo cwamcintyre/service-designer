@@ -123,6 +123,7 @@ export class DynamoDBFormStore implements FormStore {
     }
 
     async updateForm(formId: string, form: Form): Promise<void> {
+        console.log(JSON.stringify(form, null, 2));
         await this.putItem(formId, form); // Upsert behavior in DynamoDB
     }
 }

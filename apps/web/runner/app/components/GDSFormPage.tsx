@@ -35,19 +35,19 @@ export default async function GDSFormPage({ page, backLink }: { page: Page, back
                         );
                     case 'multilineText':
                         return (
-                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
+                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} errors={component.errors} />
                         );
                     case 'radio':
                         return (
-                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
+                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} errors={component.errors} />
                         );
                     case 'checkbox':
                         return (
-                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
+                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} errors={component.errors} />
                         );
                     case 'select':
                         return (
-                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} />
+                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} answer={component.answer} errors={component.errors} />
                         );
                     case 'yesno':
                         return (

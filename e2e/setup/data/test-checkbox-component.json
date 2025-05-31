@@ -1,0 +1,76 @@
+{
+   "formId": "test-checkbox-component",
+   "isCreated": true,
+   "startPage": "checkbox-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "checkbox123",
+           "validationRules": [
+             {
+               "errorMessage": "Please select at least one option",
+               "id": "1748350944141",
+               "expression": "data.checkbox !== \"\""
+             }
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the checkbox component",
+           "name": "checkbox",
+           "options": [
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Checkbox component",
+           "type": "checkbox"
+         }
+       ],
+       "id": "checkboxPage",
+       "pageType": "default",
+       "pageId": "checkbox-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests the checkbox component",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-checkbox-component",
+   "title": "Tests checkbox component"
+ }

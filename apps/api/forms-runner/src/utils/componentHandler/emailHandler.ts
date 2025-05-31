@@ -28,6 +28,10 @@ export class EmailComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): string | undefined {
-        return component.name ? data[component.name] : undefined;
+        if (component.name) {
+            // For components with a name, return the value from data
+            return data[component.name] || "";
+        }
+        return "";
     }
 }

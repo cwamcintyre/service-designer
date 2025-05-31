@@ -7,7 +7,7 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
         <GDSSummaryList>            
             {pages.map((page) => {
                 return (
-                    <GDSSummaryRow key={page.pageId}>
+                    <>
                         {page.components && page.components.map((component) => {
                             switch (component.type) {
                                 case 'text':
@@ -15,22 +15,31 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                 case 'number':
                                 case 'phonenumber':
                                 case 'multilineText':
-                                case 'radio':
-                                case 'checkbox':
-                                case 'select':
-                                case 'yesno':                                
                                     return (
-                                        <>
+                                        <GDSSummaryRow key={component.questionId} name={component.name}>
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>{component.answer || 'Not provided'}</GDSSummaryAnswer>
                                             <GDSSummaryActions>
                                                 <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
-                                        </>
+                                        </GDSSummaryRow>
+                                    );
+                                case 'radio':
+                                case 'checkbox':
+                                case 'select':
+                                case 'yesno':                                
+                                    return (
+                                        <GDSSummaryRow key={component.questionId} name={component.name}>
+                                            <GDSSummaryQuestion text={component.label || 'Untitled'} />
+                                            <GDSSummaryAnswer>{component.answer?.label || 'Not provided'}</GDSSummaryAnswer>
+                                            <GDSSummaryActions>
+                                                <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                            </GDSSummaryActions>
+                                        </GDSSummaryRow>
                                     );
                                 case 'ukaddress':
                                     return (
-                                        <>
+                                        <GDSSummaryRow key={component.questionId} name={component.name}>
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>
                                                 {component.answer?.addressLine1 ? <p>{component.answer?.addressLine1}</p> : null}
@@ -42,11 +51,11 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             <GDSSummaryActions>
                                                 <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                             </GDSSummaryActions>
-                                        </>
+                                        </GDSSummaryRow>
                                     );
                             }
                         })}
-                    </GDSSummaryRow>
+                    </>
                 )
             })}
         </GDSSummaryList>

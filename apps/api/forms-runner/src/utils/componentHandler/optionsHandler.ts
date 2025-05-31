@@ -2,11 +2,12 @@ import { type Component } from '@model/formTypes';
 import { ComponentHandler } from '@/utils/componentHandler/interfaces';
 import { evaluateExpression } from '../expressionUtils';
 
-export class DefaultComponentHandler implements ComponentHandler {
+export class OptionsComponentHandler implements ComponentHandler {
     static IsFor(type: string): boolean {
-        return type === 'text' ||
-            type === 'multilineText' ||
-            type === 'fileupload';
+        return type === 'select' ||
+            type === 'radio' ||
+            type === 'checkbox' ||
+            type === 'yesno'
     }
 
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
@@ -22,8 +23,10 @@ export class DefaultComponentHandler implements ComponentHandler {
 
     Convert(component: Component, data: { [key: string]: any }): any {
         if (component.name) {
-            // For components with a name, return the value from data
-            return data[component.name] || "";
+            // For components with a name, return the matching option from component.options
+            const selectedValue = data[component.name];
+            const matchingOption = component.options?.find(option => option.value === selectedValue);
+            return matchingOption || "";
         }
         return "";
     }

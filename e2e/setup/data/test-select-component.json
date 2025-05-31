@@ -1,0 +1,77 @@
+{
+   "formId": "test-select-component",
+   "isCreated": true,
+   "startPage": "select-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "select123",
+           "validationRules": [
+             {
+               "errorMessage": "Select a valid option",
+               "id": "1748350944139",
+               "expression": "data.select.value !== \"no-option-selected\""
+             }
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the select component",
+           "name": "select",
+           "options": [
+             {"value": "no-option-selected", "label": "Select an option"},
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Select component",
+           "type": "select"
+         }
+       ],
+       "id": "selectPage",
+       "pageType": "default",
+       "pageId": "select-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests the select component",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-select-component",
+   "title": "Tests select component"
+ }

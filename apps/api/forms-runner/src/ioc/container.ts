@@ -12,8 +12,8 @@ import { AppTypes } from "./appTypes";
 import { CosmosApplicationStore } from "~/adapters/infrastructureImpl/cosmosApplicationStore";
 import { CosmosFormStore } from "@/adapters/infrastructureImpl/cosmosFormStore";
 
-import { DynamoDBApplicationStore } from "~/adapters/infrastructureImpl/dynamodbApplicationStore";
-import { DynamoDBFormStore } from "~/adapters/infrastructureImpl/dynamoDBFormStore";
+import { DynamoDBApplicationStore } from "@/adapters/infrastructureImpl/dynamodbApplicationStore";
+import { DynamoDBFormStore } from "@/adapters/infrastructureImpl/dynamodbFormStore";
 
 import { ProcessController } from "~/adapters/controllers/process";
 import { ProcessChangeController } from "~/adapters/controllers/processChange";

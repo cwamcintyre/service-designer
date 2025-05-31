@@ -80,3 +80,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   console.log(`API documentation available at http://localhost:${port}/api-docs`);
 });
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+});
