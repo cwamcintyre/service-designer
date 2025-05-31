@@ -6,30 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { MsalProvider, useMsal } from "@azure/msal-react";
-import { PublicClientApplication, EventType, type AuthenticationResult } from "@azure/msal-browser";
-import { msalConfig } from "./authConfig";
-import { useState, useEffect } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
-
-const msalInstance = new PublicClientApplication(msalConfig);
-
-// Ensure msalInstance is initialized before rendering the app
-async function initializeMsal() {
-  try {
-    await msalInstance.initialize();
-  } catch (error) {
-    console.error("Failed to initialize MSAL instance:", error);
-  }
-}
-
-initializeMsal();
-
-function AppWrapper({ children }: { children: React.ReactNode }) {
-  return <MsalProvider instance={msalInstance}>{children}</MsalProvider>;
-}
 
 export const links: Route.LinksFunction = () => [
   { 
@@ -38,40 +17,8 @@ export const links: Route.LinksFunction = () => [
   }
 ];
 
-function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { accounts, instance } = useMsal();
-  const [isRedirectHandled, setIsRedirectHandled] = useState(false);
-
-  useEffect(() => {
-    const handleRedirect = async () => {
-      try {
-        await instance.handleRedirectPromise();
-      } catch (error) {
-        console.error("Error handling redirect:", error);
-      } finally {
-        setIsRedirectHandled(true);
-      }
-    };
-
-    handleRedirect();
-  }, [instance]);
-
-  useEffect(() => {
-    if (isRedirectHandled && accounts.length === 0) {
-      instance.loginRedirect();
-    }
-  }, [accounts, instance, isRedirectHandled]);
-
-  if (!isRedirectHandled || accounts.length === 0) {
-    return <p>Redirecting to login...</p>; // Show a message while redirecting
-  }
-
-  return <>{children}</>;
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AppWrapper>
       <html lang="en">
         <head>
           <meta charSet="utf-8" />
@@ -80,12 +27,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Links />
         </head>
         <body>
-          <RequireAuth>{children}</RequireAuth>
+          {children}
           <ScrollRestoration />
           <Scripts />
         </body>
       </html>
-    </AppWrapper>
   );
 }
 
