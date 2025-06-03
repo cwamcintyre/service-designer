@@ -15,6 +15,7 @@ build/
 .vscode/
 .idea/
 *.iml
+useful-commands.txt
 
 # React
 *.cache/
@@ -60,3 +61,8 @@ build/
 
 # Turbo
 .turbo
+
+#terraform
+.terraform*
+.tfvars
+*.tfstate

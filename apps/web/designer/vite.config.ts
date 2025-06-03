@@ -11,6 +11,6 @@ export default defineConfig({
     hmr: {
       protocol: 'ws', // WebSocket for HMR
       host: 'localhost',
-    },
+    }
   }
 });

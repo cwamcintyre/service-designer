@@ -1,0 +1,54 @@
+services:
+  runner-api:
+    image: "form-api-runner:latest"
+    ports:
+      - "9002:9002"
+    environment:
+      - EXPRESS_PORT=9002
+      - EXPRESS_HOST=runner-api
+      - EXPRESS_ALLOW_ORIGIN=['http://localhost', 'http://localhost:3000', 'http://runner-web:3000']
+      - DYNAMODB_FORM_TABLE_NAME=FormsTable
+      - DYNAMODB_APPLICATION_TABLE_NAME=ApplicationsTable
+      - DYNAMODB_LOCAL=true
+      - DYNAMODB_ENDPOINT=http://host.docker.internal:8000
+      - AWS_ACCESS_KEY_ID=ASIARJ7V2XIED3ZW2FDH
+      - AWS_SECRET_ACCESS_KEY=NLqxgvh88eLDDEA55+Xg8Zw1AHloQ+q2T06/FwZF
+      - AWS_REGION=eu-west-2
+      - AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjECMaCWV1LXdlc3QtMiJIMEYCIQCpYKbSoqbgAMfc07YOoaN6mt2FjpasQebvnbxjr1lf9wIhALK9Suh+FqK9oaYWcEt2J9Aup3mdQ0RqL0sxGJTNrhgeKoADCOz//////////wEQABoMMDkwMTcyOTk2MTA0IgxYVVRvbpZOOU0X7hwq1AL0LC2zxu1swXvPemOS9mRfQaqrMVO2Ie1LNp5lAfSeOhVBG04Qhrs1NqgBpypHQZ1rAtuKh66ErrJ0Gap0TjnQq/B+5HKvjm5e343IRSKh71S6R7g5jmSoc0T5CG7gpKcVifzk3FCB7X2BW0V+1Njru1vEbyLaSQbuwSItbhYxDSnfwK0+d+CF4yRkM/kVBtd3DG2sQ5Zu2C0Pg8G5PhlBf2VhmPq2ttF2KnjZCzZT0D3hx9IOPmbxSxgkbYDovtUHRQh8MGUwpa0VI0B+TIePWa1Kws5aHJCLUEwTEuhkf2ilnfaD/wBQBuDenOGUOC2ZAgp3ErK0i3hurRzo4obufsL3LVX4X4ObhWaOthMAb/wLuNsbOrc2MwMD37R42LkCpbemK13Rm0MniMxcFhwy8Lc9THnBJKqmsaAnJ63b6lE1f9TFUHHhNiSSgvkFJx27fsS+MKiA9sEGOqYBCJd3wLoIBHnvrWSlEyp5oKxPDbQOWBAeJCJU0wmeQHpH08qeSKBvfQ6Dyx+Tpod8OCPT4N1uRpykDPZzLxtyujnFsHNovjfg/34kmMb4wie4V+JC4U134xqPjkOFk/u3uz1XkmqoJhN5Jabef2I9CM4ow97rp2LyK3irvep92K+GqsNQdJVepxsjvDoCqnG4d1WJxynJLykVkQgB1p8nJxEHTDzZdg==      
+
+  runner-web:
+      image: "form-web-runner:latest"
+      ports:
+        - "3000:3000"
+      environment:
+        - FORM_API=http://runner-api:9002/api
+        - BASE_URL=http://localhost:3000
+
+  designer-api:
+    image: "form-api-designer:latest"
+    ports:
+      - "9001:9001"
+    environment:
+      - EXPRESS_PORT=9001
+      - EXPRESS_HOST=0.0.0.0
+      - EXPRESS_ALLOW_ORIGIN=['http://localhost', 'http://localhost:5173']
+      - DYNAMODB_TABLE_NAME=FormsTable
+      - DYNAMODB_LOCAL=true
+      - DYNAMODB_ENDPOINT=http://host.docker.internal:8000
+      - AWS_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=ASIARJ7V2XIED3ZW2FDH
+      - AWS_SECRET_ACCESS_KEY=NLqxgvh88eLDDEA55+Xg8Zw1AHloQ+q2T06/FwZF
+      - AWS_REGION=eu-west-2
+      - AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjECMaCWV1LXdlc3QtMiJIMEYCIQCpYKbSoqbgAMfc07YOoaN6mt2FjpasQebvnbxjr1lf9wIhALK9Suh+FqK9oaYWcEt2J9Aup3mdQ0RqL0sxGJTNrhgeKoADCOz//////////wEQABoMMDkwMTcyOTk2MTA0IgxYVVRvbpZOOU0X7hwq1AL0LC2zxu1swXvPemOS9mRfQaqrMVO2Ie1LNp5lAfSeOhVBG04Qhrs1NqgBpypHQZ1rAtuKh66ErrJ0Gap0TjnQq/B+5HKvjm5e343IRSKh71S6R7g5jmSoc0T5CG7gpKcVifzk3FCB7X2BW0V+1Njru1vEbyLaSQbuwSItbhYxDSnfwK0+d+CF4yRkM/kVBtd3DG2sQ5Zu2C0Pg8G5PhlBf2VhmPq2ttF2KnjZCzZT0D3hx9IOPmbxSxgkbYDovtUHRQh8MGUwpa0VI0B+TIePWa1Kws5aHJCLUEwTEuhkf2ilnfaD/wBQBuDenOGUOC2ZAgp3ErK0i3hurRzo4obufsL3LVX4X4ObhWaOthMAb/wLuNsbOrc2MwMD37R42LkCpbemK13Rm0MniMxcFhwy8Lc9THnBJKqmsaAnJ63b6lE1f9TFUHHhNiSSgvkFJx27fsS+MKiA9sEGOqYBCJd3wLoIBHnvrWSlEyp5oKxPDbQOWBAeJCJU0wmeQHpH08qeSKBvfQ6Dyx+Tpod8OCPT4N1uRpykDPZzLxtyujnFsHNovjfg/34kmMb4wie4V+JC4U134xqPjkOFk/u3uz1XkmqoJhN5Jabef2I9CM4ow97rp2LyK3irvep92K+GqsNQdJVepxsjvDoCqnG4d1WJxynJLykVkQgB1p8nJxEHTDzZdg==      
+
+  designer-web:
+      image: "form-web-designer:latest"
+      ports:
+        - "5173:443"
+      environment:
+        - VITE_APP_API_URL=http://localhost:9001/api
+        - VITE_APP_RUNNER_URL=http://localhost:3000
+        - VITE_APP_CHAT_URL=http://humphrey:8000
+        - VITE_OIDC_CLIENT_ID=67j4acvc8d1r5pnuur1197bve0
+        - VITE_OIDC_CLIENT_AUTHORITY=https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_Ay1h9vXBc
+        - VITE_OIDC_CALLBACK=http://localhost:5173/oidcCallback     

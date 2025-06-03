@@ -40,7 +40,7 @@ export type FormState = {
     receiveFormFromChat: (form: Form) => void;
 };
 
-const apiUrl = import.meta.env.VITE_APP_API_URL || (() => { throw new Error("VITE_APP_API_URL is not defined"); })();
+const apiUrl = window.RUNTIME_CONFIG.VITE_APP_API_URL || (() => { throw new Error("VITE_APP_API_URL is not defined"); })();
 const formService = new FormService(apiUrl);
 
 const useStore = createWithEqualityFn<FormState>((set, get) => ({

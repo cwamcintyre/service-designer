@@ -33,7 +33,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY apps/api/designer-chat/src ./apps/api/designer-chat/src
 
 # Expose the port the app runs on
-EXPOSE 80
+EXPOSE 8000
 
 # Command to run the application
-CMD ["uvicorn", "apps.api.designer-chat.src.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "apps.api.designer-chat.src.main:app", "--host", "0.0.0.0", "--port", "8000"]

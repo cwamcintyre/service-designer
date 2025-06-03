@@ -12,7 +12,7 @@ type Message = {
 
 export default function Chatbot({ formId, onReceiveForm }: { formId: string; onReceiveForm: (form: Form) => void }) {
 
-    const chatApiUrl = `${import.meta.env.VITE_APP_CHAT_URL}/humphrey/chat`;
+    const chatApiUrl = `${window.RUNTIME_CONFIG.VITE_APP_CHAT_URL}/humphrey/chat`;
 
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
