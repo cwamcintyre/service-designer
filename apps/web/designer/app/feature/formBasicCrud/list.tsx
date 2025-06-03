@@ -74,7 +74,7 @@ export default function List() {
                 <TableCell>{form.description}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    <Link to={`${import.meta.env.VITE_APP_RUNNER_URL}/form/${form.formId}/start`} target="_blank">
+                    <Link to={`${window.RUNTIME_CONFIG.VITE_APP_RUNNER_URL}/form/${form.formId}/start`} target="_blank">
                       <Button variant="outline" className="cursor-pointer">
                         Go
                       </Button>

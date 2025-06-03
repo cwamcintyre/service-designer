@@ -6,7 +6,6 @@ import {
   Scripts,
   ScrollRestoration
 } from "react-router";
-import { useEffect, useState } from "react";
 import { AuthProvider, useAuth } from "react-oidc-context";
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -18,13 +17,18 @@ export const links: Route.LinksFunction = () => [
   }
 ];
 
-const cognitoAuthConfig = {
-  authority: import.meta.env.VITE_OIDC_CLIENT_AUTHORITY,
-  client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
-  redirect_uri: import.meta.env.VITE_OIDC_CALLBACK,
-  response_type: "code",
-  scope: "phone openid email",
-};
+declare global {
+  interface Window {
+    RUNTIME_CONFIG: {
+      VITE_OIDC_CLIENT_AUTHORITY: string;
+      VITE_OIDC_CLIENT_ID: string;
+      VITE_OIDC_CALLBACK: string;
+      VITE_APP_API_URL: string;
+      VITE_APP_RUNNER_URL: string;
+      VITE_APP_CHAT_URL: string;
+    };
+  }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,6 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script type="text/javascript" src="/config.js"></script>
         <Meta />
         <Links />
       </head>
@@ -45,6 +50,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const cognitoAuthConfig = {
+    authority: window.RUNTIME_CONFIG.VITE_OIDC_CLIENT_AUTHORITY,
+    client_id: window.RUNTIME_CONFIG.VITE_OIDC_CLIENT_ID,
+    redirect_uri: window.RUNTIME_CONFIG.VITE_OIDC_CALLBACK,
+    response_type: "code",
+    scope: "phone openid email",
+  };
   return (
     <AuthProvider {...cognitoAuthConfig}>
       <OidcWrapper />

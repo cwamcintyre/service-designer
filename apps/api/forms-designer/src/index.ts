@@ -94,5 +94,5 @@ app.listen(port, () => {
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection:', reason);
+  console.error('Unhandled Rejection:', JSON.stringify(reason, null, 2));
 });

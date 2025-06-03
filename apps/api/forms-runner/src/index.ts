@@ -81,6 +81,6 @@ app.listen(port, () => {
   console.log(`API documentation available at http://localhost:${port}/api-docs`);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection:', reason);
+process.on('unhandledRejection', (reason: any, promise) => {
+  console.error('Unhandled Rejection:', JSON.stringify(reason, null, 2));
 });

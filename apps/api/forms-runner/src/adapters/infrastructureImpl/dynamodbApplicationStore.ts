@@ -8,6 +8,7 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 export class DynamoDBApplicationStore implements ApplicationStore {
     private client: DynamoDBClient;
     private tableName: string;
+    private initialised: boolean = false;
 
     constructor() {
         if (!process.env.DYNAMODB_APPLICATION_TABLE_NAME) {
@@ -21,10 +22,8 @@ export class DynamoDBApplicationStore implements ApplicationStore {
 
         this.client = new DynamoDBClient({
             region: process.env.AWS_REGION,
-            endpoint: process.env.DYNAMODB_LOCAL === 'true' ? 'http://localhost:8000' : undefined, // Use local endpoint if in development
+            endpoint: process.env.DYNAMODB_LOCAL === 'true' ? process.env.DYNAMODB_ENDPOINT : undefined, // Use local endpoint if in development
         });
-
-        this.initializeTable();
     }
 
     private async initializeTable() {
@@ -46,12 +45,19 @@ export class DynamoDBApplicationStore implements ApplicationStore {
             if (error.name === "ResourceInUseException") {
                 console.log(`Table '${this.tableName}' already exists.`);
             } else {
-                throw new Error(`Error initializing DynamoDB table: ${error.message}`);
+                throw new Error(`Error initializing DynamoDB table: ${JSON.stringify(error, null, 2)}`);
             }
+        }
+        finally {
+            this.initialised = true;
         }
     }
 
     private async getItem(applicantId: string): Promise<Application | null> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new GetItemCommand({
                 TableName: this.tableName,
@@ -70,6 +76,10 @@ export class DynamoDBApplicationStore implements ApplicationStore {
     }
 
     private async putItem(application: Application): Promise<void> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
 
             const applicationData = {
@@ -91,6 +101,10 @@ export class DynamoDBApplicationStore implements ApplicationStore {
     }
 
     private async deleteItem(applicantId: string): Promise<void> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new DeleteItemCommand({
                 TableName: this.tableName,
@@ -109,7 +123,7 @@ export class DynamoDBApplicationStore implements ApplicationStore {
     }
 
     async getApplication(applicantId: string): Promise<Application | null> {
-        return this.getItem(applicantId);
+        return await this.getItem(applicantId);
     }
 
     async updateApplication(application: Application): Promise<void> {

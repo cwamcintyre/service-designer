@@ -33,7 +33,7 @@ COPY --from=builder /usr/src/app/package.json ./package.json
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 9001
 
 # Define the command to run the application
 CMD ["node", "-r", "tsconfig-paths/register", "dist/apps/api/forms-designer/src/index.js", "--project", "dist/apps/api/forms-designer/tsconfig.json"]

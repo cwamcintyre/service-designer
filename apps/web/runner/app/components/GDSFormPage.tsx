@@ -51,11 +51,11 @@ export default async function GDSFormPage({ page, backLink }: { page: Page, back
                         );
                     case 'yesno':
                         return (
-                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
+                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} errors={component.errors} />
                         );
                     case 'ukaddress': 
                         return (
-                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} />
+                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} errors={component.errors} />
                         );
                     case 'html':
                         return (

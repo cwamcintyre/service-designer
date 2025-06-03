@@ -2,7 +2,7 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { setDefaultTimeout } = require('@cucumber/cucumber');
 
-setDefaultTimeout(250);
+setDefaultTimeout(5000);
 
 Given('I start the {string} form', async (test) => {
     await page.goto(`${process.env.FORM_RUNNER_URL}/${test}/start`);
@@ -34,14 +34,19 @@ Then('I should see the error {string}', async (errorText) => {
 });
 
 Then('I should see the summary page which contains {string} for question {string} with name {string}', async (text, questionLabel, questionType) => {
-    const summaryLabel = await page.locator(`.govuk-summary-list__row[data-name="${questionType}"] .govuk-summary-list__key`).innerText();
-    const summaryText = await page.locator(`.govuk-summary-list__row[data-name="${questionType}"] .govuk-summary-list__value`).innerText();
+    const summaryLabel = await page.locator(`.govuk-summary-list__row[data-name="${questionType}"] .govuk-summary-list__key`).innerHTML();
+    const summaryText = await page.locator(`.govuk-summary-list__row[data-name="${questionType}"] .govuk-summary-list__value`).innerHTML();
     expect(summaryLabel).toContain(questionLabel);
     expect(summaryText).toContain(text);
 });
 
 Then('I should see the error message {string} for {string}', async (errorMessage, questionName) => {
     const error = await page.locator(`#${questionName}-error`).innerText();
+    expect(error).toContain(errorMessage);
+});
+
+Then('I should see the error message {string} for {string} at index {string}', async (errorMessage, questionName, index) => {
+    const error = await page.locator(`#${questionName}-error-${index}`).innerText();
     expect(error).toContain(errorMessage);
 });
 

@@ -8,6 +8,7 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 export class DynamoDBFormStore implements FormStore {
     private client: DynamoDBClient;
     private tableName: string;
+    private initialised: boolean = false;
 
     constructor() {
         if (!process.env.DYNAMODB_TABLE_NAME) {
@@ -21,10 +22,8 @@ export class DynamoDBFormStore implements FormStore {
 
         this.client = new DynamoDBClient({
             region: process.env.AWS_REGION,
-            endpoint: process.env.DYNAMODB_LOCAL === 'true' ? 'http://localhost:8000' : undefined, // Use local endpoint if in development
+            endpoint: process.env.DYNAMODB_LOCAL === 'true' ? process.env.DYNAMODB_ENDPOINT : undefined, // Use local endpoint if in development
         });
-
-        this.initializeTable();
     }
 
     private async initializeTable() {
@@ -46,12 +45,19 @@ export class DynamoDBFormStore implements FormStore {
             if (error.name === "ResourceInUseException") {
                 console.log(`Table '${this.tableName}' already exists.`);
             } else {
-                throw new Error(`Error initializing DynamoDB table: ${error.message}`);
+                throw new Error(`Error initializing DynamoDB table: ${JSON.stringify(error, null, 2)}`);
             }
+        }
+        finally {
+            this.initialised = true;
         }
     }
 
     private async getItem(formId: string): Promise<Form | null> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new GetItemCommand({
                 TableName: this.tableName,
@@ -66,6 +72,10 @@ export class DynamoDBFormStore implements FormStore {
     }
 
     private async putItem(formId: string, form: Form): Promise<void> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new PutItemCommand({
                 TableName: this.tableName,
@@ -80,6 +90,10 @@ export class DynamoDBFormStore implements FormStore {
     }
 
     private async deleteItem(formId: string): Promise<void> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new DeleteItemCommand({
                 TableName: this.tableName,
@@ -94,6 +108,10 @@ export class DynamoDBFormStore implements FormStore {
     }
 
     private async scanItems(): Promise<Form[]> {
+        if (!this.initialised) {
+            await this.initializeTable();
+        }
+
         try {
             const command = new ScanCommand({
                 TableName: this.tableName,
@@ -107,11 +125,11 @@ export class DynamoDBFormStore implements FormStore {
     }
 
     async getForm(formId: string): Promise<Form | null> {
-        return this.getItem(formId);
+        return await this.getItem(formId);
     }
 
     async getForms(): Promise<Form[]> {
-        return this.scanItems();
+        return await this.scanItems();
     }
 
     async saveForm(formId: string, form: Form): Promise<void> {

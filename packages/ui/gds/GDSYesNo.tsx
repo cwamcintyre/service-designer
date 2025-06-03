@@ -1,7 +1,7 @@
 import { type Option } from '@model/formTypes';
 
-export default function GDSYesNo({ key, name, label, hint, labelIsPageTitle, answer }:
-    { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, answer?: Option }) {
+export default function GDSYesNo({ key, name, label, hint, labelIsPageTitle, answer, errors }:
+    { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, answer?: Option, errors?: string[] }) {
     return (
         <div className="govuk-form-group">
             <fieldset className="govuk-fieldset" aria-describedby={hint ? `${name}-hint` : undefined}>

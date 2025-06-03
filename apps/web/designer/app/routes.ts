@@ -7,4 +7,5 @@ export default [
     route("/form/editPage/:formId/:pageId", "routes/form/editPage.tsx"),
     route("/oidcCallback", "routes/oidcCallback.tsx"),
     route("/logout", "routes/logout.tsx"),
+    route("/health", "routes/health/health.tsx")
 ] satisfies RouteConfig;

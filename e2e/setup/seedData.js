@@ -6,7 +6,7 @@ const fs = require('fs');
 async function seedData() {
     const tableName = process.env.DYNAMODB_TABLE_NAME;
     const dynamoDBEndpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:8000';
-    const region = process.env.AWS_REGION || 'us-west-2';
+    const region = process.env.AWS_REGION || 'eu-west-2';
 
     if (!tableName) {
         throw new Error('DYNAMODB_TABLE_NAME environment variable is not defined.');
