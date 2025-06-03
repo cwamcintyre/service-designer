@@ -27,20 +27,6 @@ yarn-error.log
 npm-debug.log
 .eslintcache
 
-# C#
-bin/
-obj/
-*.user
-*.suo
-*.pdb
-*.mdb
-*.exe
-*.dll
-*.app
-*.log
-*.vs/
-.vscode/
-
 # Python
 __pycache__/
 *.py[cod]
