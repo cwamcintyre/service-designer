@@ -7,7 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect, forwardRef, useImperativeHandle, useRef } from "react";
+import { useEffect, forwardRef, useImperativeHandle, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -24,10 +24,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import React from 'react';
 
 const selector = (state: FormState) => ({
   addPageComponent: state.addPageComponent,
   removePageComponent: state.removePageComponent,
+  swapComponents: state.swapComponents,
   updatePage: state.updatePage,
 });
 
@@ -37,9 +44,34 @@ const pageFormSchema = z.object({
   title: z.string().optional()
 });
 
+function SortableItem({ id, children }: { id: string; children: React.ReactNode }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    height: isDragging ? undefined : 'auto',
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="flex items-center">
+      {children}
+      <div className="ml-auto cursor-grab">☰</div>
+    </div>
+  );
+}
+
 export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any) {
   
-  const { addPageComponent, removePageComponent, updatePage } = useFormStore(
+  const { addPageComponent, removePageComponent, swapComponents, updatePage } = useFormStore(
     useShallow(selector)
   );
 
@@ -53,6 +85,28 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
       title: page?.title || ""
     },
   });
+
+  const [components, setComponents] = useState(page.components);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setComponents((items) => {
+        const oldIndex = items.findIndex((item) => item.questionId === active.id);
+        const newIndex = items.findIndex((item) => item.questionId === over.id);        
+        return arrayMove(items, oldIndex, newIndex);
+      });
+      swapComponents(active.id, over.id);
+    }
+  };
 
   useEffect(() => {
       if (page) {
@@ -186,24 +240,50 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
       </Form>
 
       <div className="pt-4">
-        <div>
-          <h2 className="text-lg font-medium pb-4">Content</h2>
-          {page.components.map((component, index) => (
-            <div key={component.questionId} className="border border-gray-500 p-4 mb-4">
-              <ComponentEditor ref={(el: HTMLElement) => { componentEditorRefs.current[index] = el; }} controlIndex={index} component={component} pageId={page.pageId} />
-              <Separator className="my-4" />
-              <Button
-                id={`remove-component-${index}`}
-                className="cursor-pointer bg-red-500 text-white"
-                type="button"
-                onClick={() => removePageComponent(component.questionId)}
-              >
-                Remove Component
-              </Button>
-            </div>
-          ))}
-        </div>        
-        <Button id={"add-component"} className="cursor-pointer" type="button" onClick={() => addPageComponent()}>
+        <h2 className="text-lg font-medium pb-4">Content</h2>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToVerticalAxis]}
+        >
+          <SortableContext items={components.map((c) => c.questionId)}>
+            {components.map((component, index) => (
+              <SortableItem key={component.questionId} id={component.questionId}>
+                <div className="border border-gray-500 p-4 mb-4">
+                  <ComponentEditor
+                    ref={(el: HTMLElement) => {
+                      componentEditorRefs.current[index] = el;
+                    }}
+                    controlIndex={index}
+                    component={component}
+                    pageId={page.pageId}
+                  />
+                  <Separator className="my-4" />
+                  <Button
+                    id={`remove-component-${index}`}
+                    className="cursor-pointer bg-red-500 text-white"
+                    type="button"
+                    onClick={() => {
+                      setComponents((prev) =>
+                        prev.filter((c) => c.questionId !== component.questionId)
+                      );
+                      removePageComponent(component.questionId);
+                    }}
+                  >
+                    Remove Component
+                  </Button>
+                </div>
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
+        <Button
+          id={"add-component"}
+          className="cursor-pointer"
+          type="button"
+          onClick={() => addPageComponent()}
+        >
           Add Component
         </Button>
       </div>

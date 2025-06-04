@@ -11,6 +11,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import formUtil from '@/util/formUtil';
 import FormService from '@/service/formService';
 import { type Edge} from '@xyflow/react';
+import { arrayMove } from '@dnd-kit/sortable';
 
 export type FormState = {
     isLoading: boolean;
@@ -36,6 +37,7 @@ export type FormState = {
     addPageComponent: () => void;
     updatePageComponent: (componentId: string, updatedComponent: Component) => void;
     removePageComponent: (componentId: string) => void;
+    swapComponents: (activeId: string, overId: string) => void;
     resetForm: () => void;
     receiveFormFromChat: (form: Form) => void;
 };
@@ -183,6 +185,16 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
             return { selectedPage: updatedPage, isFormDirty: true };
         });
     },
+    swapComponents: (activeId: string, overId: string) => {
+        set((state) => {
+            const oldIndex = state.selectedPage.components.findIndex((item) => item.questionId === activeId);
+            const newIndex = state.selectedPage.components.findIndex((item) => item.questionId === overId);
+            const components = [...state.selectedPage.components];
+            const reordered = arrayMove(components, oldIndex, newIndex);
+            const updatedPage = { ...state.selectedPage, components: reordered };
+            return { selectedPage: updatedPage, isFormDirty: true };
+        });
+    },
     resetForm: () => {
         set({ form: {} as Form });
     },
@@ -192,4 +204,3 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
 }));
 
 export default useStore;
-
