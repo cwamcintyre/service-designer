@@ -15,6 +15,10 @@ const express = require('express');
 const cors = require('cors');
 
 dotenv.config();
+
+// must come after dotenv.config() to ensure environment variables are loaded
+import { jwtMiddleware } from '@/middleware/jwtMiddleware'; // Adjust the path as needed
+
 const app = express();
 
 const allowOrigin = process.env.ALLOW_ORIGIN || '*';
@@ -33,13 +37,13 @@ const getAllFormsController = container.get<GetAllFormsController>(GetAllFormsCo
 const deleteFormController = container.get<DeleteFormController>(DeleteFormController);
 const updateFormController = container.get<UpdateFormController>(UpdateFormController);
 
-app.get('/api/form/health', (req: Request, res: Response) => {
+app.get('/api/form/health', jwtMiddleware, (req: Request, res: Response) => {
   res.status(200).send('OK');
 });
 
-app.get('/api/form/:id', getFormController.get.bind(getFormController));
+app.get('/api/form/:id', jwtMiddleware, getFormController.get.bind(getFormController));
 
-app.get('/api/form', getAllFormsController.get.bind(getAllFormsController));
+app.get('/api/form', jwtMiddleware, getAllFormsController.get.bind(getAllFormsController));
 
 /**
  * @swagger
@@ -59,11 +63,11 @@ app.get('/api/form', getAllFormsController.get.bind(getAllFormsController));
  *       400:
  *         description: Bad request
  */
-app.put('/api/form', createFormController.put.bind(createFormController));
+app.put('/api/form', jwtMiddleware, createFormController.put.bind(createFormController));
 
-app.post('/api/form', updateFormController.post.bind(updateFormController));
+app.post('/api/form', jwtMiddleware, updateFormController.post.bind(updateFormController));
 
-app.delete('/api/form/:id', deleteFormController.delete.bind(deleteFormController));
+app.delete('/api/form/:id', jwtMiddleware, deleteFormController.delete.bind(deleteFormController));
 
 // Swagger configuration
 const swaggerOptions = {
