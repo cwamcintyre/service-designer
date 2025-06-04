@@ -30,6 +30,8 @@
     "express": "^5.1.0",
     "govuk-frontend": "^5.10.0",
     "isolated-vm": "^5.0.4",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
     "libphonenumber-js": "^1.12.8",
     "oidc-client-ts": "^3.2.1",
     "playwright": "^1.52.0",

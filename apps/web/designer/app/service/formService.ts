@@ -3,6 +3,7 @@ import type { Form } from '@model/formTypes';
 
 class FormService {
     private baseUrl: string;
+    static token: string | null = null;
 
     constructor(baseUrl: string) {
         this.baseUrl = baseUrl;
@@ -58,6 +59,11 @@ class FormService {
             console.error(`Error deleting form with id ${id}:`, error);
             throw error;
         }
+    }
+
+    static setToken(token: string) {
+        this.token = token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 }
 

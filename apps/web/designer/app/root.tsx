@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import { AuthProvider, useAuth } from "react-oidc-context";
 import type { Route } from "./+types/root";
+import FormService from "@/service/formService";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -74,6 +75,9 @@ export function OidcWrapper() {
   if (!auth.isAuthenticated) {
       auth.signinRedirect(); // Redirect to the OIDC login page
       return null;
+  }
+  else {
+    FormService.setToken(auth.user?.access_token || "");
   }
 
   return (
