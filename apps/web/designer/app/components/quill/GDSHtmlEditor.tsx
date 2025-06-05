@@ -94,6 +94,13 @@ export default function HtmlContentEditor({ html = "", onChange } : { html?: str
                         this.quill.insertText(range.index + 1, '\n', Quill.sources.USER);    
                         this.quill.setSelection(range.index + 1, Quill.sources.SILENT); 
                     }
+                },
+                tab: {
+                    key: 'Tab',
+                    shiftKey: true,
+                    handler(this: { quill: Quill }, range: any, context: KeyboardEvent) {                        
+                        return true; // Allow default tab behavior for other formats
+                    }
                 }
             }
         },

@@ -142,62 +142,62 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
                 </form>
             </Form>
             
-                {(() => {
-                    switch (form.watch("type")) {
-                        case "html":
-                            return <HtmlContentEditor key={`${component.questionId}-${controlIndex}`} controlIndex={controlIndex} component={component} />;
-                        case "summary":
-                            return <></>;
-                        default:
-                            return <InputFieldEditor key={`${component.questionId}-${controlIndex}`} ref={inputComponentRef} controlIndex={controlIndex} component={component} />;
-                    }
-                })()}
+            {(() => {
+                switch (form.watch("type")) {
+                    case "html":
+                        return <HtmlContentEditor key={`${component.questionId}-${controlIndex}`} controlIndex={controlIndex} component={component} />;
+                    case "summary":
+                        return <></>;
+                    default:
+                        return <InputFieldEditor key={`${component.questionId}-${controlIndex}`} ref={inputComponentRef} controlIndex={controlIndex} component={component} />;
+                }
+            })()}
 
-                {form.watch("type") !== "html" && form.watch("type") !== "summary" && form.watch("type") !== "stop" ? (
-                <Form {...form}>
-                    <form className="space-y-4 pt-4">
-                        <div>
-                            <h3>Validation Rules</h3>
-                            {fields.map((field, index) => (
-                                <div key={`validationRules.${index}`} className="space-y-2 border p-2">
-                                    <FormField
-                                        control={form.control}
-                                        name={`validationRules.${index}.expression` as const}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Expression</FormLabel>
-                                                <FormControl>
-                                                    <Input id={`validation-rule-expression-${controlIndex}-${index}`} placeholder="Validation Expression" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name={`validationRules.${index}.errorMessage` as const}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Error Message</FormLabel>
-                                                <FormControl>
-                                                    <Input id={`validation-rule-error-${controlIndex}-${index}`} placeholder="Error Message" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <Button id={`remove-validation-rule-${controlIndex}-${index}`} className="cursor-pointer bg-red-500 text-white" type="button" onClick={() => remove(index)}>
-                                        Remove Rule
-                                    </Button>
-                                </div>
-                            ))}
-                            <Button id={`add-validation-rule-${controlIndex}`} className="mt-4 cursor-pointer" type="button" onClick={() => append({ id: Date.now().toString(), expression: "", errorMessage: "" })}>
-                                Add Validation Rule
-                            </Button>
-                        </div>
-                    </form>
-                </Form>                    
-            ) : null }
+            {form.watch("type") !== "html" && form.watch("type") !== "summary" && form.watch("type") !== "stop" ? (
+            <Form {...form}>
+                <form className="space-y-4 pt-4">
+                    <div>
+                        <h3>Validation Rules</h3>
+                        {fields.map((field, index) => (
+                            <div key={`validationRules.${index}`} className="space-y-2 border p-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`validationRules.${index}.expression` as const}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Expression</FormLabel>
+                                            <FormControl>
+                                                <Input id={`validation-rule-expression-${controlIndex}-${index}`} placeholder="Validation Expression" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name={`validationRules.${index}.errorMessage` as const}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Error Message</FormLabel>
+                                            <FormControl>
+                                                <Input id={`validation-rule-error-${controlIndex}-${index}`} placeholder="Error Message" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button id={`remove-validation-rule-${controlIndex}-${index}`} className="cursor-pointer bg-red-500 text-white" type="button" onClick={() => remove(index)}>
+                                    Remove Rule
+                                </Button>
+                            </div>
+                        ))}
+                        <Button id={`add-validation-rule-${controlIndex}`} className="mt-4 cursor-pointer" type="button" onClick={() => append({ id: Date.now().toString(), expression: "", errorMessage: "" })}>
+                            Add Validation Rule
+                        </Button>
+                    </div>
+                </form>
+            </Form>                    
+        ) : null }
         </div>
     );
 })

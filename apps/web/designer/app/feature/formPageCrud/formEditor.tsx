@@ -55,16 +55,16 @@ function SortableItem({ id, children }: { id: string; children: React.ReactNode 
   } = useSortable({ id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
     height: isDragging ? undefined : 'auto',
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="flex items-center">
+    <div ref={setNodeRef} style={style} {...attributes} className="border border-gray-300 relative mb-4" title="Drag to reorder">
+      <div {...listeners} className="absolute top-5 right-5 cursor-grab pr-2" tabIndex={0}>☰</div>
       {children}
-      <div className="ml-auto cursor-grab">☰</div>
     </div>
   );
 }
@@ -250,7 +250,7 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
           <SortableContext items={components.map((c) => c.questionId)}>
             {components.map((component, index) => (
               <SortableItem key={component.questionId} id={component.questionId}>
-                <div className="border border-gray-500 p-4 mb-4">
+                <div className="p-4 mb-4">
                   <ComponentEditor
                     ref={(el: HTMLElement) => {
                       componentEditorRefs.current[index] = el;
