@@ -9,8 +9,8 @@ const selector = (state: FormState) => ({
     updatePageComponent: state.updatePageComponent
 });
 
-export default function HtmlContentEditor({ controlIndex, component }: { controlIndex: number, component: Component }) {
-    
+export default function HtmlContentEditor({ component }: { component: Component }) {
+
     const { updatePageComponent } = useFormStore(useShallow(selector));
 
     function handleChange(html: string) {
@@ -18,8 +18,8 @@ export default function HtmlContentEditor({ controlIndex, component }: { control
     };
 
     return (
-        <div id={`html-editor-${component.questionId}-${controlIndex}`} className="flex flex-col gap-4">
-            <GDSHtmlEditor  html={component.content} onChange={handleChange} />
+        <div id={`html-editor-${component.questionId}`} className="flex flex-col gap-4">
+            <GDSHtmlEditor componentId={component.questionId} html={component.content} onChange={handleChange} />
         </div>
     );
 }

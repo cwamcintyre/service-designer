@@ -22,7 +22,7 @@ const selector = (state: FormState) => ({
     updatePageComponent: state.updatePageComponent
 });
 
-export default forwardRef(function InputFieldEditor({ controlIndex, component }: { controlIndex: number; component: Component; }, ref: any) {
+export default forwardRef(function InputFieldEditor({ component }: { component: Component; }, ref: any) {
 
     const { updatePageComponent } = useFormStore(useShallow(selector));
 

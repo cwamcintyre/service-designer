@@ -71,11 +71,11 @@ function matchList(node: Node, delta: Delta, scroll: ScrollBlot) {
   return applyFormat(delta, list, list, scroll);
 }
 
-export default function HtmlContentEditor({ html = "", onChange } : { html?: string, onChange: (html: string) => void }) {
+export default function HtmlContentEditor({ componentId, html = "", onChange } : { componentId: string, html?: string, onChange: (html: string) => void }) {
 
     const modules = {
         toolbar: {
-            container: "#toolbar",
+            container: `#toolbar-${componentId}`,
             handlers: {
                 GdsNumbers: insertOrdered,
                 GdsBullets: insertBullet,
@@ -89,20 +89,19 @@ export default function HtmlContentEditor({ html = "", onChange } : { html?: str
                 shiftEnterOnList: {
                     key: 'Enter',
                     shiftKey: true,
-                    format: ['ordered', 'bullet'],
+                    format: ['ordered','bullet'],
                     handler(this: { quill: Quill }, range: any, context: KeyboardEvent) {
                         this.quill.insertText(range.index + 1, '\n', Quill.sources.USER);    
                         this.quill.setSelection(range.index + 1, Quill.sources.SILENT); 
                     }
-                  }
-                // },
-                // tab: {
-                //     key: 'Tab',
-                //     shiftKey: true,
-                //     handler(this: { quill: Quill }, range: any, context: KeyboardEvent) {                        
-                //         return true; // Allow default tab behavior for other formats
-                //     }
-                // }
+                },
+                tab: {
+                    key: 'Tab',
+                    shiftKey: true,
+                    handler(this: { quill: Quill }, range: any, context: KeyboardEvent) {                        
+                        return true; // Allow default tab behavior for other formats
+                    }
+                }
             }
         },
         clipboard: {
@@ -121,7 +120,7 @@ export default function HtmlContentEditor({ html = "", onChange } : { html?: str
     
     return (
       <>
-        <CustomToolbar />
+        <CustomToolbar id={componentId} />
         <ReactQuill
           className={"govuk-body"}
           value={html}

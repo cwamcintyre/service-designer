@@ -74,7 +74,7 @@ export default function EditPage({ params }: { params: { formId: string, pageId:
 
   const handleSave = async () => {
     const validIndicators = await detailForm.current.submit();
-    if (validIndicators && validIndicators.every((v: boolean) => v || v === undefined)) {
+    if (validIndicators && validIndicators.every((v: boolean) => v || v === undefined || v === null)) {
         setAction({ show: true, actionName: "Saving" });
         const newForm = {
             ...form,

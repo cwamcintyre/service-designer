@@ -16,8 +16,8 @@ const renderSingle = (formatData: any)=>{
     )
 }
 
-const CustomToolbar = () => (
-    <div id="toolbar">
+const CustomToolbar = ({ id }: {id: string}) => (
+    <div id={`toolbar-${id}`}>
         {
             formats.map(classes => {
                 return (

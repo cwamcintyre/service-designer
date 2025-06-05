@@ -86,32 +86,20 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
     },
   });
 
-  const [components, setComponents] = useState(page.components);
-
-  // const sensors = useSensors(
-  //   useSensor(PointerSensor),
-  //   useSensor(KeyboardSensor, {
-  //     coordinateGetter: sortableKeyboardCoordinates,
-  //   })
-  // );
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setComponents((items) => {
-        const oldIndex = items.findIndex((item) => item.questionId === active.id);
-        const newIndex = items.findIndex((item) => item.questionId === over.id);        
-        return arrayMove(items, oldIndex, newIndex);
-      });
       swapComponents(active.id, over.id);
     }
   };
-
-  useEffect(() => {
-    // Update components state when page.components changes
-    setComponents(page.components);
-  }, [page.components])
 
   useEffect(() => {
       if (page) {
@@ -154,6 +142,7 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
       async submit() {
           await form.trigger();
           await form.handleSubmit((data) => onNoop(data))();
+          console.log(componentEditorRefs.current);
           const validIndicators = await Promise.all(componentEditorRefs.current.map(async (ref) => {
               if (ref) {
                  const componentEditorState = await ref.getComponentEditorState();
@@ -246,15 +235,15 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
 
       <div className="pt-4">
         <h2 className="text-lg font-medium pb-4">Content</h2>
-        {/* <DndContext
+        <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis]}
         >
-          <SortableContext items={components.map((c) => c.questionId)}> */}
-            {components.map((component, index) => (
-              //<SortableItem key={component.questionId} id={component.questionId}>
+          <SortableContext items={page.components.map((c) => c.questionId)}>
+            {page.components.map((component, index) => (
+              <SortableItem key={component.questionId} id={component.questionId}>
                 <div className="p-4 mb-4">
                   <ComponentEditor
                     ref={(el: HTMLElement) => {
@@ -270,19 +259,16 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
                     className="cursor-pointer bg-red-500 text-white"
                     type="button"
                     onClick={() => {
-                      setComponents((prev) =>
-                        prev.filter((c) => c.questionId !== component.questionId)
-                      );
                       removePageComponent(component.questionId);
                     }}
                   >
                     Remove Component
                   </Button>
                 </div>
-              //</SortableItem>
+              </SortableItem>
             ))}
-          {/* </SortableContext>
-        </DndContext> */}
+          </SortableContext>
+        </DndContext>
         <Button
           id={"add-component"}
           className="cursor-pointer"

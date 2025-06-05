@@ -145,11 +145,11 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
             {(() => {
                 switch (form.watch("type")) {
                     case "html":
-                        return <HtmlContentEditor controlIndex={controlIndex} component={component} />;
+                        return <HtmlContentEditor key={`quill-${component.questionId}-${controlIndex}`} component={component} />;
                     case "summary":
                         return <></>;
                     default:
-                        return <InputFieldEditor key={`${component.questionId}-${controlIndex}`} ref={inputComponentRef} controlIndex={controlIndex} component={component} />;
+                        return <InputFieldEditor key={`${component.questionId}-${controlIndex}`} ref={inputComponentRef} component={component} />;
                 }
             })()}
 
