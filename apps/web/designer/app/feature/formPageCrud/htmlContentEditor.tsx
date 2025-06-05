@@ -18,8 +18,8 @@ export default function HtmlContentEditor({ controlIndex, component }: { control
     };
 
     return (
-        <div id={`html-editor-${controlIndex}`} className="flex flex-col gap-4">
-            <GDSHtmlEditor html={component.content} onChange={handleChange} />
+        <div id={`html-editor-${component.questionId}-${controlIndex}`} className="flex flex-col gap-4">
+            <GDSHtmlEditor  html={component.content} onChange={handleChange} />
         </div>
     );
 }
