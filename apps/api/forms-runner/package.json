@@ -9,7 +9,9 @@
     "copy-config": "npx cross-env-shell \"cp tsconfig.json dist\\apps\\api\\forms-runner\\ || copy tsconfig.json dist\\apps\\api\\forms-runner\\ \"",
     "build": "tsc && npm run copy-config",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@azure/cosmos": "^4.4.1",

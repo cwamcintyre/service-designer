@@ -22,6 +22,7 @@ export type Component = {
     options?: Option[];
     answer?: any;
     errors?: string[] | undefined;
+    optional?: boolean;
 };
 
 export type Condition = {

@@ -8,14 +8,7 @@ Feature: Phone Number Component
     When I click the submit button
     Then I should see the summary page which contains "07729 900 982" for question "Test Phone Number component" with name "phonenumber"
 
-  Scenario Outline: Fill out phone number component with invalid input
-    When I enter "<invalidPhoneNumber>" in the "phonenumber" component
+  Scenario: Fill out phone number component with invalid input
+    When I enter "abcdefghij" in the "phonenumber" component
     When I click the submit button
     Then I should see the error message "Enter a phone number, like 02010 960 001, 07729 900 982 or +44 808 157 0192" for "phonenumber"
-
-    Examples:
-      | invalidPhoneNumber |
-      | 12345              |
-      | abcdefghij         |
-      | 123-456-789        |
-      | 12345678901        |

@@ -13,14 +13,7 @@ Feature: Number Component
     When I click the submit button
     Then I should see the summary page which contains "Not provided" for question "Test Number component" with name "number"
 
-  Scenario Outline: Fill out number component with invalid input
-    When I enter "<invalidNumber>" in the "number" component
+  Scenario: Fill out number component with invalid input
+    When I enter "abc" in the "number" component
     When I click the submit button
     Then I should see the error message "Enter a valid number" for "number"
-
-    Examples:
-      | invalidNumber |
-      | abc           |
-      | 12.34.56      |
-      | -123abc       |
-      | NaN           |

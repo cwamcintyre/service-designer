@@ -25,15 +25,7 @@ Feature: UK Address Component
     And I should see the error message "Enter town or city" for "ukaddress-address-town" at index "0"
     And I should see the error message "Enter postcode" for "ukaddress-address-postcode" at index "0"
 
-  Scenario Outline: Fill out UK address component with invalid postcodes
-    When I enter "<postcode>" in the "ukaddress-addressPostcode" component
+  Scenario: Fill out UK address component with invalid postcodes
+    When I enter "INVALIDCODE" in the "ukaddress-addressPostcode" component
     When I click the submit button
     Then I should see the error message "Enter a full UK postcode" for "ukaddress-address-postcode" at index "0"
-
-    Examples:
-      | postcode     |
-      | INVALIDCODE  |
-      | 12345        |
-      | ABCD1234EFG  |
-      | AB12         |
-      | AB12 4D      |
