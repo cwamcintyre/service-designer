@@ -2,9 +2,7 @@ import {
     type Form, 
     type Page, 
     type Component, 
-    type Condition, 
-    type ValidationRule, 
-    type Submission 
+    type Condition
 } from '@model/formTypes';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
@@ -28,7 +26,7 @@ export type FormState = {
     createForm: () => string;
     saveForm: () => Promise<void>;
     deleteForm: (formId: string) => void;
-    updateLocalForm: (formId: string, updatedForm: Form) => Promise<void>;
+    updateLocalForm: (formId: string, updatedForm: Form) => void;
     addPage: (id: string) => void;
     removePage: (pageId: string) => void;
     updatePage: (updatedPage: Page) => void;
@@ -60,6 +58,10 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
         // Fetch all forms from API or local storage
         formService.getAllForms().then((forms) => {
             set({ forms: forms, isLoading: false });
+        },
+        (error) => {
+            console.error('Error fetching forms:', error);
+            set({ isLoading: false, isLoaded: true, forms: [] });
         });
     },
     createForm: () => {
@@ -80,6 +82,10 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
                 const updatedForms = state.forms.filter(form => form.formId !== formId);
                 return { forms: updatedForms, isLoading: false, isLoaded: true };
             });
+        },
+        (error) => {
+            console.error(`Error deleting form with id ${formId}:`, error);
+            set({ isLoading: false, isLoaded: true });
         });
     },
     loadForm: (formId: string) => {
@@ -89,25 +95,22 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
             return;
         }
 
-        try {
-            set({ isLoading: true, isLoaded: false });
-            formService.getForm(formId).then((form) => {
-                // ensure that pages and components all have unique IDs
-                for (const page of form.pages) {
-                    for (const component of page.components) {
-                        if (!component.questionId) {
-                            component.questionId = nanoid();
-                        }
+        set({ isLoading: true, isLoaded: false });
+        formService.getForm(formId).then((form) => {
+            // ensure that pages and components all have unique IDs
+            for (const page of form.pages) {
+                for (const component of page.components) {
+                    if (!component.questionId) {
+                        component.questionId = nanoid();
                     }
                 }
-                set({ form: { ...form, isCreated: true }, isLoaded: true, isLoading: false, isFormDirty: false });
-            });    
-        }
-        catch (error) {
+            }
+            set({ form: { ...form, isCreated: true }, isLoaded: true, isLoading: false, isFormDirty: false });
+        },
+        (error) => {
             console.error(`Error loading form with id ${formId}:`, error);
             set({ isLoaded: true, isLoading: false, isFormDirty: false });
-            throw new Error(`Failed to load form with id ${formId}`);
-        }
+        });
     },
     saveForm: async () => {
         const { form } = get();
@@ -119,7 +122,7 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
             set({ form: { ...form, isCreated: true }, isFormDirty: false, isLoading: false });
         }
     },
-    updateLocalForm: async (formId: string, updatedForm: Form) => {        
+    updateLocalForm: (formId: string, updatedForm: Form) => {        
         set((state) => {
             const updatedForms = state.forms.map(form => 
                 form.formId === formId ? { ...form, ...updatedForm } : form
