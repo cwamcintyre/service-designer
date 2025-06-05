@@ -62,8 +62,8 @@ function SortableItem({ id, children }: { id: string; children: React.ReactNode 
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} className="border border-gray-300 relative mb-4" title="Drag to reorder">
-      <div {...listeners} className="absolute top-5 right-5 cursor-grab pr-2" tabIndex={0}>☰</div>
+    <div ref={setNodeRef} style={style} {...attributes} className="border border-gray-300 relative mb-4">
+      <div {...listeners} className="absolute top-5 right-5 cursor-grab pr-2" tabIndex={0} title="Drag to reorder">☰</div>
       {children}
     </div>
   );
@@ -88,12 +88,12 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
 
   const [components, setComponents] = useState(page.components);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  // const sensors = useSensors(
+  //   useSensor(PointerSensor),
+  //   useSensor(KeyboardSensor, {
+  //     coordinateGetter: sortableKeyboardCoordinates,
+  //   })
+  // );
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
@@ -107,6 +107,11 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
       swapComponents(active.id, over.id);
     }
   };
+
+  useEffect(() => {
+    // Update components state when page.components changes
+    setComponents(page.components);
+  }, [page.components])
 
   useEffect(() => {
       if (page) {
@@ -241,15 +246,15 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
 
       <div className="pt-4">
         <h2 className="text-lg font-medium pb-4">Content</h2>
-        <DndContext
+        {/* <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis]}
         >
-          <SortableContext items={components.map((c) => c.questionId)}>
+          <SortableContext items={components.map((c) => c.questionId)}> */}
             {components.map((component, index) => (
-              <SortableItem key={component.questionId} id={component.questionId}>
+              //<SortableItem key={component.questionId} id={component.questionId}>
                 <div className="p-4 mb-4">
                   <ComponentEditor
                     ref={(el: HTMLElement) => {
@@ -274,10 +279,10 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
                     Remove Component
                   </Button>
                 </div>
-              </SortableItem>
+              //</SortableItem>
             ))}
-          </SortableContext>
-        </DndContext>
+          {/* </SortableContext>
+        </DndContext> */}
         <Button
           id={"add-component"}
           className="cursor-pointer"

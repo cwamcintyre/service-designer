@@ -145,7 +145,7 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
             {(() => {
                 switch (form.watch("type")) {
                     case "html":
-                        return <HtmlContentEditor key={`${component.questionId}-${controlIndex}`} controlIndex={controlIndex} component={component} />;
+                        return <HtmlContentEditor controlIndex={controlIndex} component={component} />;
                     case "summary":
                         return <></>;
                     default:
