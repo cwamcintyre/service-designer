@@ -45,6 +45,7 @@ export async function meetsCondition(page: Page, data: { [key: string]: any }): 
     for (const condition of page.conditions) {
         const { expression, nextPageId } = condition;
         const evaluatedValue = await evaluateExpression(expression, data);
+        console.log(`Evaluating condition: ${expression} with data:`, data, `Result:`, evaluatedValue);
         if (evaluatedValue) {
             return { metCondition: true, nextPageId };
         }

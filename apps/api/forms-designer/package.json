@@ -8,8 +8,7 @@
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/index.ts",
     "copy-config": "npx cross-env-shell \"cp tsconfig.json dist\\apps\\api\\forms-designer\\ || copy tsconfig.json dist\\apps\\api\\forms-designer\\ \"",
     "build": "tsc && npm run copy-config",
-    "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "lint": "eslint . --ext .ts"
   },
   "dependencies": {
     "@azure/cosmos": "^4.4.1",

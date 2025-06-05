@@ -22,6 +22,9 @@ export class NumberComponentHandler implements ComponentHandler {
                 validationResult.push("Enter a valid number.");
             }
         }
+        else if (!component.optional) {
+            validationResult.push("Enter a valid number.");
+        }
 
         // check that the number is valid..
         for (const validationRule of component.validationRules ?? []) {
