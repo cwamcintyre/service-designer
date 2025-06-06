@@ -7,10 +7,10 @@ describe('OptionsComponentHandler', () => {
             expect(OptionsComponentHandler.IsFor('select')).toBe(true);
             expect(OptionsComponentHandler.IsFor('radio')).toBe(true);
             expect(OptionsComponentHandler.IsFor('checkbox')).toBe(true);
-            expect(OptionsComponentHandler.IsFor('yesno')).toBe(true);
         });
 
         it('should return false for unsupported types', () => {
+            expect(OptionsComponentHandler.IsFor('yesno')).toBe(false);
             expect(OptionsComponentHandler.IsFor('text')).toBe(false);
             expect(OptionsComponentHandler.IsFor('number')).toBe(false);
         });
@@ -88,7 +88,7 @@ describe('OptionsComponentHandler', () => {
             };
 
             const handler = new OptionsComponentHandler();
-            const result = handler.Convert(mockComponent, { optionField: { id: 'opt1', value: 'option1', label: 'Option 1' } });
+            const result = handler.Convert(mockComponent, { optionField: 'option1' });
 
             expect(result).toEqual({ id: 'opt1', value: 'option1', label: 'Option 1' });
         });
@@ -106,7 +106,7 @@ describe('OptionsComponentHandler', () => {
             };
 
             const handler = new OptionsComponentHandler();
-            const result = handler.Convert(mockComponent, { optionField: { id: 'opt3', value: 'option3', label: 'Option 3' } });
+            const result = handler.Convert(mockComponent, { optionField: 'option3' });
 
             expect(result).toEqual("");
         });
@@ -123,7 +123,7 @@ describe('OptionsComponentHandler', () => {
             };
 
             const handler = new OptionsComponentHandler();
-            expect(() => handler.Convert(mockComponent, { optionField: { id: 'opt3', value: 'option3', label: 'Option 3' } })).toThrow(`No matching option found or invalid option type for value: option3 in component: optionField`);
+            expect(() => handler.Convert(mockComponent, { optionField: 'option3' })).toThrow(`No matching option found or invalid option type for value: option3 in component: optionField`);
         });
     });
 });

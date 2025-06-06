@@ -2,18 +2,16 @@ import { type Component } from '@model/formTypes';
 import { ComponentHandler } from '@/utils/componentHandler/interfaces';
 import { evaluateExpression } from '../expressionUtils';
 
-export class OptionsComponentHandler implements ComponentHandler {
+export class YesNoComponentHandler implements ComponentHandler {
     static IsFor(type: string): boolean {
-        return type === 'select' ||
-            type === 'radio' ||
-            type === 'checkbox';
+        return type === 'yesno';
     }
 
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
         const validationResult: string[] = [];
 
         if (!component.name) {
-            throw new Error('Component name is required for OptionsComponentHandler');
+            throw new Error('Component name is required for YesNoComponentHandler');
         }
 
         const option = data[component.name];
@@ -38,14 +36,30 @@ export class OptionsComponentHandler implements ComponentHandler {
     Convert(component: Component, data: { [key: string]: any }): any {
         if (component.name) {
             // For components with a name, return the matching option from component.options
-            const selectedValue = data[component.name];
-            const matchingOption = component.options?.find(option => option.value == selectedValue);
+            const selectedValue = data[component.name];            
 
             // if no matching option, the field is not optional and there is a value set, throw an error..
-            if (!matchingOption && !component.optional && data[component.name]) {
+            if (!component.optional && data[component.name] && (selectedValue !== "yes" && selectedValue !== "no")) {
                 throw new Error(`No matching option found or invalid option type for value: ${selectedValue} in component: ${component.name}`);
             }
-            return matchingOption || "";
+
+            let returnOption;
+            if (selectedValue === "yes") {
+                returnOption = {
+                    id: "yes",
+                    value: "yes",
+                    label: "Yes"
+                }
+            }
+            else if (selectedValue === "no") {
+                returnOption = {
+                    id: "no",
+                    value: "no",
+                    label: "No"
+                }
+            }
+
+            return returnOption || "";
         }
         return "";
     }

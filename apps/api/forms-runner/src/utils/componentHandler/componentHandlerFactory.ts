@@ -1,10 +1,11 @@
 import { ComponentHandler } from '@/utils/componentHandler/interfaces';
 import { DefaultComponentHandler } from '@/utils/componentHandler/defaultHandler';
-import { UKAddressComponentHandler } from './ukAddressHandler';
-import { PhoneNumberComponentHandler } from './phoneNumberHandler';
-import { EmailComponentHandler } from './emailHandler';
-import { NumberComponentHandler } from './numberHandler';
-import { OptionsComponentHandler } from './optionsHandler';
+import { UKAddressComponentHandler } from '@/utils/componentHandler/ukAddressHandler';
+import { PhoneNumberComponentHandler } from '@/utils/componentHandler/phoneNumberHandler';
+import { EmailComponentHandler } from '@/utils/componentHandler/emailHandler';
+import { NumberComponentHandler } from '@/utils/componentHandler/numberHandler';
+import { OptionsComponentHandler } from '@/utils/componentHandler/optionsHandler';
+import { YesNoComponentHandler } from '@/utils/componentHandler/yesNoHandler';
 
 export class ComponentHandlerFactory {
     static For(type: string): ComponentHandler | undefined {
@@ -25,6 +26,9 @@ export class ComponentHandlerFactory {
         }
         if (OptionsComponentHandler.IsFor(type)) {
             return new OptionsComponentHandler();
+        }
+        if (YesNoComponentHandler.IsFor(type)) {
+            return new YesNoComponentHandler();
         }
         return undefined;
     }

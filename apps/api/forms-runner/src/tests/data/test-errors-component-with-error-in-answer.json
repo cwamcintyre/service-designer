@@ -1,0 +1,75 @@
+{
+   "formId": "test-text-component",
+   "isCreated": true,
+   "startPage": "text-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "mwCLr5zZvFQbafq0XQCVg",
+           "validationRules": [
+             {
+               "errorMessage": "ERROR MESSAGE",
+               "id": "1748350944138",
+               "expression": "data.text !== \"ERROR\""
+             }
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the text component",
+           "name": "text",
+           "options": [],
+           "label": "Test Text component",
+           "type": "text",
+           "answer": "ERROR",
+           "errors": ["ERROR MESSAGE"]
+         }
+       ],
+       "id": "WnyO0ZoKvP",
+       "pageType": "default",
+       "pageId": "text-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "7A2M3nkSK6",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests all components",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-text-component",
+   "title": "Tests text component"
+ }
