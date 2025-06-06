@@ -27,12 +27,52 @@ describe('EmailComponentHandler', () => {
                 { email: 'user@com', error: 'Enter an email address in the correct format, like name@example.com' },
                 { email: 'user@@example.com', error: 'Enter an email address in the correct format, like name@example.com' },
                 { email: 'user@ example.com', error: 'Enter an email address in the correct format, like name@example.com' },
-                { email: 'user@example..com', error: 'Enter an email address in the correct format, like name@example.com' }
+                { email: 'user@example..com', error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: '', error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: null, error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: undefined, error: 'Enter an email address in the correct format, like name@example.com' }
             ];
 
             for (const { email, error } of invalidEmails) {
                 const errors = await handler.Validate(mockComponent, { emailField: email });
                 expect(errors).toContain(error);
+            }
+        });
+
+        it('should not return an error if email is empty and field is optional', async () => {
+            const mockComponent: Component = { name: 'emailField', questionId: 'q1', labelIsPageTitle: false, optional: true };
+
+            const handler = new EmailComponentHandler();
+
+            const invalidEmails = [
+                { email: '', error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: null, error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: undefined, error: 'Enter an email address in the correct format, like name@example.com' }
+            ];
+
+            for (const { email, error } of invalidEmails) {
+                const errors = await handler.Validate(mockComponent, { emailField: email });
+                expect(errors).not.toContain(error);
+            }
+        });
+
+        it('should ignore validation rules if email is empty and field is optional', async () => {
+            const mockComponent: Component = { name: 'emailField', questionId: 'q1', labelIsPageTitle: false, optional: true,
+                validationRules: [
+                    { id: 'rule1', expression: 'data.emailField.includes("@example.com")', errorMessage: 'Email must be from example.com' } as ValidationRule,
+                ] };
+
+            const handler = new EmailComponentHandler();
+
+            const invalidEmails = [
+                { email: '', error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: null, error: 'Enter an email address in the correct format, like name@example.com' },
+                { email: undefined, error: 'Enter an email address in the correct format, like name@example.com' }
+            ];
+
+            for (const { email, error } of invalidEmails) {
+                const errors = await handler.Validate(mockComponent, { emailField: email });
+                expect(errors).not.toContain(error);
             }
         });
 

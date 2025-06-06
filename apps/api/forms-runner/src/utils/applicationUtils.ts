@@ -1,12 +1,13 @@
 import { Application, Page } from '@model/formTypes'
 import { PageHandlerFactory } from './pageHandler/pageHandlerFactory'
-import { application } from 'express';
 
 type PreviousPageModel = {
     pageId: string;
     extraData?: string;
     forceRedirect?: boolean;
 }
+
+// note that most utility functions in this class are tested via the usecase tests, specifically get, process and processChange use cases.
 
 export function getAllDataFromApplication(application: Application): { [key: string]: any } {
     const allData: { [key: string]: any } = {};
@@ -138,7 +139,7 @@ export async function walkToNextInvalidOrUnfilledPage(
     return walkResult;
 }
 
-class Stack {
+export class Stack {
     items: any[];
     
     constructor() {

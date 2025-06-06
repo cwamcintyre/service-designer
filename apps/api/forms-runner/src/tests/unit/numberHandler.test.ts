@@ -20,12 +20,12 @@ describe('NumberComponentHandler', () => {
             const handler = new NumberComponentHandler();
 
             const invalidNumbers = [
-                { value: 'abc', error: 'Enter a valid number.' },
-                { value: '123abc', error: 'Enter a valid number.' },
-                { value: '12.34.56', error: 'Enter a valid number.' },
-                { value: '', error: 'Enter a valid number.' },
-                { value: null, error: 'Enter a valid number.' },
-                { value: undefined, error: 'Enter a valid number.' },
+                { value: 'abc', error: 'Enter a number' },
+                { value: '123abc', error: 'Enter a number' },
+                { value: '12.34.56', error: 'Enter a number' },
+                { value: '', error: 'Enter a number' },
+                { value: null, error: 'Enter a number' },
+                { value: undefined, error: 'Enter a number' }
             ];
 
             for (const { value, error } of invalidNumbers) {
@@ -40,9 +40,29 @@ describe('NumberComponentHandler', () => {
             const handler = new NumberComponentHandler();
 
             const invalidNumbers = [
-                { value: '', error: 'Enter a valid number.' },
-                { value: null, error: 'Enter a valid number.' },
-                { value: undefined, error: 'Enter a valid number.' },
+                { value: '', error: 'Enter a number' },
+                { value: null, error: 'Enter a number' },
+                { value: undefined, error: 'Enter a number' },
+            ];
+
+            for (const { value, error } of invalidNumbers) {
+                const errors = await handler.Validate(mockComponent, { numberField: value });
+                expect(errors).not.toContain(error);
+            }
+        });
+
+        it('should ignore validation rules if number is empty and field is optional', async () => {
+            const mockComponent: Component = { name: 'numberField', questionId: 'q1', labelIsPageTitle: false, optional: true,
+                validationRules: [
+                    { id: 'rule1', expression: 'data.numberField > 10', errorMessage: 'Number must be greater than 10' } as ValidationRule,
+                ] };
+
+            const handler = new NumberComponentHandler();
+
+            const invalidNumbers = [
+                { value: '', error: 'Enter a number' },
+                { value: null, error: 'Enter a number' },
+                { value: undefined, error: 'Enter a number' },
             ];
 
             for (const { value, error } of invalidNumbers) {
@@ -92,15 +112,6 @@ describe('NumberComponentHandler', () => {
             const result = handler.Convert(mockComponent, { numberField: '123' });
 
             expect(result).toBe('123');
-        });
-
-        it('should return an empty string for an unnamed component', () => {
-            const mockComponent: Component = { questionId: 'q1', labelIsPageTitle: false };
-            const handler = new NumberComponentHandler();
-
-            const result = handler.Convert(mockComponent, {});
-
-            expect(result).toBe('');
         });
     });
 });

@@ -39,6 +39,10 @@ class ApplicationStoreTestDouble implements ApplicationStore {
   deleteApplication(formId: string): Promise<void> {
     return this.deleteApplicationMock(formId);
   }
+
+  getUpdateApplicationSpy(): jest.Mock<Promise<void>, [Application]> {
+    return this.updateApplicationMock;
+  }
 }
 
 export default ApplicationStoreTestDouble;

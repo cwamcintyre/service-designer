@@ -11,11 +11,22 @@ export class EmailComponentHandler implements ComponentHandler {
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
         const validationResult: string[] = [];
 
-        const email = this.Convert(component, data);
+        if (!component.name) {
+            throw new Error('Component name is required for EmailComponentHandler');
+        }
+
+        const email = data[component.name];
+
+        if (!email && component.optional) {
+            return validationResult; // If the field is optional and no input, skip validation
+        }
 
         // Validate email format
         if (email && !validator.isEmail(email)) {
             validationResult.push('Enter an email address in the correct format, like name@example.com');
+        }
+        else if (!component.optional && !email) {
+            validationResult.push(component.optionalErrorMessage ??'Enter an email address in the correct format, like name@example.com');
         }
 
         for (const validationRule of component.validationRules ?? []) {

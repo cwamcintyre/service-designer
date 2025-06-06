@@ -4,7 +4,9 @@ import { GetApplicationRequest, GetApplicationResponse } from '@model/runnerApiT
 import { Application } from '@model/formTypes';
 
 const mockBasicApplication: Application = require('@/tests/data/test-text-component.json') as Application;
-const mockBasicApplicationWithBranch: Application = require('@/tests/data/previous-link-branch-b.json') as Application;
+const mockBasicApplicationWithBranchA: Application = require('@/tests/data/previous-link-branch-a.json') as Application;
+const mockBasicApplicationWithBranchB: Application = require('@/tests/data/previous-link-branch-b.json') as Application;
+const mockBasicApplicationAtStart: Application = require('@/tests/data/no-previous-link.json') as Application;
 
 describe('GetApplicationUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -43,13 +45,33 @@ describe('GetApplicationUseCase', () => {
         await expect(getApplicationUseCase.execute(request)).rejects.toThrow(`Error getting application with ID 123: ${error.message}`);
     });
 
+    it('should return an empty previous page when at the start of the form', async () => {
+        applicationStore.withGetApplicationReturning(mockBasicApplicationAtStart);
+
+        const request: GetApplicationRequest = { applicantId: '123', pageId: 'what-is-your-name', extraData: '' };
+        const response: GetApplicationResponse = await getApplicationUseCase.execute(request);
+
+        expect(response.previousPageId).toEqual('');
+        expect(response.previousExtraData).toEqual('');
+    })
+
     it('should return the correct previous page when conditions are met', async () => {
-        applicationStore.withGetApplicationReturning(mockBasicApplicationWithBranch);
+        applicationStore.withGetApplicationReturning(mockBasicApplicationWithBranchB);
 
         const request: GetApplicationRequest = { applicantId: '123', pageId: 'branch-b-subsequent-q', extraData: '' };
         const response: GetApplicationResponse = await getApplicationUseCase.execute(request);
 
         expect(response.previousPageId).toEqual('branch-b');
+        expect(response.previousExtraData).toEqual('');
+    })
+
+    it('should return the correct previous page when conditions are not met', async () => {
+        applicationStore.withGetApplicationReturning(mockBasicApplicationWithBranchA);
+
+        const request: GetApplicationRequest = { applicantId: '123', pageId: 'branch-a', extraData: '' };
+        const response: GetApplicationResponse = await getApplicationUseCase.execute(request);
+
+        expect(response.previousPageId).toEqual('do-you-want-branch-a');
         expect(response.previousExtraData).toEqual('');
     })
 });

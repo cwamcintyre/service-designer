@@ -16,8 +16,40 @@ describe('DefaultComponentHandler', () => {
     });
 
     describe('Validate', () => {
+        
+        it('should return an error if required field is empty', async () => {
+            const mockComponent: Component = { name: 'testField', optional: false } as Component;
+            const handler = new DefaultComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, {});
+
+            expect(errors).toContain('An answer is required');
+        });
+
+        it('should not return an error if optional field is empty', async () => {
+            const mockComponent: Component = { name: 'testField', optional: true } as Component;
+            const handler = new DefaultComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, {});
+
+            expect(errors).toEqual([]);
+        });
+        
+        it('should ignore validation rules if optional field is empty', async () => {
+            const mockComponent: Component = { name: 'testField', optional: true,
+                validationRules: [
+                    { expression: 'data.value > 10', errorMessage: 'Value must be greater than 10' }
+                ] } as Component;
+            const handler = new DefaultComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, {});
+
+            expect(errors).toEqual([]);
+        });
+
         it('should return validation errors for invalid data', async () => {
             const mockComponent: Component = {
+                name: 'value',
                 validationRules: [
                     { expression: 'data.value > 10', errorMessage: 'Value must be greater than 10' },
                     { expression: 'data.value < 20', errorMessage: 'Value must be less than 20' },
@@ -32,6 +64,7 @@ describe('DefaultComponentHandler', () => {
 
         it('should return an empty array if all validation rules pass', async () => {
             const mockComponent: Component = {
+                name: 'value',
                 validationRules: [
                     { expression: 'data.value > 10', errorMessage: 'Value must be greater than 10' },
                 ],
