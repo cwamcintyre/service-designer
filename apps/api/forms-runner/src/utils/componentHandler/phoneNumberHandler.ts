@@ -12,13 +12,25 @@ export class PhoneNumberComponentHandler implements ComponentHandler {
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
 
         const validationResult: string[] = [];
-        const phoneNumber = this.Convert(component, data);
-        
+
+        if (!component.name) {
+            throw new Error('Component name is required for PhoneNumberComponentHandler');
+        }
+
+        const phoneNumber = data[component.name];
+
+        if (!phoneNumber && component.optional) {
+            return validationResult; // If the field is optional and no input, skip validation
+        }
+
         if (phoneNumber) {
             const phoneNumberObj = parsePhoneNumberFromString(phoneNumber, 'GB');
             if (!phoneNumberObj || !phoneNumberObj.isValid()) {
                 validationResult.push("Enter a phone number, like 02010 960 001, 07729 900 982 or +44 808 157 0192");
             }
+        }
+        else if (!component.optional) {
+            validationResult.push(component.optionalErrorMessage ?? "Enter a phone number, like 02010 960 001, 07729 900 982 or +44 808 157 0192");
         }
 
         // check that the number is valid..

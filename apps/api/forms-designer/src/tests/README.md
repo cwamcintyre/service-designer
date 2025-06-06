@@ -1,0 +1,1 @@
+Note that there are no unit tests in this project because its pretty much a wrapper around the infrastructure layer. This is tested via the e2e tests for the solution as a whole.

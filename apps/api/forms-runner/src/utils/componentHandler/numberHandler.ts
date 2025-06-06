@@ -12,18 +12,25 @@ export class NumberComponentHandler implements ComponentHandler {
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
 
         const validationResult: string[] = [];
-        const number = this.Convert(component, data);
+
+        if (!component.name) {
+            throw new Error('Component name is required for NumberComponentHandler');
+        }
+
+        const number = data[component.name];
         
+        if (!number && component.optional) {
+            return validationResult; // If the field is optional and no input, skip validation
+        }
+
         if (number) {
-            console.log(`Validating number component: ${component.name}, value: ${number}`);
             const numberCheck = isNaN(Number(number));
-            console.log(`Number check for component ${component.name}:`, numberCheck);
             if (numberCheck) {
-                validationResult.push("Enter a valid number.");
+                validationResult.push("Enter a number");
             }
         }
         else if (!component.optional) {
-            validationResult.push("Enter a valid number.");
+            validationResult.push(component.optionalErrorMessage ?? "Enter a number");
         }
 
         // check that the number is valid..

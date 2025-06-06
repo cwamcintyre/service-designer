@@ -23,8 +23,17 @@ describe('StartApplicationUseCase', () => {
         const request: StartApplicationRequest = { applicantId: 'applicant123', formId: 'form123' };
         const response: StartApplicationResponse = await startApplicationUseCase.execute(request);
 
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+
         expect(response.startPageId).toBe(mockBasicForm.startPage);
         expect(response.extraData).toBe('');
+
+        expect(applicationArg.id).toBe(request.applicantId);
+        expect(applicationArg.applicantId).toBe(request.applicantId);
+        expect(applicationArg.status).toBe('Started');
+        expect(applicationArg.createdAt).toBeInstanceOf(Date);
+        expect(applicationArg.updatedAt).toBeInstanceOf(Date);
+        expect(applicationArg.formId).toBe(mockBasicForm.formId);
     });
 
     it('should throw an error if the form is not found', async () => {

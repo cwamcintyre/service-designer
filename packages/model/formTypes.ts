@@ -23,6 +23,7 @@ export type Component = {
     answer?: any;
     errors?: string[] | undefined;
     optional?: boolean;
+    optionalErrorMessage?: string;
 };
 
 export type Condition = {

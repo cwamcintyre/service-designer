@@ -12,21 +12,29 @@ export class UKAddressComponentHandler implements ComponentHandler {
     async Validate(component: Component, data: { [key: string]: any }): Promise<string[]> {
         const validationResult: string[] = [];
 
-        const addressLine1 = component.name ? data[component.name]?.addressLine1 : undefined;
-        if (!addressLine1 || addressLine1.trim() === '') {
+        if (!component.name) {
+            throw new Error('Component name is required for UKAddressComponentHandler');
+        }
+
+        const ukAddress: UKAddress = data[component.name];
+
+        // if the field is optional and no fields have been filled out, ignore..
+        if (component.optional && !ukAddress.addressLine1 && !ukAddress.town && !ukAddress.postcode && !ukAddress.addressLine2 && !ukAddress.county) {
+            return validationResult;
+        }
+
+        if ((!ukAddress.addressLine1 || ukAddress.addressLine1.trim() === '') && !component.optional) {
             validationResult.push('[addressLine1]-Enter address line 1, typically the building and street');
         }
 
-        const town = component.name ? data[component.name]?.town : undefined;
-        if (!town || town.trim() === '') {
+        if ((!ukAddress.town || ukAddress.town.trim() === '') && !component.optional) {
             validationResult.push('[addressTown]-Enter town or city');
         }
 
-        const postcode = component.name ? data[component.name]?.postcode : undefined;
-        if (!postcode || postcode.trim() === '') {
+        if ((!ukAddress.postcode || ukAddress.postcode.trim() === '') && !component.optional) {
             validationResult.push('[addressPostcode]-Enter postcode');
         }
-        else if (!isValid(postcode)) {
+        else if (ukAddress.postcode && !isValid(ukAddress.postcode) && !component.optional) {
             validationResult.push('[addressPostcode]-Enter a full UK postcode');
         }
 
@@ -36,16 +44,17 @@ export class UKAddressComponentHandler implements ComponentHandler {
                 validationResult.push(validationRule.errorMessage);
             }
         }
+
         return validationResult;
     }
 
     Convert(component: Component, data: { [key: string]: any }): UKAddress {
         const ukAddress: UKAddress = {
-            addressLine1: data[`${component.name}-addressLine1`],
-            addressLine2: data[`${component.name}-addressLine2`],
-            town: data[`${component.name}-addressTown`],
-            county: data[`${component.name}-addressCounty`],
-            postcode: data[`${component.name}-addressPostcode`],
+            addressLine1: data[`${component.name}-addressLine1`]?.trim(),
+            addressLine2: data[`${component.name}-addressLine2`]?.trim(),
+            town: data[`${component.name}-addressTown`]?.trim(),
+            county: data[`${component.name}-addressCounty`]?.trim(),
+            postcode: data[`${component.name}-addressPostcode`]?.trim()
         };
         return ukAddress;
     }
