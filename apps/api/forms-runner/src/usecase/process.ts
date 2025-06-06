@@ -35,6 +35,7 @@ export class ProcessApplicationUseCase implements requestResponse<ProcessApplica
             if (!page.pageType) {
                 throw new Error(`Page type is undefined for page ID ${pageId} in application ${applicantId}.`);
             }
+            
             const pageHandler = PageHandlerFactory.For(page.pageType);
             const processErrors = await pageHandler.Process(application, pageId, formData);
             
