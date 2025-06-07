@@ -1,6 +1,6 @@
 const { Before, After, BeforeAll, AfterAll } = require('@cucumber/cucumber');
 const { chromium } = require('playwright');
-const { seedData } = require('./setup/seedData');
+const { seedData } = require('../../setup/seedData');
 
 require('dotenv').config({ path: './e2e/.env' }); // Load environment variables from .env file
 
