@@ -32,6 +32,10 @@ When('I click on the back link', async () => {
     await page.click('.govuk-back-link');
 });
 
+When('I click on the back button', async () => {
+    await page.goBack();
+});
+
 When('I click on the change link for question with name {string}', async (questionName) => {
     await page.locator(`.govuk-summary-list__row[data-name="${questionName}"] .govuk-summary-list__actions a:has-text("Change")`).click();
 });
