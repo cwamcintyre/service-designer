@@ -4,6 +4,8 @@ const { setDefaultTimeout } = require('@cucumber/cucumber');
 
 setDefaultTimeout(5000);
 
+let requests = [];
+
 Given('I start the {string} form', async (test) => {
     await page.goto(`${process.env.FORM_RUNNER_URL}/${test}/start`);
 });
@@ -38,6 +40,13 @@ When('I click on the back button', async () => {
 
 When('I click on the change link for question with name {string}', async (questionName) => {
     await page.locator(`.govuk-summary-list__row[data-name="${questionName}"] .govuk-summary-list__actions a:has-text("Change")`).click();
+});
+
+When('I start tracking requests', async () => {
+    requests = [];
+    page.on('request', (request) => {
+        requests.push(request.method());
+    });
 });
 
 Then('I should see the error {string}', async (errorText) => {
@@ -80,4 +89,8 @@ Then('I should see the yes option of the {string} component', async (componentNa
 Then('There should not be a back link', async () => {
     const backLink = await page.locator('.govuk-back-link');
     expect(await backLink.count()).toBe(0);
+});
+
+Then('I should not see POST in the requests', async () => {
+    expect(requests).not.toContain('POST');
 });

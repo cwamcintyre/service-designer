@@ -18,13 +18,8 @@
                     "label": "What is your name?",
                     "name": "what_is_your_name",
                     "labelIsPageTitle": true,
-                    "validationRules": [
-                        {
-                            "id": "vr2",
-                            "expression": "data.what_is_your_name !== null && data.what_is_your_name.trim() !== \"\" ",
-                            "errorMessage": "Enter your name"
-                        }                        
-                    ]
+                    "optional": false,
+                    "optionalErrorMessage": "Enter your name"
                 }
             ],
             "nextPageId": "do-you-want-branch-a"
