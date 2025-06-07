@@ -64,3 +64,18 @@ Scenario: Fill out form using branch B, see summary and go back to the first pag
     When I click on the back button
     Then I should see the "what_is_your_name" component
     And There should not be a back link
+
+Scenario: Verify Post-Redirect-Get pattern is working on the form
+    When I enter "" in the "what_is_your_name" component
+    And I click the submit button
+    Then I should see the "what_is_your_name" component
+    And I should see the error message "Enter your name" for "what_is_your_name"
+    When I enter "John" in the "what_is_your_name" component
+    And I click the submit button
+    When I select "yes" in the "do_you_want_branch_a" radio group
+    And I start tracking requests
+    And I click on the back button
+    And I click on the back button
+    And I should see the "what_is_your_name" component
+    Then I should not see POST in the requests
+    And There should not be a back link
