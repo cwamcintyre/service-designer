@@ -18,23 +18,26 @@ export class UKAddressComponentHandler implements ComponentHandler {
 
         const ukAddress: UKAddress = data[component.name];
 
+        console.log('UKAddressComponentHandler Validate', ukAddress, component.optional);
+
         // if the field is optional and no fields have been filled out, ignore..
         if (component.optional && !ukAddress.addressLine1 && !ukAddress.town && !ukAddress.postcode && !ukAddress.addressLine2 && !ukAddress.county) {
+            console.log('UKAddressComponentHandler Validate - optional and empty, skipping validation');
             return validationResult;
         }
 
-        if ((!ukAddress.addressLine1 || ukAddress.addressLine1.trim() === '') && !component.optional) {
+        if ((!ukAddress.addressLine1 || ukAddress.addressLine1.trim() === '')) {
             validationResult.push('[addressLine1]-Enter address line 1, typically the building and street');
         }
 
-        if ((!ukAddress.town || ukAddress.town.trim() === '') && !component.optional) {
+        if ((!ukAddress.town || ukAddress.town.trim() === '')) {
             validationResult.push('[addressTown]-Enter town or city');
         }
 
-        if ((!ukAddress.postcode || ukAddress.postcode.trim() === '') && !component.optional) {
+        if ((!ukAddress.postcode || ukAddress.postcode.trim() === '')) {
             validationResult.push('[addressPostcode]-Enter postcode');
         }
-        else if (ukAddress.postcode && !isValid(ukAddress.postcode) && !component.optional) {
+        else if (ukAddress.postcode && !isValid(ukAddress.postcode)) {
             validationResult.push('[addressPostcode]-Enter a full UK postcode');
         }
 

@@ -18,6 +18,8 @@ export class OptionsComponentHandler implements ComponentHandler {
 
         const option = data[component.name];
         
+        console.log(`Validating component: ${component.name}, option: ${option}, optional: ${component.optional}`);
+
         if (component.optional && !option) {
             return validationResult; // If the field is optional and no input, skip validation
         }

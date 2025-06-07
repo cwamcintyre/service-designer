@@ -28,6 +28,14 @@ When('I click the submit button', async () => {
     await page.click('button[type="submit"]');
 });
 
+When('I click on the back link', async () => {
+    await page.click('.govuk-back-link');
+});
+
+When('I click on the change link for question with name {string}', async (questionName) => {
+    await page.locator(`.govuk-summary-list__row[data-name="${questionName}"] .govuk-summary-list__actions a:has-text("Change")`).click();
+});
+
 Then('I should see the error {string}', async (errorText) => {
     const errorMessage = await page.locator('.error-message').innerText();
     expect(errorMessage).toContain(errorText);
@@ -53,4 +61,19 @@ Then('I should see the error message {string} for {string} at index {string}', a
 Then('I should see the form with title {string}', async (formTitle) => {
     const title = await page.locator('h1').innerText();
     expect(title).toBe(formTitle);
+});
+
+Then('I should see the {string} component', async (componentName) => {
+    const component = await page.getByTestId(`${componentName}`);
+    expect(await component.count()).toBe(1);
+});
+
+Then('I should see the yes option of the {string} component', async (componentName) => {
+    const component = await page.getByTestId(`${componentName}-yes`);
+    expect(await component.count()).toBe(1);
+});
+
+Then('There should not be a back link', async () => {
+    const backLink = await page.locator('.govuk-back-link');
+    expect(await backLink.count()).toBe(0);
 });

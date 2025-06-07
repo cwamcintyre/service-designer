@@ -1,0 +1,68 @@
+{
+   "formId": "test-optional-phonenumber-component",
+   "isCreated": true,
+   "startPage": "phonenumber-component",
+   "pages": [
+     {
+       "components": [
+         {
+           "questionId": "phonenumber123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": true,
+           "hint": "This is testing the phone number component",
+           "name": "phonenumber",
+           "label": "Test Phone Number component",
+           "type": "phonenumber",
+           "optional": true
+         }
+       ],
+       "id": "phonenumberPage",
+       "pageType": "default",
+       "pageId": "phonenumber-component",
+       "nextPageId": "summary",
+       "title": ""
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form tests the phone number component",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-optional-phonenumber-component",
+   "title": "Tests phone number component"
+ }
