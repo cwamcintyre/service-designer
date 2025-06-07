@@ -30,6 +30,8 @@ export class DefaultPageHandler implements PageHandler {
                 throw new Error(`No handler found for component type ${component.type}.`);
             }
 
+            console.log(componentHandler);
+
             // update the component answer..
             if (component.name) {
                 const convertedAnswer = componentHandler.Convert(component, data);

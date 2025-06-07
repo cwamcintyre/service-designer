@@ -46,6 +46,20 @@ describe('UKAddressComponentHandler', () => {
             expect(errors).toEqual([]);
         });
 
+        it('should return errors for missing required fields if the component is optional but has some information filled', async () => {
+            const mockComponent: Component = {
+                name: 'addressField',
+                questionId: 'q1',
+                labelIsPageTitle: false,
+                optional: true
+            };
+
+            const handler = new UKAddressComponentHandler();
+            const errors = await handler.Validate(mockComponent, { addressField: { addressLine1: '3 Someplace', town: 'Somewhere' } });
+
+            expect(errors).toContain('[addressPostcode]-Enter postcode');
+        });
+
         it('should return an empty array if the component is optional', async () => {
             const mockComponent: Component = {
                 name: 'addressField',

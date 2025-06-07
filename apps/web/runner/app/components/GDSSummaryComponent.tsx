@@ -2,7 +2,7 @@ import { type Page } from '@model/formTypes'
 import { GDSSummaryList, GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '@gds/GDSSummary'
 import GDSLink from '@gds/GDSLink'
 
-export default function GDSSummaryComponent({ formId, pages }: { formId: string, pages: Page[] }) {
+export default function GDSSummaryComponent({ formId, pages }: { formId: string, pages: Page[] }) {    
     return (
         <GDSSummaryList>            
             {pages.map((page) => {
@@ -42,6 +42,9 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                         <GDSSummaryRow key={component.questionId} name={component.name}>
                                             <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                             <GDSSummaryAnswer>
+                                                {!component.answer?.addressLine1 && !component.answer?.addressLine2 && !component.answer?.town && !component.answer?.county && !component.answer?.postcode ?
+                                                    "Not provided"
+                                                : null}
                                                 {component.answer?.addressLine1 ? <p>{component.answer?.addressLine1}</p> : null}
                                                 {component.answer?.addressLine2 ? <p>{component.answer?.addressLine2}</p> : null}
                                                 {component.answer?.town ? <p>{component.answer?.town}</p> : null}
