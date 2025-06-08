@@ -4,7 +4,7 @@
     "description": "Please fill out this form.",
     "currentPage": 1,
     "totalPages": 7,
-    "startPage": "do-you-want-to-fill-in-this-form",
+    "startPage": "what-is-your-name",
     "pages": [
         {
             "pageId": "what-is-your-name",

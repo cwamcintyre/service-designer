@@ -1,0 +1,80 @@
+{
+    "formId": "testing-dates-in-forms",
+    "title": "testing-dates-in-forms",
+    "description": "Please fill out this form.",
+    "currentPage": 1,
+    "totalPages": 7,
+    "startPage": "what-is-the-first-date",
+    "pages": [
+        {
+            "pageId": "what-is-the-first-date",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "dateParts",
+                    "label": "What is the first date?",
+                    "name": "what_is_the_first_date",
+                    "labelIsPageTitle": true,
+                    "answer": {
+                        "day": "1",
+                        "month": "1",
+                        "year": "2023"
+                    }
+                }
+            ],
+            "nextPageId": "what-is-the-second-date"
+        },
+        {
+            "pageId": "what-is-the-second-date",
+            "pageType": "default",
+            "title": "",
+            "components": [
+                {
+                    "questionId": "1",
+                    "type": "dateParts",
+                    "label": "What is the second date?",
+                    "name": "what_is_the_second_date",
+                    "labelIsPageTitle": true,
+                    "answer": {
+                        "day": "2",
+                        "month": "1",
+                        "year": "2023"
+                    },
+                    "dateName": "Second date",
+                    "dateValidationRules": [
+                        {
+                            "id": "vr1",
+                            "comparisonType": "after",
+                            "errorMessage": "The second date must be after the first date",
+                            "fixedDateId": "what_is_the_first_date"
+                        }
+                    ]
+                }
+            ],
+            "nextPageId": "summary"
+        },
+        {
+            "pageId": "summary",
+            "title": "Check your answers before sending your application",
+            "pageType": "summary",
+            "components": [                
+                {
+                    "type": "summary"
+                },
+                {
+                    "type": "html",
+                    "content": "<h2 class=\"govuk-heading-m\">Now send your application</h2><p class=\"govuk-body\">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>"
+                }
+            ]
+        }
+    ],
+    "submission": {
+        "method": "POST",
+        "endpoint": "http://localhost:7163/api/v1/submit",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

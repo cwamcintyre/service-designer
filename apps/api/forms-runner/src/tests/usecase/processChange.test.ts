@@ -5,6 +5,8 @@ import { Application } from '@model/formTypes';
 
 const mockApplication: Application = require('@/tests/data/change-answer-valid.json') as Application;
 const mockApplicationWithErrors: Application = require('@/tests/data/change-answer-invalid-and-blank.json') as Application;
+const mockApplicationWithErrorsAgain: Application = require('@/tests/data/change-answer-invalid-and-blank-branch-b.json') as Application;
+const mockApplicationWithInvalidDateAfter: Application = require('@/tests/data/change-date-after-becomes-invalid.json') as Application;
 
 describe('ProcessApplicationChangeUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -78,7 +80,7 @@ describe('ProcessApplicationChangeUseCase', () => {
     });
 
     it('should process an application change and walk to the next unfilled page', async () => {
-        applicationStore.withGetApplicationReturning(mockApplicationWithErrors);
+        applicationStore.withGetApplicationReturning(mockApplicationWithErrorsAgain);
 
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'do-you-want-branch-a', formData: { do_you_want_branch_a: "no" } };
         const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
@@ -90,5 +92,20 @@ describe('ProcessApplicationChangeUseCase', () => {
         expect(component?.answer).toEqual({ id: 'no', value: 'no', label: 'No' });
 
         expect(response.nextPageId).toEqual('branch-b-subsequent-q');
+    });
+
+    it('should process an application change and find a date that is now invalid after it', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithInvalidDateAfter);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'what-is-the-first-date', formData: { "what_is_the_first_date-day": "15", "what_is_the_first_date-month": "02", "what_is_the_first_date-year": "2030" } };
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+        const component = applicationArg.pages.find(p => p.pageId === 'what-is-the-first-date')?.components.find(c => c.name === 'what_is_the_first_date');
+        const invalidComponent = applicationArg.pages.find(p => p.pageId === 'what-is-the-second-date')?.components.find(c => c.name === 'what_is_the_second_date');
+
+        expect(invalidComponent?.errors).toEqual([JSON.stringify({ errorMessage: "The second date must be after the first date", dayError: true, monthError: true, yearError: true })]);
+        expect(component?.answer).toEqual({ day: '15', month: '02', year: '2030' });
+        expect(response.nextPageId).toEqual('what-is-the-second-date');
     });
 });

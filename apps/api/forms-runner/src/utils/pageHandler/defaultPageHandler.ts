@@ -102,6 +102,7 @@ export class DefaultPageHandler implements PageHandler {
 
             const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
             if (validationResult.length > 0) {
+                component.errors = validationResult;
                 return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
             }
         }

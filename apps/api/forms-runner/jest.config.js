@@ -1,6 +1,7 @@
 module.exports = {
   testEnvironment: 'node',
   testMatch: [
+    //'**/tests/unit/**/datePartsHandler.test.ts', // uncomment and change to run specific tests.. DO NOT CHECK IN CHANGES!
     '**/tests/unit/**/*.test.ts',
     '**/tests/usecase/**/*.test.ts'
   ],
@@ -10,5 +11,6 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@model/(.*)$': '<rootDir>/../../../packages/model/$1'
   },
 };

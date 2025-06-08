@@ -56,6 +56,21 @@ export default function GDSSummaryComponent({ formId, pages }: { formId: string,
                                             </GDSSummaryActions>
                                         </GDSSummaryRow>
                                     );
+                                case 'dateParts':
+                                    return (
+                                        <GDSSummaryRow key={component.questionId} name={component.name}>
+                                            <GDSSummaryQuestion text={component.label || 'Untitled'} />
+                                            <GDSSummaryAnswer>
+                                                {!component.answer?.day || !component.answer?.month || !component.answer?.year ? 
+                                                    "Not provided" : 
+                                                    new Date(`${component.answer.year}-${component.answer.month}-${component.answer.day}`).toLocaleDateString()
+                                                }
+                                            </GDSSummaryAnswer>
+                                            <GDSSummaryActions>
+                                                <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                            </GDSSummaryActions>
+                                        </GDSSummaryRow>
+                                    );
                             }
                         })}
                     </>
