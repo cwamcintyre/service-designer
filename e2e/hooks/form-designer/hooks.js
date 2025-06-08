@@ -49,8 +49,6 @@ BeforeAll(async () => {
       auth_token = await fetchToken();
 
       global.auth_token = auth_token; // Store the token globally for use in other steps
-
-      // Store the token for use in your tests
     } catch (error) {
       console.error('Error fetching token:', error);
     }
@@ -64,6 +62,28 @@ Before(async () => {
 
     // Attach the page to the global scope for use in steps
     global.page = page;    
+
+    // Construct the payload expected by react-oidc-context
+    const idToken = auth_token.getIdToken();
+    const oidcPayload = {
+        id_token: idToken.jwtToken,
+        access_token: auth_token.getAccessToken().jwtToken,
+        expires_at: idToken.payload.exp,
+        scope: 'phone openid email',
+        token_type: 'Bearer',
+        profile: idToken.payload, // User profile information
+    };
+
+    // Store the token in local storage
+    const storageKey = `oidc.user:${process.env.AWS_OIDC_AUTHORITY}:${process.env.AWS_OIDC_CLIENT_ID}`;
+
+    await page.addInitScript((object) => {
+        try {
+            sessionStorage.setItem(object.storageKey, JSON.stringify(object.oidcPayload));
+        } catch (error) {
+            console.error('Error setting sessionStorage:', error);
+        }
+    }, { storageKey, oidcPayload });
 });
 
 After(async () => {

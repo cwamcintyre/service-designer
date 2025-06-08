@@ -107,14 +107,15 @@ export async function walkToNextInvalidOrUnfilledPage(
     application: Application,
     currentPageId: string,
     extraData: string,
-): Promise<{ pageId: string, pageType: string, stop: boolean }> {
+    pageStack: Stack
+): Promise<{ pageId: string, pageType: string, stop: boolean, pageStack: Stack }> {
     const currentPage = application.pages.find(p => p.pageId === currentPageId);
     if (!currentPage) {
         throw new Error(`Page with ID ${currentPageId} not found.`);
     }
 
     if (currentPage.pageType === 'summary' || currentPage.pageType === 'stop') {
-        return { pageId: currentPageId, pageType: currentPage.pageType, stop: true };
+        return { pageId: currentPageId, pageType: currentPage.pageType, stop: true, pageStack: pageStack };
     }
 
     if (!currentPage.pageType) {
@@ -125,6 +126,8 @@ export async function walkToNextInvalidOrUnfilledPage(
         throw new Error(`No handler found for page type ${currentPage.pageType}`);
     }
 
+    pageStack.push({ pageId: currentPage.pageId, pageType: currentPage.pageType, extraData: extraData });
+
     const walkResult = await pageHandler.WalkToNextInvalidOrUnfilledPage(
         application,
         currentPageId,
@@ -132,11 +135,35 @@ export async function walkToNextInvalidOrUnfilledPage(
     );
 
     if (!walkResult.stop) {
-        return walkToNextInvalidOrUnfilledPage(application, walkResult.pageId, extraData);
+        return await walkToNextInvalidOrUnfilledPage(application, walkResult.pageId, extraData, pageStack);
     }
 
     // TODO: keep a track of the path and wipe any intermediate data that is not needed...
-    return walkResult;
+    const result = {
+        ...walkResult,
+        pageStack: pageStack
+    };
+
+    return result;
+}
+
+export function removeDataFromUnwalkedPages(
+    application: Application,
+    pageStack: Stack
+): Application {
+    const visitedPageIds = new Set(pageStack.items.map(item => item.pageId));
+    
+    for (const page of application.pages) {
+        if (!visitedPageIds.has(page.pageId)) {
+            for (const component of page.components) {
+                if (component.name) {
+                    delete component.answer; // Remove the answer property
+                }
+            }
+        }
+    }
+
+    return application;
 }
 
 export class Stack {

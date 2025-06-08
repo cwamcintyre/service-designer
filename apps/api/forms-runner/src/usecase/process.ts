@@ -46,7 +46,7 @@ export class ProcessApplicationUseCase implements requestResponse<ProcessApplica
                 this.response = await pageHandler.GetNextPageId(application, pageId);
             }
 
-            this.applicationStore.updateApplication(application);
+            await this.applicationStore.updateApplication(application);
 
             return this.response;
         } catch (error) {

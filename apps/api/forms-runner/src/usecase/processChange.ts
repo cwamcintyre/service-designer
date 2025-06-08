@@ -3,7 +3,7 @@ import { type ProcessApplicationRequest, type ProcessApplicationResponse } from 
 import { requestResponse } from '@clean/useCaseInterfaces';
 import { PageHandlerFactory } from '@/utils/pageHandler/pageHandlerFactory';
 import { type ApplicationStore } from '@/usecase/shared/infrastructure/applicationStore';
-import { walkToNextInvalidOrUnfilledPage, getAllDataFromApplication } from '@/utils/applicationUtils';
+import { walkToNextInvalidOrUnfilledPage, getAllDataFromApplication, Stack, removeDataFromUnwalkedPages } from '@/utils/applicationUtils';
 import { inject, injectable } from 'inversify';
 
 @injectable()
@@ -19,7 +19,7 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
     public async execute(request: ProcessApplicationRequest): Promise<ProcessApplicationResponse> {
         try {
             console.log('ProcessApplicationChangeUseCase: Processing application change request:', request);
-            const application = await this.applicationStore.getApplication(request.applicantId);
+            let application = await this.applicationStore.getApplication(request.applicantId);
             if (!application) {
                 throw new Error(`Application with ID ${request.applicantId} not found.`);
             }
@@ -43,14 +43,22 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
                 this.response = { nextPageId: page.pageId, nextPageType: page.pageType, extraData: request.extraData };
             }
             else {
+
                 console.log('ProcessApplicationChangeUseCase: walking to next page', getAllDataFromApplication(application));
-                const walkResult = await walkToNextInvalidOrUnfilledPage(application, pageId, formData.extraData);
+                
+                // need to go from beginning because it may be a previous page that is invalid now...
+                const pageStack = new Stack();
+                const walkResult = await walkToNextInvalidOrUnfilledPage(application, application.startPage, formData.extraData, pageStack);
+                
+                console.log('Removing data from unwalked pages:', pageStack);
+                application = removeDataFromUnwalkedPages(application, pageStack);
+
                 // TODO: handle extraData
                 this.response = { nextPageId: walkResult.pageId, nextPageType: walkResult.pageType, extraData: "" };
                 console.log('ProcessApplicationChangeUseCase: Walk result:', walkResult);
             }
 
-            this.applicationStore.updateApplication(application);
+            await this.applicationStore.updateApplication(application);
 
             return this.response;
         } catch (error) {
