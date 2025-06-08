@@ -6,6 +6,7 @@ import { EmailComponentHandler } from '@/utils/componentHandler/emailHandler';
 import { NumberComponentHandler } from '@/utils/componentHandler/numberHandler';
 import { OptionsComponentHandler } from '@/utils/componentHandler/optionsHandler';
 import { YesNoComponentHandler } from '@/utils/componentHandler/yesNoHandler';
+import { DatePartsComponentHandler } from '@/utils/componentHandler/datePartsHandler';
 
 export class ComponentHandlerFactory {
     static For(type: string): ComponentHandler | undefined {
@@ -29,6 +30,9 @@ export class ComponentHandlerFactory {
         }
         if (YesNoComponentHandler.IsFor(type)) {
             return new YesNoComponentHandler();
+        }
+        if (DatePartsComponentHandler.IsFor(type)) {
+            return new DatePartsComponentHandler();
         }
         return undefined;
     }

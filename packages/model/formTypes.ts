@@ -26,6 +26,42 @@ export type Component = {
     optionalErrorMessage?: string;
 };
 
+export interface DateComponent extends Component {
+    dateName?: string; // For components like "dateParts"
+    dateValidationRules?: DateValidationRule[];
+}
+
+export type DateValidationRule = {
+    id: string;
+    errorMessage: string;
+    comparisonType?: DateComponentComparison;
+    fixedDate?: Date;
+    fixedDateId?: string;
+    startDate?: Date;
+    endDate?: Date;
+    startDateId?: string;
+    endDateId?: string;
+}
+
+export enum DateComponentComparison {
+    TodayOrInPast = "todayOrInPast",
+    InPast = "inPast",
+    TodayOrInFuture = "todayOrInFuture",
+    InFuture = "inFuture",
+    SameOrAfter = "sameOrAfter",
+    After = "after",
+    SameOrBefore = "sameOrBefore",
+    Before = "before",
+    Between = "between"
+}
+
+export type DateError = {
+    errorMessage: string;
+    dayError: boolean;
+    monthError: boolean;
+    yearError: boolean;
+}
+
 export type Condition = {
     id: string;
     label: string;
@@ -64,6 +100,12 @@ export type UKAddress = {
     town?: string;
     county?: string;
     postcode?: string;
+}
+
+export type DateParts = {
+    day?: string;
+    month?: string;
+    year?: string;
 }
 
 export interface Application extends Form {

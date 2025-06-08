@@ -9,6 +9,7 @@ import GDSSelect from '@gds/GDSSelect';
 import GDSCheckbox from '@gds/GDSCheckbox';
 import GDSYesNo from '@gds/GDSYesNo';
 import GDSUKAddress from '@gds/GDSUKAddress';
+import GDSDateParts from '@gds/GDSDateParts';
 
 export default async function GDSFormPage({ page, backLink }: { page: Page, backLink: string }) {
     return (
@@ -57,6 +58,10 @@ export default async function GDSFormPage({ page, backLink }: { page: Page, back
                         return (
                             <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} errors={component.errors} />
                         );
+                    case 'dateParts':
+                        return (
+                            <GDSDateParts key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} answer={component.answer} errors={component.errors} />
+                        );                        
                     case 'html':
                         return (
                             <div key={component.questionId} dangerouslySetInnerHTML={{ __html: component.content ? component.content: "" }} />

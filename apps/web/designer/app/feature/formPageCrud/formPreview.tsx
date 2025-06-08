@@ -7,6 +7,7 @@ import GDSSelect from '@gds/GDSSelect';
 import GDSCheckbox from '@gds/GDSCheckbox';
 import GDSYesNo from '@gds/GDSYesNo';
 import GDSUKAddress from '@gds/GDSUKAddress';
+import GDSDateParts from '@gds/GDSDateParts';
 import GDSSummaryExample from '@gds/GDSSummaryExample';
 
 export default function FormPreview({page}: {page: Page | undefined}) {
@@ -76,6 +77,10 @@ export default function FormPreview({page}: {page: Page | undefined}) {
                     case 'ukaddress': 
                         return (
                             <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
+                        );
+                    case 'dateParts':
+                        return (
+                            <GDSDateParts key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} />
                         );
                     case 'html':
                         return (

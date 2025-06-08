@@ -44,18 +44,14 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
             }
             else {
 
-                console.log('ProcessApplicationChangeUseCase: walking to next page', getAllDataFromApplication(application));
-                
                 // need to go from beginning because it may be a previous page that is invalid now...
                 const pageStack = new Stack();
                 const walkResult = await walkToNextInvalidOrUnfilledPage(application, application.startPage, formData.extraData, pageStack);
                 
-                console.log('Removing data from unwalked pages:', pageStack);
                 application = removeDataFromUnwalkedPages(application, pageStack);
 
                 // TODO: handle extraData
                 this.response = { nextPageId: walkResult.pageId, nextPageType: walkResult.pageType, extraData: "" };
-                console.log('ProcessApplicationChangeUseCase: Walk result:', walkResult);
             }
 
             await this.applicationStore.updateApplication(application);
