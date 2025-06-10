@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@gds/*": ["../../../packages/ui/gds/*"],
+      "@gds/*": ["../../../packages/ui/gds/src/*"],
       "@model/*": ["../../../packages/model/*"]
     }
   },

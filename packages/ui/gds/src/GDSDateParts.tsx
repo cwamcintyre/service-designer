@@ -13,11 +13,15 @@ export default function GDSDateParts({ name, label, hint, labelIsPageTitle, answ
     const hasYearError = dateErrors.some(error => error.yearError);
     const errorId = `${name}-error`;
 
+    const ariaDescribedBy = [hint ? `${name}-hint` : null, hasError ? errorId : null]
+        .filter(Boolean)
+        .join(' ');
+
     return (
         <div className={`govuk-form-group${hasError ? ' govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset"
-                aria-describedby={hint ? `${name}-hint` : undefined} 
-                aria-invalid={hasError ? 'true' : undefined} 
+                aria-describedby={ariaDescribedBy}
+                aria-invalid={hasError ? 'true' : undefined}
                 aria-errormessage={hasError ? errorId : undefined}>
                 {labelIsPageTitle ?
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
