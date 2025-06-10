@@ -26,6 +26,12 @@ When('I select {string} in the {string} radio group', async (option, name) => {
     await page.getByTestId(`${name}-${option}`).check();
 });
 
+When('I enter {string} for day, {string} for month, and {string} for year in the {string} date parts component', async (day, month, year, componentName) => {
+    await page.getByTestId(`${componentName}-day`).fill(day);
+    await page.getByTestId(`${componentName}-month`).fill(month);
+    await page.getByTestId(`${componentName}-year`).fill(year);
+});
+
 When('I click the submit button', async () => {
     await page.click('button[type="submit"]');
 });

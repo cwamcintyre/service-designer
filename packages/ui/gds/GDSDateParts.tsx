@@ -40,26 +40,32 @@ export default function GDSDateParts({ name, label, hint, labelIsPageTitle, answ
                     ))}
                 </p>
                 : null}
-
-                <div className={`govuk-form-group`}>
-                    <label className="govuk-label" htmlFor={`${name}-day`}>
-                        Day
-                    </label>
-                    <input className={`govuk-input${hasDayError ? ' govuk-input--error' : ''}`} id={`${name}-day`} data-testid={`${name}-day`} name={`${name}-day`} type="text" defaultValue={answer?.day} inputMode="numeric"/>
-                </div>
-
-                <div className={`govuk-form-group`}>
-                    <label className="govuk-label" htmlFor={`${name}-month`}>
-                        Month
-                    </label>
-                    <input className={`govuk-input${hasMonthError ? ' govuk-input--error' : ''}`} id={`${name}-month`} data-testid={`${name}-month`} name={`${name}-month`} type="text" defaultValue={answer?.month} inputMode="numeric" />
-                </div>
-
-                <div className={`govuk-form-group`}>
-                    <label className="govuk-label" htmlFor={`${name}-year`}>
-                        Year
-                    </label>
-                    <input className={`govuk-input govuk-!-width-two-thirds${hasYearError ? ' govuk-input--error' : ''}`} id={`${name}-year`} data-testid={`${name}-year`} name={`${name}-year`} type="text" defaultValue={answer?.year} inputMode="numeric" />
+                
+                <div className="govuk-date-input" id={`${name}`}>
+                    <div className={"govuk-date-input__item"}>
+                        <div className={`govuk-form-group`}>
+                            <label className="govuk-label govuk-date-input__label" htmlFor={`${name}-day`}>
+                                Day
+                            </label>
+                            <input className={`govuk-date-input__input govuk-input--width-2 govuk-input${hasDayError ? ' govuk-input--error' : ''}`} id={`${name}-day`} data-testid={`${name}-day`} name={`${name}-day`} type="text" defaultValue={answer?.day} inputMode="numeric"/>
+                        </div>
+                    </div>
+                    <div className={"govuk-date-input__item"}>
+                        <div className={`govuk-form-group`}>
+                            <label className="govuk-label govuk-date-input__label" htmlFor={`${name}-month`}>
+                                Month
+                            </label>
+                            <input className={`govuk-date-input__input govuk-input--width-2 govuk-input${hasMonthError ? ' govuk-input--error' : ''}`} id={`${name}-month`} data-testid={`${name}-month`} name={`${name}-month`} type="text" defaultValue={answer?.month} inputMode="numeric" />
+                        </div>
+                    </div>
+                    <div className={"govuk-date-input__item"}>
+                        <div className={`govuk-form-group`}>
+                            <label className="govuk-label govuk-date-input__label" htmlFor={`${name}-year`}>
+                                Year
+                            </label>
+                            <input className={`govuk-date-input__input govuk-input--width-4 govuk-input${hasYearError ? ' govuk-input--error' : ''}`} id={`${name}-year`} data-testid={`${name}-year`} name={`${name}-year`} type="text" defaultValue={answer?.year} inputMode="numeric" />
+                        </div>
+                    </div>
                 </div>
             </fieldset>
         </div>
