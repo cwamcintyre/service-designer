@@ -5,6 +5,10 @@ export default function GDSSelect({ name, label, hint, labelIsPageTitle, options
     
     const hasError = errors && errors.length > 0;
     const errorId = `${name}-error`;    
+
+    const ariaDescribedBy = [hint ? `${name}-hint` : null, hasError ? errorId : null]
+        .filter(Boolean)
+        .join(' ');
     
     return (
         <div className={`govuk-form-group${hasError ? ' govuk-form-group--error' : ''}`}>
@@ -27,7 +31,7 @@ export default function GDSSelect({ name, label, hint, labelIsPageTitle, options
                 className="govuk-select" 
                 data-testid={name} 
                 name={name} 
-                aria-describedby={`${name}-hint`}
+                aria-describedby={ariaDescribedBy}
                 aria-invalid={hasError ? 'true' : undefined}
                 aria-errormessage={hasError ? errorId : undefined}>
                 {options && options.map((option) => (

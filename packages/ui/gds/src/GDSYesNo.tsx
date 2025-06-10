@@ -2,9 +2,16 @@ import { type Option } from '@model/formTypes';
 
 export default function GDSYesNo({ key, name, label, hint, labelIsPageTitle, answer, errors }:
     { key: string, name: string | undefined, label: string | undefined, hint: string | undefined, labelIsPageTitle: boolean | undefined, answer?: Option, errors?: string[] }) {
+
+    const hasError = errors && errors.length > 0;
+    const errorId = `${name}-error`;
+    const ariaDescribedBy = [hint ? `${name}-hint` : null, hasError ? errorId : null]
+        .filter(Boolean)
+        .join(' ');
+
     return (
         <div className="govuk-form-group">
-            <fieldset className="govuk-fieldset" aria-describedby={hint ? `${name}-hint` : undefined}>
+            <fieldset className="govuk-fieldset" aria-describedby={ariaDescribedBy}>
                 <legend className={`govuk-fieldset__legend ${labelIsPageTitle ? 'govuk-fieldset__legend--l' : 'govuk-fieldset__legend--m'}`}>
                     {labelIsPageTitle ? <h1 className="govuk-fieldset__heading">{label}</h1> : label}
                 </legend>

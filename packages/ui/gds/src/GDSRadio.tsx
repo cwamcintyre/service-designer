@@ -6,11 +6,15 @@ export default function GDSRadio({ name, label, hint, labelIsPageTitle, options,
     const hasError = errors && errors.length > 0;
     const errorId = `${name}-error`;
     
+    const ariaDescribedBy = [hint ? `${name}-hint` : null, hasError ? errorId : null]
+        .filter(Boolean)
+        .join(' ');
+
     return (
         <div className={`govuk-form-group${hasError ? ' govuk-form-group--error' : ''}`}>
             <fieldset 
                 className="govuk-fieldset" 
-                aria-describedby={hint ? `${name}-hint` : undefined} 
+                aria-describedby={ariaDescribedBy} 
                 aria-invalid={hasError ? 'true' : undefined} 
                 aria-errormessage={hasError ? errorId : undefined}>
                 <legend className={`govuk-fieldset__legend ${labelIsPageTitle ? 'govuk-fieldset__legend--l' : 'govuk-fieldset__legend--m'}`}>

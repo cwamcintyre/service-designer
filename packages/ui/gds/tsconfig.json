@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "jsx": "react-jsx", // Use "react-jsx" for React 17+ or "react" for older versions
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true, // Prevent emitting compiled files during tests
+    "types": ["jest", "@testing-library/jest-dom", "@testing-library/react"], // Include Jest and Testing Library types
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"],
+      "@model/*": ["../../../packages/model/*"]
+    },
+    "outDir": "./dist", // Output directory for compiled files
+  },
+  "include": ["src/**/*", "test/**/*"], // Include all TypeScript files in the src folder
+  "exclude": ["node_modules", "dist"] // Exclude node_modules and dist folders
+}
