@@ -3,8 +3,6 @@ import { type UKAddress } from '@model/formTypes';
 export default function GDSUKAddress({ name, label, hint, labelIsPageTitle, answer, errors }:
     { name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean, answer?: UKAddress, errors?: string[] }) {
 
-    console.log('GDSUKAddress', { name, label, hint, labelIsPageTitle, answer, errors });
-
     const fieldErrors = {
         addressLine1: errors?.filter(error => error.startsWith('[addressLine1]')),
         addressTown: errors?.filter(error => error.startsWith('[addressTown]')),

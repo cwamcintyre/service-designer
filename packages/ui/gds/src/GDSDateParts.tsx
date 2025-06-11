@@ -3,8 +3,6 @@ import { type DateError, type DateParts } from '@model/formTypes';
 export default function GDSDateParts({ name, label, hint, labelIsPageTitle, answer, errors }:
     { name: string | undefined; label: string | undefined; hint: string | undefined; labelIsPageTitle: boolean, answer?: DateParts, errors?: string[] }) {
 
-    console.log('GDSDateParts', { name, label, hint, labelIsPageTitle, answer, errors });
-
     const dateErrors: DateError[] = errors?.map(error => JSON.parse(error)) ?? [];
 
     const hasError = dateErrors.length > 0;

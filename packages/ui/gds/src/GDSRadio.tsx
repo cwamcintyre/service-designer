@@ -29,7 +29,7 @@ export default function GDSRadio({ name, label, hint, labelIsPageTitle, options,
                 <div className="govuk-radios" data-module="govuk-radios">
                     {options && options.map((option) => (
                         <div className="govuk-radios__item" key={option.value}>
-                            <input className="govuk-radios__input" data-testid={`${name}-${option.value}`} name={name} type="radio" value={option.value} defaultChecked={option.value === answer?.value} />
+                            <input className="govuk-radios__input" data-testid={`${name}-${option.value}`} id={`${name}-${option.value}`} name={name} type="radio" value={option.value} defaultChecked={option.value === answer?.value} />
                             <label className="govuk-label govuk-radios__label" htmlFor={`${name}-${option.value}`}>
                             {option.label}
                             </label>

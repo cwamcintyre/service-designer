@@ -22,7 +22,9 @@ describe('GDSCheckbox Component', () => {
             />
         );
         const hint = screen.getByText(/please read the terms carefully/i);
+        const fieldset = screen.getByRole('group');
         expect(hint).toBeInTheDocument();
+        expect(fieldset).toHaveAttribute('aria-describedby', 'terms-hint');
     });
 
     it('renders the checkbox group with error message when errors are passed', () => {
@@ -58,6 +60,7 @@ describe('GDSCheckbox Component', () => {
         const fieldset = screen.getByRole('group');
         expect(fieldset).toHaveAttribute('aria-invalid', 'true');
         expect(fieldset).toHaveAttribute('aria-errormessage', 'terms-error');
+        expect(fieldset).toHaveAttribute('aria-describedby', 'terms-error');
     });
 
     it('renders the checkbox group with options', () => {
