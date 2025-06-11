@@ -35,16 +35,16 @@ app.get('/api/application/health', (req: Request, res: Response) => {
   res.status(200).send('OK');
 });
 
-app.get('/api/application/:applicantId/:pageId/:extraData', (req: Request, res: Response) => {
-  const { applicantId, pageId, extraData } = req.params;
+app.get('/api/application/:applicantId/:pageId/:onlyCurrentPage/:extraData', (req: Request, res: Response) => {
+  const { applicantId, pageId, onlyCurrentPage, extraData } = req.params;
   req.params.extraData = extraData || ''; // Handle missing extraData parameter
-  getApplicationController.put(req, res);
+  getApplicationController.get(req, res);
 });
 
-app.get('/api/application/:applicantId/:pageId', (req: Request, res: Response) => {
-  const { applicantId, pageId } = req.params;
+app.get('/api/application/:applicantId/:pageId/:onlyCurrentPage', (req: Request, res: Response) => {
+  const { applicantId, pageId, onlyCurrentPage } = req.params;
   req.params.extraData = ''; // Default extraData to an empty string
-  getApplicationController.put(req, res);
+  getApplicationController.get(req, res);
 });
 
 app.put('/api/application/start', startController.put.bind(startController));

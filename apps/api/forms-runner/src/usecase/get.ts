@@ -24,8 +24,6 @@ export class GetApplicationUseCase implements requestResponse<GetApplicationRequ
 
             this.response = { application: {} as Application, previousExtraData: '', previousPageId: '' };
             
-            this.response.application = application;
-
             const previousPageResult = await calculatePreviousPageId(application, request.pageId, request.extraData || "");
             if (previousPageResult) {
                 const { pageId, extraData } = previousPageResult;
@@ -34,6 +32,11 @@ export class GetApplicationUseCase implements requestResponse<GetApplicationRequ
                     this.response.previousExtraData = extraData || "";
                 }
             }
+
+            this.response.application = {
+                ...application,
+                pages: request.onlyCurrentPage ? application.pages.filter(page => page.pageId === request.pageId) : application.pages,
+            };
 
             console.log(`Application with ID ${request.applicantId} has been retrieved.`);
             console.log(`previousPageId: ${this.response.previousPageId}`);
