@@ -14,11 +14,11 @@ export default function GDSSelect({ name, label, hint, labelIsPageTitle, options
         <div className={`govuk-form-group${hasError ? ' govuk-form-group--error' : ''}`}>
             {labelIsPageTitle ?
                 <h1 className="govuk-label-wrapper">
-                    <label className="govuk-label govuk-label--l" htmlFor="select-example">
+                    <label className="govuk-label govuk-label--l" htmlFor={name}>
                         {label || 'Select an option'}
                     </label>
                 </h1>
-            : <label className="govuk-label govuk-label--m" htmlFor="select-example">
+            : <label className="govuk-label govuk-label--m" htmlFor={name}>
                 {label || 'Select an option'}
             </label>}
             {hint && <div id={`${name}-hint`} className="govuk-hint">{hint}</div>}
@@ -29,13 +29,16 @@ export default function GDSSelect({ name, label, hint, labelIsPageTitle, options
                 ) : null}
             <select 
                 className="govuk-select" 
-                data-testid={name} 
+                data-testid={name}
+                id={name} 
                 name={name} 
                 aria-describedby={ariaDescribedBy}
                 aria-invalid={hasError ? 'true' : undefined}
-                aria-errormessage={hasError ? errorId : undefined}>
+                aria-errormessage={hasError ? errorId : undefined}
+                defaultValue={answer?.value}
+            >
                 {options && options.map((option) => (
-                    <option key={option.value} data-testid={`${name}-${option.value}`} value={option.value} selected={option.value === answer?.value}>
+                    <option key={option.value} data-testid={`${name}-${option.value}`} value={option.value}>
                         {option.label}
                     </option>
                 ))}

@@ -33,6 +33,7 @@ export default function GDSTextarea({ name, label, hint, labelIsPageTitle, answe
             <textarea 
                 className={`govuk-textarea${hasError ? ' govuk-textarea--error' : ''}`} 
                 data-testid={name} 
+                id={name}
                 name={name} 
                 rows={5} 
                 defaultValue={answer} 
