@@ -1,0 +1,319 @@
+{
+   "formId": "test-all-components-doubled",
+   "isCreated": true,
+   "startPage": "all-components-doubled",
+   "pages": [
+     {
+       "components": [
+        {
+           "questionId": "yesno123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the yes/no component",
+           "name": "yesno",
+           "label": "Test Yes/No component",
+           "type": "yesno"
+         },
+        {
+           "questionId": "yesno124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the yes/no 2 component",
+           "name": "yesno2",
+           "label": "Test Yes/No 2 component",
+           "type": "yesno"
+         },
+        {
+           "questionId": "ukaddress123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the UK address component",
+           "name": "ukaddress",
+           "label": "Test UK Address component",
+           "type": "ukaddress"
+         },
+        {
+           "questionId": "ukaddress124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the UK address 2 component",
+           "name": "ukaddress2",
+           "label": "Test UK Address 2 component",
+           "type": "ukaddress"
+        },                 
+        {
+           "questionId": "mwCLr5zZvFQbafq0XQCVg",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the text component",
+           "name": "text",
+           "options": [],
+           "label": "Test Text component",
+           "type": "text"
+         },
+        {
+           "questionId": "mwCLr5zZvFQbafq0XQCVA",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the text 2 component",
+           "name": "text2",
+           "options": [],
+           "label": "Test Text 2 component",
+           "type": "text"
+         },
+        {
+           "questionId": "select123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the select component",
+           "name": "select",
+           "options": [
+             {"value": "no-option-selected", "label": "Select an option"},
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Select component",
+           "type": "select"
+         },
+        {
+           "questionId": "select124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the select 2 component",
+           "name": "select2",
+           "options": [
+             {"value": "no-option-selected", "label": "Select an option"},
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Select 2 component",
+           "type": "select" 
+        },
+        {
+           "questionId": "radio123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the radio component",
+           "name": "radio",
+           "options": [
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Radio component",
+           "type": "radio"
+         },
+        {
+           "questionId": "radio124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the radio 2 component",
+           "name": "radio2",
+           "options": [
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Radio 2 component",
+           "type": "radio"
+         },                 
+        {
+           "questionId": "phonenumber123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the phone number component",
+           "name": "phonenumber",
+           "label": "Test Phone Number component",
+           "type": "phonenumber"
+         },
+        {
+           "questionId": "phonenumber1244",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the phone number 2 component",
+           "name": "phonenumber2",
+           "label": "Test Phone Number 2 component",
+           "type": "phonenumber"
+         },
+         {
+           "questionId": "text123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the text component",
+           "name": "text",
+           "label": "Test Text component",
+           "type": "text"
+         },
+         {
+           "questionId": "text124",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the text 2 component",
+           "name": "text2",
+           "label": "Test Text 2 component",
+           "type": "text"
+         },
+        {
+           "questionId": "multilineText123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the multiline text component",
+           "name": "multilineText",
+           "label": "Test Multiline Text component",
+           "type": "multilineText"
+         },
+        {
+           "questionId": "multilineText124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the multiline text 2 component",
+           "name": "multilineText2",
+           "label": "Test Multiline Text 2 component",
+           "type": "multilineText"
+         },                 
+        {
+           "questionId": "email123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the email component",
+           "name": "email",
+           "label": "Test Email component",
+           "type": "email"
+         },
+        {
+           "questionId": "email125",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the email 2 component",
+           "name": "email2",
+           "label": "Test Email 2 component",
+           "type": "email"
+         },
+        {
+            "questionId": "1",
+            "type": "dateParts",
+            "label": "What is the first date?",
+            "name": "what_is_the_first_date",
+            "labelIsPageTitle": false
+        },
+        {
+            "questionId": "2",
+            "type": "dateParts",
+            "label": "What is the second date?",
+            "name": "what_is_the_second_date",
+            "labelIsPageTitle": false
+        },
+        {
+           "questionId": "checkbox123",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the checkbox component",
+           "name": "checkbox",
+           "options": [
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Checkbox component",
+           "type": "checkbox"
+         },
+         {
+           "questionId": "checkbox124",
+           "validationRules": [
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the checkbox component 2",
+           "name": "checkbox2",
+           "options": [
+             {"value": "option1", "label": "Option 1"},
+             {"value": "option2", "label": "Option 2"}
+           ],
+           "label": "Test Checkbox component 2",
+           "type": "checkbox"
+         },
+         {
+           "questionId": "number123",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the number component",
+           "name": "number",
+           "label": "Test Number component",
+           "type": "number"
+         },
+         {
+           "questionId": "number124",
+           "validationRules": [             
+           ],
+           "labelIsPageTitle": false,
+           "hint": "This is testing the number 2 component",
+           "name": "number2",
+           "label": "Test Number 2 component",
+           "type": "number"
+         }
+       ],
+       "id": "numberPage",
+       "pageType": "default",
+       "pageId": "all-components-doubled",
+       "nextPageId": "summary",
+       "title": "All components doubled"
+     },
+     {
+       "components": [
+         {
+           "questionId": "luHKcqd3e--O8M0lkkipy",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a the top text component</p>"
+         },
+         {
+           "name": "Enter data name...",
+           "questionId": "ushVgLoUwI9zIDzGIczmC",
+           "label": "Enter label...",
+           "type": "summary",
+           "validationRules": [],
+           "labelIsPageTitle": false
+         },
+         {
+           "questionId": "8uudg1xN1WjRBpop8XoYf",
+           "validationRules": [],
+           "labelIsPageTitle": false,
+           "name": "Enter data name...",
+           "label": "Enter label...",
+           "type": "html",
+           "content": "<p class=\"govuk-body\">This is a bottom text component</p>"
+         }
+       ],
+       "id": "summaryPage",
+       "pageType": "summary",
+       "pageId": "summary",
+       "title": "Check your answers"
+     }
+   ],
+   "description": "This form allows for accessibility testing of all components, with each component appearing twice to ensure no ID issues.",
+   "submission": {
+     "method": "POST",
+     "endpoint": "http://localhost/api/v1/form/submit"
+   },
+   "id": "test-all-components-doubled",
+   "title": "Tests all components (doubled)"
+ }

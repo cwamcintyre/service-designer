@@ -45,7 +45,7 @@ async function seedData() {
 
     // Step 2: Seed data into the table
     console.log('Seeding data into the table...');
-    const dataDir = path.resolve('./e2e/setup/data');
+    const dataDir = path.resolve('./tests/e2e/setup/data');
     const files = fs.readdirSync(dataDir).filter((file) => file.endsWith('.json'));
 
     console.log(`Found ${files.length} JSON files in ${dataDir}.`);

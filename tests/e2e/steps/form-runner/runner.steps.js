@@ -1,6 +1,6 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { setDefaultTimeout } = require('@cucumber/cucumber');
+const { AxeBuilder } = require('@axe-core/playwright');
 
 setDefaultTimeout(5000);
 
@@ -78,25 +78,35 @@ Then('I should see the error message {string} for {string} at index {string}', a
 });
 
 Then('I should see the form with title {string}', async (formTitle) => {
+    await page.waitForLoadState('networkidle');
     const title = await page.locator('h1').innerText();
     expect(title).toBe(formTitle);
 });
 
 Then('I should see the {string} component', async (componentName) => {
+    await page.waitForLoadState('networkidle');
     const component = await page.getByTestId(`${componentName}`);
     expect(await component.count()).toBe(1);
 });
 
 Then('I should see the yes option of the {string} component', async (componentName) => {
+    await page.waitForLoadState('networkidle');
     const component = await page.getByTestId(`${componentName}-yes`);
     expect(await component.count()).toBe(1);
 });
 
 Then('There should not be a back link', async () => {
+    await page.waitForLoadState('networkidle');
     const backLink = await page.locator('.govuk-back-link');
     expect(await backLink.count()).toBe(0);
 });
 
 Then('I should not see POST in the requests', async () => {
     expect(requests).not.toContain('POST');
+});
+
+Then('the page should pass accessibility checks', async function () {
+    await page.waitForLoadState('networkidle');
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toHaveLength(0);
 });

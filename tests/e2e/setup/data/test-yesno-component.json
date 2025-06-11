@@ -17,12 +17,8 @@
            "labelIsPageTitle": true,
            "hint": "This is testing the yes/no component",
            "name": "yesno",
-           "options": [
-             {"value": "yes", "label": "Yes"},
-             {"value": "no", "label": "No"}
-           ],
            "label": "Test Yes/No component",
-           "type": "radio"
+           "type": "yesno"
          }
        ],
        "id": "yesnoPage",
