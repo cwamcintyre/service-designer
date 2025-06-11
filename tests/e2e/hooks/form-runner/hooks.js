@@ -2,7 +2,7 @@ const { Before, After, BeforeAll, AfterAll } = require('@cucumber/cucumber');
 const { chromium } = require('playwright');
 const { seedData } = require('../../setup/seedData');
 
-require('dotenv').config({ path: './e2e/.env' }); // Load environment variables from .env file
+require('dotenv').config({ path: './tests/e2e/.env' }); // Load environment variables from .env file
 
 let browser, context, page;
 
@@ -16,7 +16,7 @@ Before(async () => {
     // Launch the browser and create a new context and page before each scenario
     browser = await chromium.launch({ headless: true });
     context = await browser.newContext({
-        javaScriptEnabled: false // needed in this case to ensure the service aligns with GDS standards..
+        //javaScriptEnabled: false // needed in this case to ensure the service aligns with GDS standards..
     });
     page = await context.newPage();
     // Attach the page to the global scope for use in steps
