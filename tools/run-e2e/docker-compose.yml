@@ -1,0 +1,54 @@
+services:
+  runner-api:
+    image: "form-api-runner:latest"
+    ports:
+      - "9002:9002"
+    environment:
+      - EXPRESS_PORT=9002
+      - EXPRESS_HOST=runner-api
+      - EXPRESS_ALLOW_ORIGIN=['http://localhost', 'http://localhost:3000', 'http://runner-web:3000']
+      - DYNAMODB_FORM_TABLE_NAME=FormsTable
+      - DYNAMODB_APPLICATION_TABLE_NAME=ApplicationsTable
+      - DYNAMODB_LOCAL=true
+      - DYNAMODB_ENDPOINT=http://host.docker.internal:8000
+      - AWS_ACCESS_KEY_ID=fake
+      - AWS_SECRET_ACCESS_KEY=fake
+      - AWS_REGION=eu-west-2
+      - AWS_SESSION_TOKEN=fake      
+
+  runner-web:
+      image: "form-web-runner:latest"
+      ports:
+        - "3000:3000"
+      environment:
+        - FORM_API=http://runner-api:9002/api
+        - BASE_URL=http://localhost:3000
+
+  designer-api:
+    image: "form-api-designer:latest"
+    ports:
+      - "9001:9001"
+    environment:
+      - EXPRESS_PORT=9001
+      - EXPRESS_HOST=0.0.0.0
+      - EXPRESS_ALLOW_ORIGIN=['http://localhost', 'http://localhost:5173']
+      - DYNAMODB_TABLE_NAME=FormsTable
+      - DYNAMODB_LOCAL=true
+      - DYNAMODB_ENDPOINT=http://host.docker.internal:8000
+      - AWS_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=fake
+      - AWS_SECRET_ACCESS_KEY=fake
+      - AWS_REGION=eu-west-2
+      - AWS_SESSION_TOKEN=fake
+
+  designer-web:
+      image: "form-web-designer:latest"
+      ports:
+        - "5173:443"
+      environment:
+        - VITE_APP_API_URL=http://localhost:9001/api
+        - VITE_APP_RUNNER_URL=http://localhost:3000
+        - VITE_APP_CHAT_URL=http://humphrey:8000
+        - VITE_OIDC_CLIENT_ID=67j4acvc8d1r5pnuur1197bve0
+        - VITE_OIDC_CLIENT_AUTHORITY=https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_Ay1h9vXBc
+        - VITE_OIDC_CALLBACK=http://localhost:5173/oidcCallback     
