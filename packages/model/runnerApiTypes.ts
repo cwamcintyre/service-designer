@@ -14,6 +14,7 @@ export type GetApplicationRequest = {
     applicantId: string;
     pageId: string;
     extraData?: string;
+    onlyCurrentPage?: boolean;
 };
 
 export type GetApplicationResponse = {

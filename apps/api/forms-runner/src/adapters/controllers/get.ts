@@ -11,11 +11,12 @@ export class GetApplicationController {
         this.useCase = useCase; 
     }
 
-    public async put(request: Request, response: Response): Promise<void> {
+    public async get(request: Request, response: Response): Promise<void> {
         const getApplicationRequest: GetApplicationRequest = {
             applicantId: request.params.applicantId,
             pageId: request.params.pageId,
-            extraData: request.params.extraData
+            extraData: request.params.extraData,
+            onlyCurrentPage: request.params.onlyCurrentPage ? request.params.onlyCurrentPage === 'true' : undefined,
         };
         console.log("GetApplicationController: getting application");
         console.log(`GetApplicationController: ${JSON.stringify(getApplicationRequest)}`);

@@ -6,6 +6,7 @@ Feature: aXe accessibility checks
     And the page should pass accessibility checks
     When I click the submit button
     Then the page should pass accessibility checks
+    And I should see "Not provided" in the summary "22" times
 
   Scenario: Check accessibility of all components on one page with hints and errors
     Given I start the "test-all-components-doubled" form

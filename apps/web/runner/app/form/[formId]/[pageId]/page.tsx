@@ -22,7 +22,7 @@ export default async function FormPage({ params, searchParams }: { params: Promi
     }
 
     console.log(`Application ID: ${applicationId}`);
-    const applicationResponse = await applicationService.getApplication(applicationId, pageId, "");
+    const applicationResponse = await applicationService.getApplication(applicationId, pageId, "", true);
     const page = applicationResponse.application.pages.find((page: Page) => page.pageId === pageId);
 
     if (!page || typeof page.pageType !== 'string') {

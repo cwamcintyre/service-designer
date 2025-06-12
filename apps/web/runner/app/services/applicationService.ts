@@ -27,8 +27,8 @@ const applicationService = {
             return data.startPageId;
         }
     },
-    getApplication: async (applicationId: string, pageId: string, extraData: string): Promise<GetApplicationResponse> => {
-        let url = `${process.env.FORM_API}/application/${applicationId}/${pageId}`;
+    getApplication: async (applicationId: string, pageId: string, extraData: string, onlyCurrentPage?: boolean): Promise<GetApplicationResponse> => {
+        let url = `${process.env.FORM_API}/application/${applicationId}/${pageId}/${onlyCurrentPage}`;
         if (extraData) {
             url += `/${extraData}`;
         }

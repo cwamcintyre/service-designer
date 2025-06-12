@@ -110,3 +110,11 @@ Then('the page should pass accessibility checks', async function () {
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
     expect(accessibilityScanResults.violations).toHaveLength(0);
 });
+
+Then('I should see {string} in the summary {string} times', async function (text, count) {
+    await page.waitForLoadState('networkidle');
+    const summaryText = await page.locator('.govuk-summary-list__value').allInnerTexts();
+    const combinedText = summaryText.join(' ');
+    const notProvidedCount = (combinedText.match(new RegExp(text, 'g')) || []).length;
+    expect(notProvidedCount).toBe(parseInt(count, 10));
+});
