@@ -1,0 +1,100 @@
+import { ProcessApplicationChangeUseCase } from '@/usecase/processChange';
+import ApplicationStoreTestDouble from '@/tests/doubles/applicationStore.testdouble';
+import { ProcessApplicationRequest, ProcessApplicationResponse } from '@model/runnerApiTypes';
+import { AddAnotherPage, Application } from '@model/formTypes';
+
+const mockApplicationWithAddAnother: Application = require('@/tests/data/moj-add-another-change.json') as Application;
+const mockApplicationWithAddAnotherToBranch: Application = require('@/tests/data/moj-add-another-change-to-branch.json') as Application;
+
+describe('ProcessApplicationChangeUseCase', () => {
+    let applicationStore: ApplicationStoreTestDouble;
+    let processApplicationChangeUseCase: ProcessApplicationChangeUseCase;
+
+    beforeEach(() => {
+        applicationStore = new ApplicationStoreTestDouble();
+        processApplicationChangeUseCase = new ProcessApplicationChangeUseCase(applicationStore);
+    });
+
+    it('should process an application change successfully and walk to the summary page', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
+            "full_name-1": 'Jack Doe', 
+            "date_of_birth-day-1": '1', 
+            "date_of_birth-month-1": '1', 
+            "date_of_birth-year-1": '2000', 
+            "full_name-2": 'Jane Smith', 
+            "date_of_birth-day-2": '2', 
+            "date_of_birth-month-2": '2', 
+            "date_of_birth-year-2": '2001' } };
+
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+        const page = applicationArg.pages.find((p): p is AddAnotherPage => p.pageId === 'test-component');
+        
+        expect(page?.pageAnswer).toEqual([
+            { "full_name": "Jack Doe", "date_of_birth": { day: "1", month: "1", year: "2000" } },
+            { "full_name": "Jane Smith", "date_of_birth": { day: "2", month: "2", year: "2001" } }
+        ]);
+        expect(response.nextPageId).toEqual('summary');
+        expect(response.nextPageType).toEqual('summary');
+    });
+
+    it('should return the same page if there are processing errors', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
+            "full_name-1": 'BOB', 
+            "date_of_birth-day-1": '1', 
+            "date_of_birth-month-1": '1', 
+            "date_of_birth-year-1": '2000', 
+            "full_name-2": 'Jane Smith', 
+            "date_of_birth-day-2": '2', 
+            "date_of_birth-month-2": '', 
+            "date_of_birth-year-2": '2001' } };
+
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+        const page = applicationArg.pages.find((p): p is AddAnotherPage => p.pageId === 'test-component');
+        
+        expect(page?.pageAnswer).toEqual([
+            { "full_name": "BOB", "date_of_birth": { day: "1", month: "1", year: "2000" } },
+            { "full_name": "Jane Smith", "date_of_birth": { day: "2", month: "", year: "2001" } }
+        ]);
+
+        expect(page?.pageErrors).toEqual({
+            "full_name-1": ["YOUR NAME IS NOT BOB"],
+            "date_of_birth-2": ["{\"errorMessage\":\"date must include a month\",\"dayError\":false,\"monthError\":true,\"yearError\":false}"]            
+        });
+
+        expect(response.nextPageId).toEqual('test-component');
+    });
+
+    it('should process an application change and walk to the next unfilled page', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithAddAnotherToBranch);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
+            "full_name-1": 'DOUG', 
+            "date_of_birth-day-1": '1', 
+            "date_of_birth-month-1": '1', 
+            "date_of_birth-year-1": '2000', 
+            "full_name-2": 'Jane Smith', 
+            "date_of_birth-day-2": '2', 
+            "date_of_birth-month-2": '2', 
+            "date_of_birth-year-2": '2001' } };
+
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+        const page = applicationArg.pages.find((p): p is AddAnotherPage => p.pageId === 'test-component');
+
+        expect(page?.pageAnswer).toEqual([
+            { "full_name": "DOUG", "date_of_birth": { day: "1", month: "1", year: "2000" } },
+            { "full_name": "Jane Smith", "date_of_birth": { day: "2", month: "2", year: "2001" } }
+        ]);
+        expect(response.nextPageId).toEqual('who-is-doug');
+        expect(response.nextPageType).toEqual('default');
+    });
+});

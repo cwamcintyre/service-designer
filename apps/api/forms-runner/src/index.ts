@@ -8,6 +8,8 @@ import { ProcessController } from '~/adapters/controllers/process';
 import { StartApplicationController } from '~/adapters/controllers/start';
 import { GetApplicationController } from './adapters/controllers/get';
 import { ProcessChangeController } from '~/adapters/controllers/processChange';
+import { MoJRemoveFromAddAnother } from './adapters/controllers/mojRemoveFromAddAnother';
+import { MoJAddAnother } from './adapters/controllers/mojAddAnother';
 
 const dotenv = require('dotenv');
 const express = require('express');
@@ -30,6 +32,8 @@ const processController = container.get<ProcessController>(ProcessController);
 const startController = container.get<StartApplicationController>(StartApplicationController);
 const getApplicationController = container.get<GetApplicationController>(GetApplicationController);
 const processChangeController = container.get<ProcessChangeController>(ProcessChangeController);
+const mojAddAnotherController = container.get<MoJAddAnother>(MoJAddAnother);
+const mojRemoveFromAddAnotherController = container.get<MoJRemoveFromAddAnother>(MoJRemoveFromAddAnother);
 
 app.get('/api/application/health', (req: Request, res: Response) => {
   res.status(200).send('OK');
@@ -50,6 +54,9 @@ app.get('/api/application/:applicantId/:pageId/:onlyCurrentPage', (req: Request,
 app.put('/api/application/start', startController.put.bind(startController));
 
 app.post('/api/application', processController.post.bind(processController));
+
+app.post('/api/application/moj-add-another', mojAddAnotherController.post.bind(mojAddAnotherController));
+app.post('/api/application/moj-remove-from-add-another', mojRemoveFromAddAnotherController.post.bind(mojRemoveFromAddAnotherController));
 
 app.patch('/api/application', processChangeController.patch.bind(processChangeController));
 
@@ -74,13 +81,14 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use(express.json());
 const port = process.env.EXPRESS_PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   console.log(`API documentation available at http://localhost:${port}/api-docs`);
 });
 
+// prevents the API from crashing on unhandled promise rejections, and logs potential problems.
+// typically this happens because an await is missing, or a promise is not handled correctly.
 process.on('unhandledRejection', (reason: any, promise) => {
   console.error('Unhandled Rejection:', JSON.stringify(reason, null, 2));
 });

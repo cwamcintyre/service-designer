@@ -77,6 +77,21 @@
                         }
                     ],
                     "answer": "INVALID"
+                },
+                {
+                    "questionId": "1",
+                    "type": "text",
+                    "label": "This is invalid too",
+                    "name": "this_is_invalid_too",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr3",
+                            "expression": "data.this_is_invalid_too !== \"INVALID TOO\"",
+                            "errorMessage": "Thats not right."
+                        }
+                    ],
+                    "answer": "INVALID TOO"
                 }
             ],
             "nextPageId": "summary"

@@ -35,3 +35,15 @@ export type ProcessApplicationResponse = {
     nextPageType?: string;
     extraData?: string;
 }
+
+export type MoJAddAnotherRequest = {
+    applicantId: string;
+    pageId: string;
+    numberOfItems: number;
+}
+
+export type MoJRemoveRequest = {
+    applicantId: string;
+    pageId: string;
+    itemIndex: number;
+}

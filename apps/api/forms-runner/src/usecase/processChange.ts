@@ -49,7 +49,7 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
                 const walkResult = await walkToNextInvalidOrUnfilledPage(application, application.startPage, formData.extraData, pageStack);
                 
                 application = removeDataFromUnwalkedPages(application, pageStack);
-
+                
                 // TODO: handle extraData
                 this.response = { nextPageId: walkResult.pageId, nextPageType: walkResult.pageType, extraData: "" };
             }

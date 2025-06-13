@@ -79,6 +79,22 @@ export type Page = {
     conditions?: Condition[];
 };
 
+export enum PageTypes {
+    Summary = "summary",
+    Stop = "stop",
+    MoJAddAnother = "mojAddAnother",
+    Default = "default"
+}
+
+export interface AddAnotherPage extends Page {
+    numberOfItems: number;
+    pageAnswer?: { [key: string]: any; }[];
+    pageErrors?: { [key: string]: string[] };
+    answerKey?: string;
+    numberOfItemsToStartWith: number;
+    addAnotherButtonLabel: string;
+}
+
 export type Submission = {
     method: string;
     endpoint: string;

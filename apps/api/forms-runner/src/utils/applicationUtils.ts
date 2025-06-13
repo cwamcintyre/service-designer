@@ -1,4 +1,4 @@
-import { Application, Page } from '@model/formTypes'
+import { Application, Page, AddAnotherPage, PageTypes } from '@model/formTypes'
 import { PageHandlerFactory } from './pageHandler/pageHandlerFactory'
 
 type PreviousPageModel = {
@@ -13,8 +13,14 @@ export function getAllDataFromApplication(application: Application): { [key: str
     const allData: { [key: string]: any } = {};
     for (const page of application.pages) {
         for (const component of page.components) {
-            if (component.name) {
+            if (component.name && component.answer !== undefined) {
                 allData[component.name] = component.answer;
+            }            
+        }
+        if ('pageAnswer' in page && 'answerKey' in page) {
+            const addAnotherPage = page as AddAnotherPage;
+            if (addAnotherPage.pageAnswer && addAnotherPage.answerKey) {
+                allData[addAnotherPage.answerKey] = addAnotherPage.pageAnswer;
             }
         }
     }
@@ -32,9 +38,6 @@ export async function calculatePreviousPageId(
         currentPageId = `${currentPageId}/${extraData}`;
     }
 
-    console.log(`calculatePreviousPageId: currentPageId: ${currentPageId}`);
-    console.log(`calculatePreviousPageId: extraData: ${extraData}`);
-
     await calculatePreviousPageRecursive(
         application,
         application.pages[0],
@@ -45,7 +48,6 @@ export async function calculatePreviousPageId(
     );
 
     if (visitedPages.size() === 0) {
-        console.log(`calculatePreviousPageId: no previous page found`);
         return {
             pageId: ""
         }
@@ -69,7 +71,6 @@ async function calculatePreviousPageRecursive(
     }
 
     if (checkPageId === currentPageId) {
-        console.log(`calculatePreviousPageRecursive: found pageId: ${page.pageId}`);
         return;
     }
 

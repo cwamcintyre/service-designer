@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: 'node',
   testMatch: [
-    //'**/tests/unit/**/datePartsHandler.test.ts', // uncomment and change to run specific tests.. DO NOT CHECK IN CHANGES!
+    //'**/tests/usecase/**/mojRemoveFromAddAnother.test.ts', // uncomment and change to run specific tests.. DO NOT CHECK IN CHANGES!
     '**/tests/unit/**/*.test.ts',
     '**/tests/usecase/**/*.test.ts'
   ],
