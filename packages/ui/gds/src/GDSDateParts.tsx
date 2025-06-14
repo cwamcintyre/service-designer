@@ -38,7 +38,7 @@ export default function GDSDateParts({ name, label, hint, labelIsPageTitle, answ
                 <p id={`${name}-error`} className="govuk-error-message">
                     <span className="govuk-visually-hidden">Error:</span>
                     {dateErrors.map((error, index) => (
-                        <span key={index}>{error.errorMessage}</span>
+                        <><span key={index}>{error.errorMessage}</span><br /></>
                     ))}
                 </p>
                 : null}

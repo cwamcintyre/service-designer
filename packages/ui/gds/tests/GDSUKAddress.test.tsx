@@ -47,6 +47,24 @@ describe('GDSUKAddress Component', () => {
         expect(postcodeError).toBeInTheDocument();
     });
 
+    it('renders the UK address form with general error messages', () => {
+        const errors = [
+            'This is an error message'
+        ];
+
+        render(
+            <GDSUKAddress
+                name="address"
+                label="Enter your address"
+                hint={undefined}
+                errors={errors}
+                labelIsPageTitle={false}
+            />
+        );
+        const generalError = screen.getByText(/this is an error message/i);
+        expect(generalError).toBeInTheDocument();
+    });
+
     it('renders the UK address form with the correct default values', () => {
         render(
             <GDSUKAddress

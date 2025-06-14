@@ -23,7 +23,10 @@ export default function GDSRadio({ name, label, hint, labelIsPageTitle, options,
                 {hint ? <div id={`${name}-hint`} className="govuk-hint">{hint}</div> : null}
                 {hasError ? (
                     <p id={errorId} className="govuk-error-message">
-                        <span className="govuk-visually-hidden">Error:</span> {errors[0]}
+                        <span className="govuk-visually-hidden">Error:</span>
+                        {errors.map((error, index) => (
+                            <><span key={index}>{error}</span><br /></>
+                        ))}
                     </p>
                 ) : null}
                 <div className="govuk-radios" data-module="govuk-radios">
