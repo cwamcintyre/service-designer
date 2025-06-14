@@ -26,6 +26,7 @@ describe('StartApplicationUseCase', () => {
         const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
 
         expect(response.startPageId).toBe(mockBasicForm.startPage);
+        expect(response.formTitle).toBe(mockBasicForm.title);
         expect(response.extraData).toBe('');
 
         expect(applicationArg.id).toBe(request.applicantId);

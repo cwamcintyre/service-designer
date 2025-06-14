@@ -7,6 +7,7 @@ export type StartApplicationRequest = {
 
 export type StartApplicationResponse = {
     startPageId: string;
+    formTitle?: string;
     extraData?: string;
 }
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import GDSInitialiser from "@/app/components/GDSinitialiser";
-import { getSharedState } from "@/app/utils/sharedState";
+import applicationService from "@/app/services/applicationService";
 
 export const metadata: Metadata = {
   title: "GOV UK",
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { serviceTitle } = getSharedState();
+  const serviceTitle = applicationService.getApplicationTitle();
 
   return (
     <html lang="en">

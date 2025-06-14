@@ -12,18 +12,26 @@ export async function GET(req: Request, { params }: { params: Promise<{ formId: 
 
     // Fetch the form details
     // TODO: fetch the form title and stash it in a cookie..
-    const startPageId = await applicationService.startApplication(applicationId, formId);
+    const { startPageId, formTitle } = await applicationService.startApplication(applicationId, formId);
 
     // Create a response with a cookie and redirect
     const response = NextResponse.redirect(`${process.env.BASE_URL}/form/${formId}/${startPageId}`, 302);
 
-    // TODO: set cookie names with a prefix set to window.name so that tabs can have their own cookies..
     response.cookies.set('applicationId', applicationId, {
         httpOnly: true, // Prevent client-side access
         secure: true,   // Ensure the cookie is sent over HTTPS
         sameSite: 'strict', // Prevent cross-site request forgery
         path: '/',      // Make the cookie available across the entire site
     });
+
+    if (formTitle) {
+        response.cookies.set('formTitle', formTitle, {
+            httpOnly: true, // Prevent client-side access
+            secure: true,   // Ensure the cookie is sent over HTTPS
+            sameSite: 'strict', // Prevent cross-site request forgery
+            path: '/'
+        });
+    }
 
     console.log('Application ID: ', applicationId);
 

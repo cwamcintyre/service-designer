@@ -1,7 +1,6 @@
 'use server';
 
 import { LogHandler } from '@/app/utils/logging/logHandler';
-import { setSharedState } from '@/app/utils/sharedState';
 import GDSFormPage from '@/app/components/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import GDSButton from '@gds/GDSButton';
@@ -32,9 +31,6 @@ export default async function FormPage({ params, searchParams }: { params: Promi
 
     const backLink = applicationResponse.previousExtraData ? `/form/${formId}/${applicationResponse.previousPageId}/${applicationResponse.previousExtraData}` : 
                                                           applicationResponse.previousPageId ? `/form/${formId}/${applicationResponse.previousPageId}` : "";
-
-    setSharedState({ serviceTitle: applicationResponse.application.title });
-    LogHandler.debug("Form Title: ", applicationResponse.application.title);
 
     return (
         <>

@@ -1,12 +1,16 @@
 import { cookies } from 'next/headers';
-import { GetApplicationResponse, ProcessApplicationResponse } from '@model/runnerApiTypes';
+import { GetApplicationResponse, ProcessApplicationResponse, StartApplicationResponse } from '@model/runnerApiTypes';
 
 const applicationService = {
     getApplicationId: async () => {
         const cookieStore = await cookies();
         return cookieStore.get('applicationId')?.value || "";
     },
-    startApplication: async (applicantId: string, formId: string): Promise<string> => {
+    getApplicationTitle: async () => {
+        const cookieStore = await cookies();
+        return cookieStore.get('formTitle')?.value || "";
+    },
+    startApplication: async (applicantId: string, formId: string): Promise<StartApplicationResponse> => {
         const result = await fetch(`${process.env.FORM_API}/application/start`, {
             method: 'PUT',
             headers: {
@@ -24,7 +28,7 @@ const applicationService = {
         }
         else {
             const data = await result.json();
-            return data.startPageId;
+            return data;
         }
     },
     getApplication: async (applicationId: string, pageId: string, extraData: string, onlyCurrentPage?: boolean): Promise<GetApplicationResponse> => {
