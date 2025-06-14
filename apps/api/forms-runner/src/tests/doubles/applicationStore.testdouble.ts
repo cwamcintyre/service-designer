@@ -17,7 +17,17 @@ class ApplicationStoreTestDouble implements ApplicationStore {
     return this;
   }
 
+  withGetApplicationThrowingAny(error: any): this {
+    this.getApplicationMock.mockRejectedValue(error);
+    return this;
+  }
+
   withUpdateApplicationThrowing(error: Error): this {
+    this.updateApplicationMock.mockRejectedValue(error);
+    return this;
+  }
+
+  withUpdateApplicationThrowingAny(error: any): this {
     this.updateApplicationMock.mockRejectedValue(error);
     return this;
   }

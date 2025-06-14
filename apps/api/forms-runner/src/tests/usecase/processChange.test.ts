@@ -26,6 +26,23 @@ describe('ProcessApplicationChangeUseCase', () => {
         await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Application with ID 123 not found.');
     });
 
+    it('should throw an error if the page is not found in the application', async () => {
+        applicationStore.withGetApplicationReturning(mockApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'non-existent-page', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Page with ID non-existent-page not found in application 123.');
+    });
+
+    it('should throw an error if the page type is undefined', async () => {
+        const invalidPageApplication = { ...mockApplication, pages: [{ ...mockApplication.pages[0], pageType: undefined }] };
+        applicationStore.withGetApplicationReturning(invalidPageApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'what-is-your-name', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Page type is undefined for page ID what-is-your-name in application 123.');
+    });
+
     it('should handle errors thrown by the application store', async () => {
         const error = new Error('Database error');
         applicationStore.withGetApplicationThrowing(error);
@@ -33,6 +50,15 @@ describe('ProcessApplicationChangeUseCase', () => {
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
 
         await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: ${error.message}`);
+    });
+    
+    it('should handle unknown errors thrown by the application store', async () => {
+        const error = 'Database error';
+        applicationStore.withGetApplicationThrowingAny(error);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: Unknown error occurred.`);
     });
 
     it('should process an application change successfully and walk to the summary page', async () => {

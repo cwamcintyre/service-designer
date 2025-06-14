@@ -12,7 +12,7 @@ export class EmailComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
 
         if (!component.name) {
-            throw new Error('Component name is required for EmailComponentHandler');
+            throw new Error('Component name is required');
         }
 
         const email = data[component.name];
@@ -39,10 +39,9 @@ export class EmailComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): string | undefined {
-        if (component.name) {
-            // For components with a name, return the value from data
-            return data[component.name] || "";
+        if (!component.name) {
+            throw new Error('Component name is required');
         }
-        return "";
+        return data[component.name];
     }
 }

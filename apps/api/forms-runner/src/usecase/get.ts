@@ -38,8 +38,6 @@ export class GetApplicationUseCase implements requestResponse<GetApplicationRequ
                 pages: request.onlyCurrentPage ? application.pages.filter(page => page.pageId === request.pageId) : application.pages,
             };
 
-            console.log(`Application with ID ${request.applicantId} has been retrieved.`);
-            console.log(`previousPageId: ${this.response.previousPageId}`);
             return this.response;
         } catch (error) {
             if (error instanceof Error) {

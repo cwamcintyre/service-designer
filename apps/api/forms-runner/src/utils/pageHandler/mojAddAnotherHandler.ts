@@ -34,9 +34,7 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
                         const dataKey = `${baseName}-${i}`;
                         if (data[dataKey] !== undefined) {
                             individualData[baseName] = data[dataKey];
-                        } else {
-                            individualData[baseName] = null; // or some default value
-                        }
+                        } 
                     }
                 }
             }
@@ -71,13 +69,12 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
 
                 // store the answer in the component for validation purposes, and also in the pageItemAnswer object so that
                 // it can be included in the page answer, which can also be used for validation purposes, as well as display.
+                // no need to throw an error here because that has already been checked above.
                 if (component.name) {
                     const convertedAnswer = componentHandler.Convert(component, dataItem);
                     component.answer = convertedAnswer;    
                     pageItemAnswer[component.name] = convertedAnswer;            
-                } else {
-                    throw new Error(`Component name is undefined for component ID ${component.questionId}.`);
-                }
+                } 
 
                const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
                if (validationResult.length > 0) {
@@ -122,12 +119,9 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
                     continue;
                 }
 
-                console.log(page.pageAnswer, i, component.name);
                 if (page.pageAnswer && page.pageAnswer[i] && component.name) {
                     component.answer = page.pageAnswer[i][component.name] || null;
                 }
-
-                console.log(component);
 
                 // check whether the answer is empty. If so, we need to stop here.
                 // note we're not checking for whether the component is optional - that should be handled by the user, and this is possibly

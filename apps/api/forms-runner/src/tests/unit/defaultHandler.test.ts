@@ -17,6 +17,15 @@ describe('DefaultComponentHandler', () => {
 
     describe('Validate', () => {
         
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new DefaultComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return an error if required field is empty', async () => {
             const mockComponent: Component = { name: 'testField', optional: false } as Component;
             const handler = new DefaultComponentHandler();
@@ -86,5 +95,14 @@ describe('DefaultComponentHandler', () => {
 
             expect(result).toBe('testValue');
         });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new DefaultComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
+        });        
     });
 });

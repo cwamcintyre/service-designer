@@ -5,6 +5,8 @@ import { AddAnotherPage, Application } from '@model/formTypes';
 
 const mockApplicationWithAddAnother: Application = require('@/tests/data/moj-add-another-change.json') as Application;
 const mockApplicationWithAddAnotherToBranch: Application = require('@/tests/data/moj-add-another-change-to-branch.json') as Application;
+const mockApplicationWithEmptyAddAnother: Application = require('@/tests/data/moj-add-another-unfilled.json') as Application;
+const mockApplicationWithInvalidAddAnother: Application = require('@/tests/data/moj-add-another-invalid.json') as Application;
 
 describe('ProcessApplicationChangeUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -97,4 +99,30 @@ describe('ProcessApplicationChangeUseCase', () => {
         expect(response.nextPageId).toEqual('who-is-doug');
         expect(response.nextPageType).toEqual('default');
     });
+
+    it('should process an application change and walk to the add another page because it is empty', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithEmptyAddAnother);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'do-you-want-branch-a', formData: { 
+            "do_you_want_branch_a": "yes" } 
+        };
+
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        expect(response.nextPageId).toEqual('branch-b');
+        expect(response.nextPageType).toEqual('mojAddAnother');
+    });
+
+    it('should process an application change and walk to the add another page because it is now invalid', async () => {
+        applicationStore.withGetApplicationReturning(mockApplicationWithInvalidAddAnother);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'dont-include', formData: { 
+            "dont_include": "BOB" } 
+        };
+
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        expect(response.nextPageId).toEqual('people');
+        expect(response.nextPageType).toEqual('mojAddAnother');
+    });    
 });

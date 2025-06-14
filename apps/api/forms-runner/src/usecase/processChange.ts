@@ -18,7 +18,6 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
 
     public async execute(request: ProcessApplicationRequest): Promise<ProcessApplicationResponse> {
         try {
-            console.log('ProcessApplicationChangeUseCase: Processing application change request:', request);
             let application = await this.applicationStore.getApplication(request.applicantId);
             if (!application) {
                 throw new Error(`Application with ID ${request.applicantId} not found.`);
@@ -36,6 +35,7 @@ export class ProcessApplicationChangeUseCase implements requestResponse<ProcessA
             if (!page.pageType) {
                 throw new Error(`Page type is undefined for page ID ${pageId} in application ${applicantId}.`);
             }
+            
             const pageHandler = PageHandlerFactory.For(page.pageType);
             const processErrors = await pageHandler.Process(application, pageId, formData);
             

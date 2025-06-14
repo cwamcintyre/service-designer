@@ -65,4 +65,16 @@ describe('MoJAddAnother Use Case', () => {
 
         await expect(useCase.execute(request)).rejects.toThrow('Error adding another for applicant 123: Unknown error');
     });
+
+    it('should throw a generic error if an unknown any error occurs', async () => {
+        const request: MoJAddAnotherRequest = {
+            applicantId: '123',
+            pageId: 'test-component',
+            numberOfItems: 3,
+        };
+
+        applicationStore.withGetApplicationThrowingAny('Unknown error');
+
+        await expect(useCase.execute(request)).rejects.toThrow('Error adding another for applicant 123: Unknown error');
+    });    
 });

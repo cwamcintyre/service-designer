@@ -1,8 +1,37 @@
 {
-   "formId": "test-addanother-page",
+   "formId": "test-unfilled-addanother-page",
    "isCreated": true,
-   "startPage": "test-component",
+   "startPage": "do-you-want-branch-a",
    "pages": [
+{
+            "pageId": "do-you-want-branch-a",
+            "pageType": "default",
+            "components": [
+                {
+                    "questionId": "0",
+                    "type": "yesno",
+                    "label": "Do you want to add people?",
+                    "name": "do_you_want_branch_a",
+                    "labelIsPageTitle": true,
+                    "validationRules": [
+                        {
+                            "id": "vr1",
+                            "expression": "data.do_you_want_branch_a.value !== null && data.do_you_want_branch_a.value.trim() !== \"\" ",
+                            "errorMessage": "Select yes or no"
+                        }
+                    ],
+                    "answer": { "value": "no", "label": "No" }
+                }
+            ],
+            "conditions": [
+                {
+                    "id": "c1",
+                    "expression": "data.do_you_want_branch_a.value === \"yes\"",
+                    "nextPageId": "branch-b"
+                }
+            ],
+            "nextPageId": "summary"
+        },    
      {
        "components": [
         {
@@ -39,7 +68,7 @@
        ],
        "id": "WnyO0ZoKvP",
        "pageType": "mojAddAnother",
-       "pageId": "test-component",
+       "pageId": "branch-b",
        "nextPageId": "summary",
        "title": "Add a person",
        "numberOfItems": 2,
@@ -113,6 +142,6 @@
      "method": "POST",
      "endpoint": "http://localhost/api/v1/form/submit"
    },
-   "id": "test-text-component",
-   "title": "Tests text component"
+   "id": "test-unfilled-addanother-page",
+   "title": "Tests unfilled add another page"
  }

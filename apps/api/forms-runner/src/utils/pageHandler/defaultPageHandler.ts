@@ -8,6 +8,7 @@ export class DefaultPageHandler implements PageHandler {
 
     async Process(application: Application, pageId: string, data: { [key: string]: any; }): Promise<boolean> {
         const page = application.pages.find(p => p.pageId === pageId);
+        
         if (!page) {
             throw new Error(`Page with ID ${pageId} not found.`);
         }

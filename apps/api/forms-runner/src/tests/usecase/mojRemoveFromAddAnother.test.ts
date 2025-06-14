@@ -110,4 +110,16 @@ describe('MoJRemoveFromAddAnother Use Case', () => {
 
         await expect(useCase.execute(request)).rejects.toThrow('Error removing from add another for applicant 123: Unknown error');
     });
+
+    it('should throw a generic error if an unknown any error occurs', async () => {
+        const request: MoJRemoveRequest = {
+            applicantId: '123',
+            pageId: 'page1',
+            itemIndex: 0,
+        };
+
+        applicationStore.withGetApplicationThrowingAny('Unknown error');
+
+        await expect(useCase.execute(request)).rejects.toThrow('Error removing from add another for applicant 123: Unknown error');
+    });    
 });

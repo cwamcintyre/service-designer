@@ -36,6 +36,15 @@ describe('ProcessApplicationUseCase', () => {
         await expect(processApplicationUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: ${error.message}`);
     });
 
+    it('should handle unknown errors thrown by the application store', async () => {
+        const error = 'Database error';
+        applicationStore.withGetApplicationThrowingAny(error);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
+
+        await expect(processApplicationUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: Unknown error occurred.`);
+    });
+
     it('should throw an error if the page is not found', async () => {
         applicationStore.withGetApplicationReturning(mockApplication);
 

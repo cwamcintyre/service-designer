@@ -13,4 +13,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@model/(.*)$': '<rootDir>/../../../packages/model/$1'
   },
+  coveragePathIgnorePatterns: [
+    "/tests/"        // Exclude test files
+  ]
 };

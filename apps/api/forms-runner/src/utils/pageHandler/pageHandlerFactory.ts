@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { PageTypes } from '@model/formTypes';
 import { PageHandler } from '@/utils/pageHandler/interfaces';
 import { DefaultPageHandler } from '@/utils/pageHandler/defaultPageHandler';

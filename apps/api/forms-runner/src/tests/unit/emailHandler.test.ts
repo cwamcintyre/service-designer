@@ -14,6 +14,16 @@ describe('EmailComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new EmailComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return an error for each invalid email format', async () => {
             const mockComponent: Component = { name: 'emailField', questionId: 'q1', labelIsPageTitle: false };
 
@@ -118,5 +128,14 @@ describe('EmailComponentHandler', () => {
 
             expect(result).toBe('user@example.com');
         });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new EmailComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
+        });        
     });
 });

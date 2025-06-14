@@ -14,6 +14,16 @@ describe('DatePartsComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: DateComponent = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new DatePartsComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return an error if required date fields are empty', async () => {
             const mockComponent: DateComponent = { name: 'testDate', optional: false } as DateComponent;
             const handler = new DatePartsComponentHandler();
@@ -35,6 +45,62 @@ describe('DatePartsComponentHandler', () => {
             const errors = await handler.Validate(mockComponent, {});
 
             expect(errors).toEqual([]);
+        });
+
+        it('should return an error for completely empty date parts', async () => {
+            const mockComponent: DateComponent = { name: 'testDate', optional: false } as DateComponent;
+            const handler = new DatePartsComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, { testDate: { 'day': '', 'month': '', 'year': '' } });
+
+            expect(errors).toContain(JSON.stringify({
+                errorMessage: 'Enter your date',
+                dayError: true,
+                monthError: true,
+                yearError: true
+            }));
+        });
+
+        it('should return an error for non-numeric date parts', async () => {
+            const mockComponent: DateComponent = { name: 'testDate', optional: false } as DateComponent;
+            const handler = new DatePartsComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, { testDate: { 'day': 'NOT A DAY', 'month': 'blah', 'year': 'silly' } });
+
+            expect(errors).toContain(JSON.stringify({
+                errorMessage: 'date must be a real date',
+                dayError: true,
+                monthError: true,
+                yearError: true
+            }));
+        });
+
+        it('should return an error if the year is too small to be valid', async () => {
+            const mockComponent: DateComponent = { name: 'testDate', optional: false } as DateComponent;
+            const handler = new DatePartsComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, { testDate: { 'day': '1', 'month': '1', 'year': '1899' } });
+
+            expect(errors).toContain(JSON.stringify({
+                errorMessage: 'date must be a real date',
+                dayError: false,
+                monthError: false,
+                yearError: true
+            }));
+        });
+
+        it('should return an error if the year is too large to be valid', async () => {
+            const mockComponent: DateComponent = { name: 'testDate', optional: false } as DateComponent;
+            const handler = new DatePartsComponentHandler();
+
+            const errors = await handler.Validate(mockComponent, { testDate: { 'day': '1', 'month': '1', 'year': '10000' } });
+
+            expect(errors).toContain(JSON.stringify({
+                errorMessage: 'Year must include 4 numbers',
+                dayError: false,
+                monthError: false,
+                yearError: true
+            }));
         });
 
         it('should return an error for invalid date parts', async () => {
@@ -255,6 +321,192 @@ describe('DatePartsComponentHandler', () => {
                 monthError: true,
                 yearError: true
             }));
+        });
+
+        it('should throw an error if fixed date is not given for SameOrAfter', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.SameOrAfter,
+                        errorMessage: 'Date must be the same or after the fixed date',
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Fixed date is required for comparison type: sameOrAfter');
+        });
+
+        it('should throw an error if fixed date is not given for SameOrBefore', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.SameOrBefore,
+                        errorMessage: 'Date must be the same or before the fixed date',
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Fixed date is required for comparison type: sameOrBefore');
+        });
+
+        it('should throw an error if fixed date is not given for After', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.After,
+                        errorMessage: 'Date must be after the fixed date',
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Fixed date is required for comparison type: after');
+        });
+
+        it('should throw an error if fixed date is not given for Before', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.Before,
+                        errorMessage: 'Date must be before the fixed date',
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Fixed date is required for comparison type: before');
+        });
+
+        it('should throw an error if before and after dates are not given for Between', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.Between,
+                        errorMessage: 'Date must be between the fixed dates',
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Before and after date is required for comparison type: between');
+        });
+
+        it('should throw an error if before date is not given for Between', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.Between,
+                        errorMessage: 'Date must be between the fixed dates',
+                        endDate: new Date()
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Before date is required for comparison type: between');
+        });
+
+        it('should throw an error if after date is not given for Between', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.Between,
+                        errorMessage: 'Date must be between the fixed dates',
+                        startDate: new Date()
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('After date is required for comparison type: between');
+        });
+
+        it('should throw an error if the date comparison type is unknown', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: 'unknown' as DateComponentComparison,
+                        errorMessage: 'Date must be between the fixed dates'
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Unknown date comparison type: unknown');
+        });
+
+        it('should throw an error if fixed date has empty parts', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.SameOrAfter,
+                        errorMessage: 'Date must be the same or after the fixed date',
+                        fixedDateId: 'fixedDate'
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() },
+                fixedDate: { 'day': "", 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Invalid date parts provided for conversion');
+        });
+
+        it('should throw an error if fixed date has non-numeric parts', async () => {
+            const mockComponent: DateComponent = {
+                name: 'testDate',
+                dateValidationRules: [
+                    {
+                        comparisonType: DateComponentComparison.SameOrAfter,
+                        errorMessage: 'Date must be the same or after the fixed date',
+                        fixedDateId: 'fixedDate'
+                    }
+                ]                
+            } as DateComponent;
+
+            const handler = new DatePartsComponentHandler();
+            const fixed = new Date();
+            await expect(handler.Validate(mockComponent, { 
+                testDate: { 'day': fixed.getDate().toString(), 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() },
+                fixedDate: { 'day': "NOT A DAY", 'month': (fixed.getMonth() + 1).toString(), 'year': fixed.getFullYear().toString() }
+            })).rejects.toThrow('Invalid date parts provided for conversion');
         });
 
         it('should pass a date against a rule requiring it to be the same or after a form date', async () => {
@@ -752,5 +1004,14 @@ describe('DatePartsComponentHandler', () => {
                 year: '2023'
             });
         });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: DateComponent = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new DatePartsComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
+        });          
     });
 });

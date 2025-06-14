@@ -15,7 +15,7 @@ export class DatePartsComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
         
         if (!component.name) {
-            throw new Error('Component name is required for DatePartsComponentHandler');
+            throw new Error('Component name is required');
         }
 
         const input = data[component.name];
@@ -47,7 +47,6 @@ export class DatePartsComponentHandler implements ComponentHandler {
             const beforeDate = dateValidationRule.startDate ?? (dateValidationRule.startDateId ? this.ConvertFromDateParts(data[dateValidationRule.startDateId]) : undefined);
             const afterDate = dateValidationRule.endDate ?? (dateValidationRule.endDateId ? this.ConvertFromDateParts(data[dateValidationRule.endDateId]) : undefined);
 
-            console.log(`Dates for validation: fixedDate=${fixedDate}, beforeDate=${beforeDate}, afterDate=${afterDate}`);
             const error = this.isValidDateParts(input, dateValidationRule, fixedDate, beforeDate, afterDate);
             if (error) {
                 validationResult.push(JSON.stringify(error));
@@ -58,15 +57,15 @@ export class DatePartsComponentHandler implements ComponentHandler {
     }
 
     Convert(component: DateComponent, data: { [key: string]: any }): DateParts | undefined {
-        if (component.name) {
-            const dateParts: DateParts = {
-                day: data[`${component.name}-day`]?.trim(),
-                month: data[`${component.name}-month`]?.trim(),
-                year: data[`${component.name}-year`]?.trim()
-            };
-            return dateParts;
+        if (!component.name) {
+            throw new Error('Component name is required');
         }
-        return undefined;
+        const dateParts: DateParts = {
+            day: data[`${component.name}-day`]?.trim(),
+            month: data[`${component.name}-month`]?.trim(),
+            year: data[`${component.name}-year`]?.trim()
+        };
+        return dateParts;
     }
 
     private ConvertFromDateParts(dateParts: DateParts): Date {
@@ -219,8 +218,6 @@ export class DatePartsComponentHandler implements ComponentHandler {
             default:
                 throw new Error(`Unknown date comparison type: ${rule.comparisonType}`);
         }
-
-        return undefined;
     }
 
     private checkDateComplete(dateParts: DateParts, dateName: string): DateError | undefined {
@@ -341,7 +338,6 @@ export class DatePartsComponentHandler implements ComponentHandler {
     private isSameOrBeforeDate(date: Date, comparisonDate: Date): boolean {
         date.setHours(0, 0, 0, 0); // Normalize to midnight for comparison
         comparisonDate.setHours(0, 0, 0, 0); // Normalize to midnight for comparison
-        console.log(`Comparing ${date.getTime()} with ${comparisonDate.getTime()}`);
         if (date.getTime() === comparisonDate.getTime()) {
             return true; // They are the same date
         }

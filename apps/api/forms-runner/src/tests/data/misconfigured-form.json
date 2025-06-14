@@ -1,7 +1,7 @@
 {
-   "formId": "test-addanother-page",
+   "formId": "test-text-component",
    "isCreated": true,
-   "startPage": "test-component",
+   "startPage": "text-component",
    "pages": [
      {
        "components": [
@@ -18,61 +18,26 @@
            "questionId": "mwCLr5zZvFQbafq0XQCVg",
            "validationRules": [
              {
-               "errorMessage": "YOUR NAME IS NOT BOB",
+               "errorMessage": "ERROR MESSAGE",
                "id": "1748350944138",
-               "expression": "data.full_name !== \"BOB\""
+               "expression": "data.text !== \"ERROR\""
              }
            ],
-           "labelIsPageTitle": false,
-           "hint": "",
-           "name": "full_name",
-           "label": "Full name",
-           "type": "text"
-         },
-         {
-            "questionId": "1",
-            "type": "dateParts",
-            "label": "Date of birth",
-            "name": "date_of_birth",
-            "labelIsPageTitle": false
-        }
-       ],
-       "id": "WnyO0ZoKvP",
-       "pageType": "mojAddAnother",
-       "pageId": "test-component",
-       "nextPageId": "summary",
-       "title": "Add a person",
-       "numberOfItems": 2,
-       "answerKey": "people",
-       "numberOfItemsToStartWith": 1,
-       "addAnotherButtonLabel": "Add another person",
-       "conditions": [
-            {
-                "id": "c1",
-                "expression": "data.people.some(item => item.full_name === \"DOUG\")",
-                "nextPageId": "who-is-doug"
-            }
-        ]       
-     },
-    {
-       "components": [
-         {
-           "questionId": "blah",
-           "validationRules": [
-           ],
            "labelIsPageTitle": true,
-           "hint": "",
-           "name": "who_is_doug",
-           "label": "Who is Doug?",
-           "type": "textarea"
+           "hint": "This is testing the text component",
+           "name": "text",
+           "options": [],
+           "label": "Test Text component",
+           "type": "text",
+           "answer": "stuff"
          }
        ],
-       "id": "test",
+       "id": "WnyO0ZoKvP",
        "pageType": "default",
-       "pageId": "who-is-doug",
-       "nextPageId": "summary",
+       "pageId": "text-component",
+       "nextPageId": "does-not-exist",
        "title": ""
-     },     
+     },
      {
        "components": [
          {
