@@ -12,22 +12,27 @@ export class GetApplicationController {
     }
 
     public async get(request: Request, response: Response): Promise<void> {
-        const getApplicationRequest: GetApplicationRequest = {
-            applicantId: request.params.applicantId,
-            pageId: request.params.pageId,
-            extraData: request.params.extraData,
-            onlyCurrentPage: request.params.onlyCurrentPage ? request.params.onlyCurrentPage === 'true' : undefined,
-        };
-        console.log("GetApplicationController: getting application");
-        console.log(`GetApplicationController: ${JSON.stringify(getApplicationRequest)}`);
+        try {
+            const getApplicationRequest: GetApplicationRequest = {
+                applicantId: request.params.applicantId,
+                pageId: request.params.pageId,
+                extraData: request.params.extraData,
+                onlyCurrentPage: request.params.onlyCurrentPage ? request.params.onlyCurrentPage === 'true' : undefined,
+            };
+            console.log("GetApplicationController: getting application");
+            console.log(`GetApplicationController: ${JSON.stringify(getApplicationRequest)}`);
 
-        const result = await this.useCase.execute(getApplicationRequest);
-        if (result) {
-            console.log(`GetApplicationController: application retrieved with ID ${getApplicationRequest.applicantId}`);
-            response.status(200).send(result);
-        } else {
-            console.log(`GetApplicationController: failed to get application`);
-            response.status(400).send();
+            const result = await this.useCase.execute(getApplicationRequest);
+            if (result) {
+                console.log(`GetApplicationController: application retrieved with ID ${getApplicationRequest.applicantId}`);
+                response.status(200).send(result);
+            } else {
+                console.log(`GetApplicationController: failed to get application`);
+                response.status(400).send();
+            }
+        } catch (error) {
+            console.error(`GetApplicationController: ${error}`);
+            response.status(500).send({ error: 'Internal Server Error' });
         }
     }
 }

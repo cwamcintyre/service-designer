@@ -12,18 +12,23 @@ export class MoJAddAnother {
     }
 
     public async post(request: Request, response: Response): Promise<void> {
-        const processRequest: MoJAddAnotherRequest = {
-            ...request.body
-        };
-        console.log("MoJAddAnother: processing form");
-        console.log(`MoJAddAnother: ${JSON.stringify(processRequest)}`);
-        const result = await this.useCase.execute(processRequest);
-        if (result) {
-            console.log(`MoJAddAnother: succeeded adding another section for applicant ${processRequest.applicantId}`);
-            response.status(200).send(result);
-        } else {
-            console.log(`MoJAddAnother: failed to process`);
-            response.status(400).send();
+        try {
+            const processRequest: MoJAddAnotherRequest = {
+                ...request.body
+            };
+            console.log("MoJAddAnother: processing form");
+            console.log(`MoJAddAnother: ${JSON.stringify(processRequest)}`);
+            const result = await this.useCase.execute(processRequest);
+            if (result) {
+                console.log(`MoJAddAnother: succeeded adding another section for applicant ${processRequest.applicantId}`);
+                response.status(200).send(result);
+            } else {
+                console.log(`MoJAddAnother: failed to process`);
+                response.status(400).send();
+            }
+        } catch (error) {
+            console.error(`MoJAddAnother: ${error}`);
+            response.status(500).send({ error: 'Internal Server Error' });
         }
     }
 }

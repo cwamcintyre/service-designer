@@ -12,18 +12,23 @@ export class ProcessController {
     }
 
     public async post(request: Request, response: Response): Promise<void> {
-        const processRequest: ProcessApplicationRequest = {
-            ...request.body
-        };
-        console.log("ProcessController: processing form");
-        console.log(`ProcessController: ${JSON.stringify(processRequest)}`);
-        const result = await this.useCase.execute(processRequest);
-        if (result) {
-            console.log(`ProcessController: form processed for applicant ${processRequest.applicantId}`);
-            response.status(200).send(result);
-        } else {
-            console.log(`ProcessController: failed to process form`);
-            response.status(400).send();
+        try {
+            const processRequest: ProcessApplicationRequest = {
+                ...request.body
+            };
+            console.log("ProcessController: processing form");
+            console.log(`ProcessController: ${JSON.stringify(processRequest)}`);
+            const result = await this.useCase.execute(processRequest);
+            if (result) {
+                console.log(`ProcessController: form processed for applicant ${processRequest.applicantId}`);
+                response.status(200).send(result);
+            } else {
+                console.log(`ProcessController: failed to process form`);
+                response.status(400).send();
+            }
+        } catch (error) {
+            console.error(`ProcessController: ${error}`);
+            response.status(500).send({ error: 'Internal Server Error' });
         }
     }
 }
