@@ -40,6 +40,10 @@ a {
   margin-bottom: 30px;
 }
 
+.moj-repeat-summary-section__item {
+  margin-bottom: 15px;
+}
+
 button.moj-repeat-section__remove-button {
   position: absolute;
   top: 0;

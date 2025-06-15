@@ -35,6 +35,7 @@
        "title": "People",
        "numberOfItems": 1,
        "answerKey": "people",
+       "answerLabel": "Person",
        "numberOfItemsToStartWith": 1,
        "addAnotherButtonLabel": "Add another person",
        "sectionTitle": "Person",

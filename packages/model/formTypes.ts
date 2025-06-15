@@ -92,6 +92,7 @@ export interface AddAnotherPage extends Page {
     pageAnswer?: { [key: string]: any; }[];
     pageErrors?: { [key: string]: string[] };
     answerKey?: string;
+    answerLabel?: string;
     numberOfItemsToStartWith: number;
     addAnotherButtonLabel: string;
 }
