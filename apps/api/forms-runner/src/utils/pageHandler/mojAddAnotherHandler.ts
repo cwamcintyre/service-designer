@@ -5,7 +5,7 @@ import { AddAnotherPage, Application } from '@model/formTypes';
 
 export class MoJAddAnotherHandler extends DefaultPageHandler {
 
-    async Process(application: Application, pageId: string, data: { [key: string]: any; }): Promise<boolean> {
+    async Process(application: Application, pageId: string, data: { [key: string]: any }, skipValidation?: boolean ): Promise<boolean> {
         const page: AddAnotherPage | undefined = application.pages.find((p): p is AddAnotherPage => p.pageId === pageId && 'numberOfItems' in p);
         if (!page) {
             throw new Error(`Page with ID ${pageId} not found.`);
@@ -13,9 +13,9 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
 
         const baseNames = new Set<string>();
         Object.keys(data).forEach(key => {
-            const lastDashIndex = key.lastIndexOf('-');
-            if (lastDashIndex > 0) {
-                const baseName = key.substring(0, lastDashIndex);
+            const firstDashIndex = key.indexOf('-');
+            if (firstDashIndex > 0) {
+                const baseName = key.substring(firstDashIndex + 1, key.length);
                 baseNames.add(baseName);
             }
         });
@@ -31,7 +31,7 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
 
                 for (const baseName of baseNames) {
                     if (baseName.includes(component.name)) {
-                        const dataKey = `${baseName}-${i}`;
+                        const dataKey = `${i}-${baseName}`;
                         if (data[dataKey] !== undefined) {
                             individualData[baseName] = data[dataKey];
                         } 
@@ -42,6 +42,8 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
             dataItems.push(individualData);
         }
 
+        console.log(dataItems);
+
         const pageErrors: { [key: string]: string[] } = {};
         const pageData: { [key: string]: any; }[] = [];
         // set them now, we will be mutating them in the loop below (so that getAllDataFromApplication can use them for validation)
@@ -51,6 +53,8 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
             const dataItem = dataItems[i];
             const pageItemAnswer: { [key: string]: any; } = {};
             pageData.push(pageItemAnswer);
+            const normalisedIteration = i + 1; // normalise the iteration to start from 1
+
             for (const component of page.components) {
             
                 if (!component.type) {
@@ -76,14 +80,16 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
                     pageItemAnswer[component.name] = convertedAnswer;            
                 } 
 
-               const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
-               if (validationResult.length > 0) {
-                   hasErrors = true;
-                   if (!pageErrors[`${component.name}-${i+1}`]) {
-                       pageErrors[`${component.name}-${i+1}`] = [];
-                   }
-                   pageErrors[`${component.name}-${i+1}`] = validationResult;
-               }
+                if (!skipValidation) {
+                    const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
+                    if (validationResult.length > 0) {
+                        hasErrors = true;
+                        if (!pageErrors[`${normalisedIteration}-${component.name}`]) {
+                            pageErrors[`${normalisedIteration}-${component.name}`] = [];
+                        }
+                        pageErrors[`${normalisedIteration}-${component.name}`] = validationResult;
+                    }
+                }
             }
         }
 
@@ -108,6 +114,9 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
         let hasErrors = false;
 
         for (let i = 0; i <= page.numberOfItems; i++) {
+
+            const normalisedIteration = i + 1; // normalise the iteration to start from 1
+
             for (const component of page.components) {
             
                 if (!component.type) {
@@ -138,10 +147,10 @@ export class MoJAddAnotherHandler extends DefaultPageHandler {
                 const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
                 if (validationResult.length > 0) {
                     hasErrors = true;
-                    if (!pageErrors[`${component.name}-${i+1}`]) {
-                        pageErrors[`${component.name}-${i+1}`] = [];
+                    if (!pageErrors[`${normalisedIteration}-${component.name}`]) {
+                        pageErrors[`${normalisedIteration}-${component.name}`] = [];
                     }
-                    pageErrors[`${component.name}-${i+1}`] = validationResult;
+                    pageErrors[`${normalisedIteration}-${component.name}`] = validationResult;
                 }
             }
         }

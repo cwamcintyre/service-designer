@@ -18,14 +18,14 @@ describe('ProcessApplicationUseCase', () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
 
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
-            "full_name-1": 'John Doe', 
-            "date_of_birth-day-1": '1', 
-            "date_of_birth-month-1": '1', 
-            "date_of_birth-year-1": '2000', 
-            "full_name-2": 'Jane Doe', 
-            "date_of_birth-day-2": '2', 
-            "date_of_birth-month-2": '2', 
-            "date_of_birth-year-2": '2001' } };
+            "1-full_name": 'John Doe', 
+            "1-date_of_birth-day": '1', 
+            "1-date_of_birth-month": '1', 
+            "1-date_of_birth-year": '2000', 
+            "2-full_name": 'Jane Doe', 
+            "2-date_of_birth-day": '2', 
+            "2-date_of_birth-month": '2', 
+            "2-date_of_birth-year": '2001' } };
 
         const response: ProcessApplicationResponse = await processApplicationUseCase.execute(request);
 
@@ -44,14 +44,14 @@ describe('ProcessApplicationUseCase', () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
 
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
-            "full_name-1": 'John Doe', 
-            "date_of_birth-day-1": '', 
-            "date_of_birth-month-1": '1', 
-            "date_of_birth-year-1": '2000', 
-            "full_name-2": '', 
-            "date_of_birth-day-2": '2', 
-            "date_of_birth-month-2": '', 
-            "date_of_birth-year-2": '2001' } };
+            "1-full_name": 'John Doe', 
+            "1-date_of_birth-day": '', 
+            "1-date_of_birth-month": '1', 
+            "1-date_of_birth-year": '2000', 
+            "2-full_name": '', 
+            "2-date_of_birth-day": '2', 
+            "2-date_of_birth-month": '', 
+            "2-date_of_birth-year": '2001' } };
 
         const response: ProcessApplicationResponse = await processApplicationUseCase.execute(request);
 
@@ -59,9 +59,9 @@ describe('ProcessApplicationUseCase', () => {
         const page = applicationArg.pages.find((p): p is AddAnotherPage => p.pageId === 'test-component');
         
         expect(page?.pageErrors).toEqual({
-            "date_of_birth-1": ["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"],
-            "full_name-2": ["An answer is required"],
-            "date_of_birth-2": ["{\"errorMessage\":\"date must include a month\",\"dayError\":false,\"monthError\":true,\"yearError\":false}"]
+            "1-date_of_birth": ["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"],
+            "2-full_name": ["An answer is required"],
+            "2-date_of_birth": ["{\"errorMessage\":\"date must include a month\",\"dayError\":false,\"monthError\":true,\"yearError\":false}"]
         });
 
         expect(page?.pageAnswer).toEqual([
@@ -76,14 +76,14 @@ describe('ProcessApplicationUseCase', () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
 
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { 
-            "full_name-1": 'BOB', 
-            "date_of_birth-day-1": '', 
-            "date_of_birth-month-1": '1', 
-            "date_of_birth-year-1": '2000', 
-            "full_name-2": 'Jane Doe', 
-            "date_of_birth-day-2": '2', 
-            "date_of_birth-month-2": '', 
-            "date_of_birth-year-2": '2001' } };
+            "1-full_name": 'BOB', 
+            "1-date_of_birth-day": '', 
+            "1-date_of_birth-month": '1', 
+            "1-date_of_birth-year": '2000', 
+            "2-full_name": 'Jane Doe', 
+            "2-date_of_birth-day": '2', 
+            "2-date_of_birth-month": '', 
+            "2-date_of_birth-year": '2001' } };
 
         const response: ProcessApplicationResponse = await processApplicationUseCase.execute(request);
 
@@ -91,9 +91,9 @@ describe('ProcessApplicationUseCase', () => {
         const page = applicationArg.pages.find((p): p is AddAnotherPage => p.pageId === 'test-component');
         
         expect(page?.pageErrors).toEqual({
-            "date_of_birth-1": ["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"],
-            "full_name-1": ["YOUR NAME IS NOT BOB"],
-            "date_of_birth-2": ["{\"errorMessage\":\"date must include a month\",\"dayError\":false,\"monthError\":true,\"yearError\":false}"]
+            "1-date_of_birth": ["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"],
+            "1-full_name": ["YOUR NAME IS NOT BOB"],
+            "2-date_of_birth": ["{\"errorMessage\":\"date must include a month\",\"dayError\":false,\"monthError\":true,\"yearError\":false}"]
         });
 
         expect(page?.pageAnswer).toEqual([
@@ -108,14 +108,14 @@ describe('ProcessApplicationUseCase', () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
 
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: {
-            "full_name-1": 'John Doe',
-            "date_of_birth-day-1": '1',
-            "date_of_birth-month-1": '1',
-            "date_of_birth-year-1": '2000',
-            "full_name-2": 'DOUG',
-            "date_of_birth-day-2": '2',
-            "date_of_birth-month-2": '2',
-            "date_of_birth-year-2": '2001' } };
+            "1-full_name": 'John Doe',
+            "1-date_of_birth-day": '1',
+            "1-date_of_birth-month": '1',
+            "1-date_of_birth-year": '2000',
+            "2-full_name": 'DOUG',
+            "2-date_of_birth-day": '2',
+            "2-date_of_birth-month": '2',
+            "2-date_of_birth-year": '2001' } };
 
         const response: ProcessApplicationResponse = await processApplicationUseCase.execute(request);
 

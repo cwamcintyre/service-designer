@@ -3,6 +3,7 @@ import { MoJAddAnotherRequest, type ProcessApplicationRequest, type ProcessAppli
 import { requestResponse } from '@clean/useCaseInterfaces';
 import { type Application, type AddAnotherPage } from '@model/formTypes';
 import { type ApplicationStore } from '@/usecase/shared/infrastructure/applicationStore';
+import { PageHandlerFactory } from '@/utils/pageHandler/pageHandlerFactory';
 import { inject, injectable } from 'inversify';
 
 @injectable()
@@ -11,7 +12,7 @@ export class MoJAddAnotherUseCase implements requestResponse<MoJAddAnotherReques
     public response: ProcessApplicationResponse;
 
     constructor(@inject(AppTypes.ApplicationStore) public applicationStore: ApplicationStore) {
-        this.request = { applicantId: '', pageId: '', numberOfItems: 0 };
+        this.request = { applicantId: '', pageId: '', numberOfItems: 0, formData: {} };
         this.response = { nextPageId: '', extraData: '' };
     }
 
@@ -27,6 +28,14 @@ export class MoJAddAnotherUseCase implements requestResponse<MoJAddAnotherReques
             if (!page) {
                 throw new Error(`Page with ID ${request.pageId} not found.`);
             }
+
+            if (!page.pageType) {
+                throw new Error(`Page type is undefined for page ID ${request.pageId} in application ${request.applicantId}.`);
+            }
+
+            const pageHandler = PageHandlerFactory.For(page.pageType);
+            // process the page so that we don't lose any input but skip validation..
+            const processErrors = await pageHandler.Process(application, request.pageId, request.formData, true);
 
             page.numberOfItems = request.numberOfItems;
 

@@ -88,6 +88,7 @@ export enum PageTypes {
 
 export interface AddAnotherPage extends Page {
     numberOfItems: number;
+    sectionTitle?: string;
     pageAnswer?: { [key: string]: any; }[];
     pageErrors?: { [key: string]: string[] };
     answerKey?: string;

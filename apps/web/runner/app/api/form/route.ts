@@ -37,11 +37,63 @@ export async function POST(req: Request) {
         return new Response("Invalid extraData", { status: 400 });
     }
 
-    const processResult = await applicationService.processApplication(
-        applicationId,
-        pageId,
-        Object.fromEntries(formData.entries())
-    );
+    let processResult = null;
+    
+    console.log(formData);
+
+    const requestData = Object.fromEntries(formData.entries());
+
+    if (formData.has('mojRemove')) {
+        const mojRemoveValue = formData.get('mojRemove');
+        if (typeof mojRemoveValue !== 'string') {
+            LogHandler.error("Invalid mojRemove value", new Error("mojRemove value must be a string"));
+            return new Response("Invalid mojRemove value", { status: 400 });
+        }
+        
+        const separatorIndex = mojRemoveValue.lastIndexOf('-');
+        const pageIdToRemove = mojRemoveValue.substring(0, separatorIndex);
+        const itemIndex = mojRemoveValue.substring(separatorIndex + 1);
+        if (!pageIdToRemove || !itemIndex) {
+            LogHandler.error("Invalid mojRemove format", new Error("mojRemove value must be in the format 'pageId-itemIndex'"));
+            return new Response("Invalid mojRemove format", { status: 400 });
+        }
+
+        processResult = await applicationService.mojRemoveFromAddAnother(
+            applicationId,
+            pageIdToRemove,
+            parseInt(itemIndex, 10),
+            requestData
+        );
+    }
+    else if (formData.has('mojAdd')) {
+        const mojAddValue = formData.get('mojAdd');
+        if (typeof mojAddValue !== 'string') {
+            LogHandler.error("Invalid mojAdd value", new Error("mojAdd value must be a string"));
+            return new Response("Invalid mojAdd value", { status: 400 });
+        }
+
+        const separatorIndex = mojAddValue.lastIndexOf('-');
+        const pageIdToAdd = mojAddValue.substring(0, separatorIndex);
+        const numberOfItems = mojAddValue.substring(separatorIndex + 1);
+        if (!pageIdToAdd || !numberOfItems) {
+            LogHandler.error("Invalid mojAdd format", new Error("mojAdd value must be in the format 'pageId-numberOfItems'"));
+            return new Response("Invalid mojAdd format", { status: 400 });
+        }
+
+        processResult = await applicationService.moJAddAnother(
+            applicationId,
+            pageIdToAdd,
+            parseInt(numberOfItems, 10),
+            requestData
+        );
+    }
+    else {
+        processResult = await applicationService.processApplication(
+            applicationId,
+            pageId,
+            requestData
+        );
+    }
 
     const baseUrl = process.env.BASE_URL || '';
 

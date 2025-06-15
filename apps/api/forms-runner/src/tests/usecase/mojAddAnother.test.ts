@@ -4,6 +4,7 @@ import { MoJAddAnotherRequest, ProcessApplicationResponse } from '@model/runnerA
 import { Application, AddAnotherPage } from '@model/formTypes';
 
 const mockApplicationWithAddAnother: Application = require('@/tests/data/moj-add-another-change.json') as Application;
+const mockApplicationRetainsInfoWithNoErrors: Application = require('@/tests/data/moj-add-another-retains-info-on-add.json') as Application; 
 
 describe('MoJAddAnother Use Case', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -19,6 +20,7 @@ describe('MoJAddAnother Use Case', () => {
             applicantId: '123',
             pageId: 'page1',
             numberOfItems: 2,
+            formData: {}
         };
 
         applicationStore.withGetApplicationReturning(null);
@@ -31,6 +33,7 @@ describe('MoJAddAnother Use Case', () => {
             applicantId: '123',
             pageId: 'does-not-exist',
             numberOfItems: 2,
+            formData: {}
         };
 
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
@@ -43,6 +46,7 @@ describe('MoJAddAnother Use Case', () => {
             applicantId: '123',
             pageId: 'test-component',
             numberOfItems: 3,
+            formData: {}
         };
 
         applicationStore.withGetApplicationReturning(mockApplicationWithAddAnother);
@@ -54,11 +58,38 @@ describe('MoJAddAnother Use Case', () => {
         expect(response).toEqual({ nextPageId: 'test-component', extraData: '' });
     });
 
+    it('should retain information that has been typed into the form without validating it', async () => {
+        const request: MoJAddAnotherRequest = {
+            applicantId: '123',
+            pageId: 'test-component',
+            numberOfItems: 2,
+            formData: {
+                '1-full_name': 'John Doe',
+                '1-date_of_birth-day': '1',
+                '1-date_of_birth-month': '1',
+                '1-date_of_birth-year': '2000'
+            }
+        };
+
+        applicationStore.withGetApplicationReturning(mockApplicationRetainsInfoWithNoErrors);
+        const response: ProcessApplicationResponse = await useCase.execute(request);
+
+        expect(applicationStore.getUpdateApplicationSpy()).toHaveBeenCalledWith(mockApplicationRetainsInfoWithNoErrors);
+        const page = mockApplicationRetainsInfoWithNoErrors.pages.find(p => p.pageId === 'test-component') as AddAnotherPage;
+        expect(page.pageAnswer).toEqual([
+            { full_name: 'John Doe', date_of_birth: { day: '1', month: '1', year: '2000' } },
+            { full_name: undefined, date_of_birth: { day: undefined, month: undefined, year: undefined } } // this is not what is stored in DynamoDB but is returned by the use case..
+        ]);
+        expect(page.numberOfItems).toBe(2);
+        expect(page.pageErrors).toEqual({});
+    });
+
     it('should throw a generic error if an unknown error occurs', async () => {
         const request: MoJAddAnotherRequest = {
             applicantId: '123',
             pageId: 'test-component',
             numberOfItems: 3,
+            formData: {}
         };
 
         applicationStore.withGetApplicationThrowing(new Error('Unknown error'));
@@ -71,6 +102,7 @@ describe('MoJAddAnother Use Case', () => {
             applicantId: '123',
             pageId: 'test-component',
             numberOfItems: 3,
+            formData: {}
         };
 
         applicationStore.withGetApplicationThrowingAny('Unknown error');

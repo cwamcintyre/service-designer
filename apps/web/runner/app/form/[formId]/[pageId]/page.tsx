@@ -4,7 +4,8 @@ import { LogHandler } from '@/app/utils/logging/logHandler';
 import GDSFormPage from '@/app/components/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import GDSButton from '@gds/GDSButton';
-import { Page } from '@model/formTypes';
+import { Page, PageTypes, AddAnotherPage } from '@model/formTypes';
+import MoJAddAnotherPage from '@/app/components/MoJAddAnotherPage';
 
 export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>; searchParams: Promise<Record<string, string>> }) {
         
@@ -34,13 +35,18 @@ export default async function FormPage({ params, searchParams }: { params: Promi
 
     return (
         <>
+            { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }
             <form action={`/api/form`} method="POST" className="govuk-form-group">
                 
                 <input type="hidden" name="formId" value={formId} />
                 <input type="hidden" name="pageId" value={pageId} />
                 <input type="hidden" name="extraData" value={JSON.stringify({ step })} />
 
-                <GDSFormPage page={page} backLink={backLink} />
+                {page.pageType === PageTypes.MoJAddAnother ? (
+                    <MoJAddAnotherPage page={page as AddAnotherPage} />
+                ) : (
+                    <GDSFormPage page={page} />
+                )}
 
                 <div className="govuk-button-group">
                     <GDSButton type="submit" text="Continue" />
