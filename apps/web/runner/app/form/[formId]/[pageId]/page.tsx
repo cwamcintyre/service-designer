@@ -1,11 +1,11 @@
 'use server';
 
 import { LogHandler } from '@/app/utils/logging/logHandler';
-import GDSFormPage from '@/app/components/GDSFormPage';
+import GDSFormPage from '@gds/forms/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import GDSButton from '@gds/GDSButton';
 import { Page, PageTypes, AddAnotherPage } from '@model/formTypes';
-import MoJAddAnotherPage from '@/app/components/MoJAddAnotherPage';
+import MoJAddAnotherPage from '@gds/forms/MoJAddAnotherPage';
 
 export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>; searchParams: Promise<Record<string, string>> }) {
         

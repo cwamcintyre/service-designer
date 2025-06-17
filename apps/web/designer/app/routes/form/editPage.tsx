@@ -74,6 +74,7 @@ export default function EditPage({ params }: { params: { formId: string, pageId:
 
   const handleSave = async () => {
     const validIndicators = await detailForm.current.submit();
+    console.log("validIndicators", validIndicators);
     if (validIndicators && validIndicators.every((v: boolean) => v || v === undefined || v === null)) {
         setAction({ show: true, actionName: "Saving" });
         const newForm = {
@@ -124,7 +125,7 @@ export default function EditPage({ params }: { params: { formId: string, pageId:
             <FormEditor ref={detailForm} page={selectedPage} />
           </div>
           <div className="properties-pane h-full overflow-y-auto">
-            <FormPreview page={selectedPage} />
+            <FormPreview form={form} page={selectedPage} />
           </div>
       </SplitPane>
       <ActionOverlay show={show} action={actionName} />

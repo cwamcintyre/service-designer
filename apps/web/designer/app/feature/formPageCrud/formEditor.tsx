@@ -1,4 +1,4 @@
-import { type Page, type Form as FormData } from '@model/formTypes';
+import { type Page, type Form as FormData, PageTypes, type AddAnotherPage } from '@model/formTypes';
 import ComponentEditor from './componentEditor';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -7,7 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import {
   Form,
   FormControl,
@@ -30,19 +30,6 @@ import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import React from 'react';
-
-const selector = (state: FormState) => ({
-  addPageComponent: state.addPageComponent,
-  removePageComponent: state.removePageComponent,
-  swapComponents: state.swapComponents,
-  updatePage: state.updatePage,
-});
-
-const pageFormSchema = z.object({
-  pageId: z.string().min(1, { message: "Page ID is required" }),
-  pageType: z.string().min(1, { message: "Page Type is required" }),
-  title: z.string().optional()
-});
 
 function SortableItem({ id, children }: { id: string; children: React.ReactNode }) {
   const {
@@ -71,6 +58,38 @@ function SortableItem({ id, children }: { id: string; children: React.ReactNode 
 
 export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any) {
   
+  const selector = (state: FormState) => ({
+    addPageComponent: state.addPageComponent,
+    removePageComponent: state.removePageComponent,
+    swapComponents: state.swapComponents,
+    updatePage: state.updatePage,
+  });
+
+  // Define a single schema that includes all possible fields
+  // but make the Add Another fields optional
+  const pageFormSchema = z.object({
+    pageId: z.string().min(1, { message: "Page ID is required" }),
+    pageType: z.string().min(1, { message: "Page Type is required" }),
+    title: z.string().optional(),
+    // Add Another specific fields - optional by default
+    sectionTitle: z.string().min(1, { message: "Section title is required" }).optional(),
+    numberOfItemsToStartWith: z.coerce.number().min(1, { message: "At least one item is required" }).optional(),
+    addAnotherButtonLabel: z.string().min(1, { message: "Button label is required" }).optional(),
+    answerKey: z.string().min(1, { message: "Answer key is required" }).optional(),
+    answerLabel: z.string().min(1, { message: "Answer label is required" }).optional()
+  })
+  // Add refinement to enforce required fields when page type is MoJAddAnother
+  .refine((data) => {
+    if (data.pageType === PageTypes.MoJAddAnother) {
+      return !!data.sectionTitle && 
+             data.numberOfItemsToStartWith !== undefined && 
+             !!data.addAnotherButtonLabel && 
+             !!data.answerKey && 
+             !!data.answerLabel;
+    }
+    return true;
+  }, {});
+
   const { addPageComponent, removePageComponent, swapComponents, updatePage } = useFormStore(
     useShallow(selector)
   );
@@ -82,8 +101,16 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
     defaultValues: {
       pageId: page?.pageId || "",
       pageType: page?.pageType || "default",
-      title: page?.title || ""
-    },
+      title: page?.title || "",
+      ...(page.pageType === PageTypes.MoJAddAnother && (page as AddAnotherPage) && {
+        sectionTitle: (page as AddAnotherPage).sectionTitle  || "",
+        numberOfItemsToStartWith: (page as AddAnotherPage).numberOfItemsToStartWith || 1,
+        numberOfItems: (page as AddAnotherPage).numberOfItemsToStartWith || 1,
+        addAnotherButtonLabel: (page as AddAnotherPage).addAnotherButtonLabel || "",
+        answerKey: (page as AddAnotherPage).answerKey || "",
+        answerLabel: (page as AddAnotherPage).answerLabel || ""
+      })
+    }
   });
 
   const sensors = useSensors(
@@ -106,9 +133,16 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
           form.reset({
               pageId: page?.pageId,
               pageType: page?.pageType,
-              title: page?.title || ""             
+              title: page?.title || "",
+              ...(page.pageType === PageTypes.MoJAddAnother && (page as AddAnotherPage) && {
+                sectionTitle: (page as AddAnotherPage).sectionTitle  || "",
+                numberOfItemsToStartWith: (page as AddAnotherPage).numberOfItemsToStartWith || 1,
+                numberOfItems: (page as AddAnotherPage).numberOfItemsToStartWith || 1,
+                addAnotherButtonLabel: (page as AddAnotherPage).addAnotherButtonLabel || "",
+                answerKey: (page as AddAnotherPage).answerKey || "",
+                answerLabel: (page as AddAnotherPage).answerLabel || ""
+              })             
           });
-          form.trigger();
       }
   }, [page]);
   
@@ -118,14 +152,29 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
                 const isDifferent =
                     page.pageId !== values.pageId ||
                     page.pageType !== values.pageType ||
-                    page.title !== values.title;
+                    page.title !== values.title ||
+                    (page.pageType === PageTypes.MoJAddAnother && (page as AddAnotherPage) && (
+                      (page as AddAnotherPage).sectionTitle !== values.sectionTitle ||
+                      (page as AddAnotherPage).numberOfItemsToStartWith !== values.numberOfItemsToStartWith ||
+                      (page as AddAnotherPage).addAnotherButtonLabel !== values.addAnotherButtonLabel ||
+                      (page as AddAnotherPage).answerKey !== values.answerKey ||
+                      (page as AddAnotherPage).answerLabel !== values.answerLabel
+                    ));
                 if (isDifferent) {
                     updatePage(
                         {
                             ...page,
                             pageId: values.pageId || "",
                             pageType: values.pageType || "default",
-                            title: values.title || ""
+                            title: values.title || "",
+                            ...(page.pageType === PageTypes.MoJAddAnother && (page as AddAnotherPage) && {
+                              sectionTitle: values.sectionTitle  || "",
+                              numberOfItemsToStartWith: values.numberOfItemsToStartWith || 1,
+                              numberOfItems: values.numberOfItemsToStartWith || 1,
+                              addAnotherButtonLabel: values.addAnotherButtonLabel || "",
+                              answerKey: values.answerKey || "",
+                              answerLabel: values.answerLabel || ""
+                            })
                         }
                     );
                 }                
@@ -187,10 +236,10 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
             )}
           />
           <FormField
-              control={form.control}
-              name="pageType"
-              render={({ field }) => (
-                <FormItem>
+            control={form.control}
+            name="pageType"
+            render={({ field }) => (
+              <FormItem>
                 <FormLabel>Page Type</FormLabel>
                 <FormControl>
                   <Select
@@ -201,35 +250,127 @@ export default forwardRef(function FormEditor({ page }: { page: Page }, ref: any
                     <SelectValue placeholder="Select Page Type" />
                   </SelectTrigger>
                   <SelectContent id={"select-page-type"}>
-                    <SelectItem value="default">Default</SelectItem>
-                    <SelectItem value="summary">Summary</SelectItem>
-                    <SelectItem value="stop">Stop</SelectItem>
-                    <SelectItem value="inline-repeating-page">
-                    Inline Repeating Page
+                    <SelectItem value={PageTypes.Default}>Default</SelectItem>
+                    <SelectItem value={PageTypes.Summary}>Summary</SelectItem>
+                    <SelectItem value={PageTypes.Stop}>Stop</SelectItem>
+                    <SelectItem value={PageTypes.MoJAddAnother}>
+                      MoJ Add Another
                     </SelectItem>
                   </SelectContent>
                   </Select>
                 </FormControl>
                 <FormMessage />
-                </FormItem>
-              )}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input id={"input-title"} placeholder="Title" {...field}  onChange={(e) => {
+                    field.onChange(e); // Ensure input can still be typed in
+                    form.trigger("title");
+                  }}/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+           {page.pageType === PageTypes.MoJAddAnother && (
+            <>
+              <FormField
+                control={form.control}
+                name="sectionTitle"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Section Title</FormLabel>
+                    <FormControl>
+                      <Input id={"input-section-title"} placeholder="Section Title" {...field} onChange={(e) => {
+                        field.onChange(e);
+                        form.trigger("sectionTitle");
+                      }}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
               <FormField
                 control={form.control}
-                name="title"
+                name="numberOfItemsToStartWith"
                 render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input id={"input-title"} placeholder="Title" {...field}  onChange={(e) => {
-                      field.onChange(e); // Ensure input can still be typed in
-                      form.trigger("title");
-                    }}/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-            )}
-          />          
+                  <FormItem>
+                    <FormLabel>Number of Items to Start With</FormLabel>
+                    <FormControl>
+                      <Input 
+                        id={"input-items-to-start"} 
+                        type="number" 
+                        placeholder="Number of Items" 
+                        {...field} 
+                        onChange={(e) => {
+                          // Convert string to number
+                          field.onChange(parseInt(e.target.value) || 1);
+                          form.trigger("numberOfItemsToStartWith");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="addAnotherButtonLabel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Add Another Button Label</FormLabel>
+                    <FormControl>
+                      <Input id={"input-button-label"} placeholder="Button Label" {...field} onChange={(e) => {
+                        field.onChange(e);
+                        form.trigger("addAnotherButtonLabel");
+                      }}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="answerKey"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Answer Key</FormLabel>
+                    <FormControl>
+                      <Input id={"input-answer-key"} placeholder="Answer Key" {...field} onChange={(e) => {
+                        field.onChange(e);
+                        form.trigger("answerKey");
+                      }}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="answerLabel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Answer Label</FormLabel>
+                    <FormControl>
+                      <Input id={"input-answer-label"} placeholder="Answer Label" {...field} onChange={(e) => {
+                        field.onChange(e);
+                        form.trigger("answerLabel");
+                      }}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              </>
+          )}          
         </form>
       </Form>
 

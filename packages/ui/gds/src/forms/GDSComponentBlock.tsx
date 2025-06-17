@@ -1,17 +1,15 @@
-'use server';
-
 import { type Page, type Component } from '@model/formTypes';
 
-import GDSInput from '@gds/GDSInput';
-import GDSTextarea from '@gds/GDSTextarea';
-import GDSRadio from '@gds/GDSRadio';
-import GDSSelect from '@gds/GDSSelect';
-import GDSCheckbox from '@gds/GDSCheckbox';
-import GDSYesNo from '@gds/GDSYesNo';
-import GDSUKAddress from '@gds/GDSUKAddress';
-import GDSDateParts from '@gds/GDSDateParts';
+import GDSInput from '../GDSInput';
+import GDSTextarea from '../GDSTextarea';
+import GDSRadio from '../GDSRadio';
+import GDSSelect from '../GDSSelect';
+import GDSCheckbox from '../GDSCheckbox';
+import GDSYesNo from '../GDSYesNo';
+import GDSUKAddress from '../GDSUKAddress';
+import GDSDateParts from '../GDSDateParts';
 
-export default async function GDSComponentBlock({ components }: { components: Component[] }) {
+export default function GDSComponentBlock({ components }: { components: Component[] }) {
     return (
         <>
             {components.map((component: Component) => {

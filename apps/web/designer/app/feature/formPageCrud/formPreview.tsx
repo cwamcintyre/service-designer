@@ -1,16 +1,22 @@
-import { type Page } from '@model/formTypes';
-import GDSInput from '@gds/GDSInput';
-import GDSButton from '@gds/GDSButton';
-import GDSTextarea from '@gds/GDSTextarea';
-import GDSRadio from '@gds/GDSRadio';
-import GDSSelect from '@gds/GDSSelect';
-import GDSCheckbox from '@gds/GDSCheckbox';
-import GDSYesNo from '@gds/GDSYesNo';
-import GDSUKAddress from '@gds/GDSUKAddress';
-import GDSDateParts from '@gds/GDSDateParts';
-import GDSSummaryExample from '@gds/GDSSummaryExample';
+import { type Form, type Page, PageTypes } from '@model/formTypes';
+import ComponentsPreview from '../common/componentsPreview';
+import SummaryPreview from '../common/summaryPreview';
 
-export default function FormPreview({page}: {page: Page | undefined}) {
+function renderBasedOnPageType(form: Form, page: Page) {
+
+    switch (page.pageType) {
+        case PageTypes.Stop:
+        case PageTypes.Default:
+        case PageTypes.MoJAddAnother:
+            return <ComponentsPreview page={page} />;
+        case PageTypes.Summary:
+            return <SummaryPreview selectedPage={page} pages={form.pages} />;
+        default:
+            return <div>Unknown page type</div>;
+    }
+}
+
+export default function FormPreview({form, page}: {form: Form; page: Page}) {
   return (
     <div>
         <header className="govuk-header" data-module="govuk-header">
@@ -35,71 +41,7 @@ export default function FormPreview({page}: {page: Page | undefined}) {
     </header>
     <div className="govuk-width-container">
         <main className="govuk-main-wrapper" id="main-content">
-            {page?.title ? <h1 className="govuk-heading-xl">{page?.title}</h1> : null }
-            {page?.components && page?.components.map((component => {            
-                switch (component.type) {
-                    case 'text':    
-                        return (                        
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} />
-                        );
-                    case 'email':
-                        return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} autocomplete='email' />
-                        );
-                    case 'number':
-                        return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} inputmode='numeric' />
-                        );
-                    case 'phonenumber':
-                        return (
-                            <GDSInput key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} value={""} autocomplete='tel' />
-                        );
-                    case 'multilineText':
-                        return (
-                            <GDSTextarea key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
-                        );
-                    case 'radio':
-                        return (
-                            <GDSRadio key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
-                        );
-                    case 'checkbox':
-                        return (
-                            <GDSCheckbox key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
-                        );
-                    case 'select':
-                        return (
-                            <GDSSelect key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} options={component.options} />
-                        );
-                    case 'yesno':
-                        return (
-                            <GDSYesNo key={component.questionId} name={component.name} label={component.label} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
-                        );
-                    case 'ukaddress': 
-                        return (
-                            <GDSUKAddress key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} />
-                        );
-                    case 'dateParts':
-                        return (
-                            <GDSDateParts key={component.questionId} label={component.label} name={component.name} hint={component.hint} labelIsPageTitle={component.labelIsPageTitle} errors={[]} />
-                        );
-                    case 'html':
-                        return (
-                            <div key={component.questionId} dangerouslySetInnerHTML={{ __html: component.content ? component.content: "" }} />
-                        );
-                    case 'summary':
-                        return (
-                            <GDSSummaryExample key={component.questionId} />
-                        );
-                    default:
-                        return <p key={component.questionId} className="govuk-body">Component type not supported</p>;
-                }
-            }))}
-            {page?.pageType !== "stop" ?
-                page?.pageType === "summary" ?
-                <GDSButton text="Accept and send" /> :
-                <GDSButton text="Continue" /> 
-                : null
-            }                        
+            {renderBasedOnPageType(form, page)}
         </main>
     </div>
     <footer className="govuk-footer">

@@ -2,7 +2,7 @@
 
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
-import GDSFormPage from '@/app/components/GDSFormPage';
+import GDSFormPage from '@gds/forms/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import { Page } from '@model/formTypes';
 
@@ -25,12 +25,9 @@ export default async function FormPage({ params, searchParams }: { params: Promi
 
     const backLink = "";
 
-    setSharedState({ serviceTitle: form.application.title });
-    LogHandler.debug("Form Title: ", form.application.title);
-
     return (
         <>
-            <GDSFormPage page={page} backLink={backLink} />
+            <GDSFormPage page={page} />
         </>
     );
 }

@@ -65,7 +65,7 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                 })
             )
             .optional(),
-        dateName: z.string().min(1, { message: "Date name cannot be empty" })
+        dateName: z.string().min(1, { message: "Date name cannot be empty" }).optional()
     });
 
     const getDefaultValues = () => {
@@ -115,11 +115,13 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                 hint: component.hint || "",
                 labelIsPageTitle: component?.labelIsPageTitle || false,
                 options: component.options?.map((opt) => ({ id: opt.id, label: opt.label, value: opt.value })) || [],
-                dateValidationRules: (component as DateComponent)?.dateValidationRules || [],
-                dateName: (component as DateComponent)?.dateName || ""
+                ...(component.type === "dateParts" && {
+                    dateValidationRules: (component as DateComponent)?.dateValidationRules || [],
+                    dateName: (component as DateComponent)?.dateName || ""
+                })
             });
         }
-        form.trigger();
+        //form.trigger();
     }, [component, form]);    
     
     useEffect(() => {
@@ -131,8 +133,10 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                     component.hint !== values.hint ||
                     component.labelIsPageTitle !== values.labelIsPageTitle ||
                     JSON.stringify(component.options) !== JSON.stringify(values.options) ||
-                    JSON.stringify((component as DateComponent)?.dateValidationRules) !== JSON.stringify(values.dateValidationRules) ||
-                    (component.type === "dateParts" && (component as DateComponent)?.dateName !== values.dateName);
+                    (component.type === "dateParts" && (
+                        JSON.stringify((component as DateComponent)?.dateValidationRules) !== JSON.stringify(values.dateValidationRules) ||
+                        (component as DateComponent)?.dateName !== values.dateName
+                    ));
 
                 if (isDifferent) {
                     updatePageComponent(
@@ -151,7 +155,7 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                             ...(component.type === "dateParts" && {
                                 dateValidationRules: values.dateValidationRules,
                                 dateName: values.dateName
-                            }),
+                            })
                         }
                     );
                 }

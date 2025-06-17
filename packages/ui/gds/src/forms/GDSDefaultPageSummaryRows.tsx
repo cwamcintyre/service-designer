@@ -1,8 +1,8 @@
 import { type Page } from '@model/formTypes'
-import { GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '@gds/GDSSummary'
-import GDSLink from '@gds/GDSLink'
+import { GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '../GDSSummary'
+import GDSLink from '../GDSLink'
 
-export default function GDSDefaultPageSummaryRows({ formId, page }: { formId: string, page: Page }) {
+export default function GDSDefaultPageSummaryRows({ formId, page, realHref }: { formId: string, page: Page, realHref?: boolean }) {
     return (
         <>
             {page.components && page.components.map((component) => {
@@ -17,7 +17,7 @@ export default function GDSDefaultPageSummaryRows({ formId, page }: { formId: st
                                 <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                 <GDSSummaryAnswer>{component.answer || 'Not provided'}</GDSSummaryAnswer>
                                 <GDSSummaryActions>
-                                    <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                    <GDSLink href={realHref ? `/form/${formId}/change/${page.pageId}` : `#`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                 </GDSSummaryActions>
                             </GDSSummaryRow>
                         );
@@ -30,7 +30,7 @@ export default function GDSDefaultPageSummaryRows({ formId, page }: { formId: st
                                 <GDSSummaryQuestion text={component.label || 'Untitled'} />
                                 <GDSSummaryAnswer>{component.answer?.label || 'Not provided'}</GDSSummaryAnswer>
                                 <GDSSummaryActions>
-                                    <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                    <GDSLink href={realHref ? `/form/${formId}/change/${page.pageId}` : `#`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                 </GDSSummaryActions>
                             </GDSSummaryRow>
                         );
@@ -49,7 +49,7 @@ export default function GDSDefaultPageSummaryRows({ formId, page }: { formId: st
                                     {component.answer?.postcode ? <p>{component.answer?.postcode}</p> : null}
                                 </GDSSummaryAnswer>
                                 <GDSSummaryActions>
-                                    <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                    <GDSLink href={realHref ? `/form/${formId}/change/${page.pageId}` : `#`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                 </GDSSummaryActions>
                             </GDSSummaryRow>
                         );
@@ -64,7 +64,7 @@ export default function GDSDefaultPageSummaryRows({ formId, page }: { formId: st
                                     }
                                 </GDSSummaryAnswer>
                                 <GDSSummaryActions>
-                                    <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
+                                    <GDSLink href={realHref ? `/form/${formId}/change/${page.pageId}` : '#'}>Change<span className="govuk-visually-hidden">{component.label}</span></GDSLink>
                                 </GDSSummaryActions>
                             </GDSSummaryRow>
                         );

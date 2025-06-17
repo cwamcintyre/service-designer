@@ -1,11 +1,9 @@
-'use server';
-
 import { AddAnotherPage, type Component } from '@model/formTypes';
 
 import GDSComponentBlock from './GDSComponentBlock';
-import GDSButton from '@gds/GDSButton';
+import GDSButton from '../GDSButton';
 
-export default async function MoJAddAnotherPage({ page }: { page: AddAnotherPage }) {
+export default function MoJAddAnotherPage({ page }: { page: AddAnotherPage }) {
     const sectionComponents: Component[][] = [];
     console.log(page.pageAnswer);
     console.log(page.pageErrors);

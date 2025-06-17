@@ -1,7 +1,6 @@
 import { type AddAnotherPage } from '@model/formTypes'
-import { GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '@gds/GDSSummary'
-import GDSLink from '@gds/GDSLink'
-import { get } from 'http';
+import { GDSSummaryRow, GDSSummaryQuestion, GDSSummaryAnswer, GDSSummaryActions, } from '../GDSSummary'
+import GDSLink from '../GDSLink'
 
 function getAnswer(index: number, componentName?: string, pageAnswers?: Record<string, any>[]) {
     if (!pageAnswers || !pageAnswers[index]) return "Not provided";
@@ -39,7 +38,7 @@ function getDatePartsAnswer(index: number, componentName?: string, pageAnswers?:
     return new Date(`${dateParts.year}-${dateParts.month}-${dateParts.day}`).toLocaleDateString();
 }
 
-export default function GDSMoJAddAnotherSummaryRow({ formId, page }: { formId: string, page: AddAnotherPage }) {
+export default function GDSMoJAddAnotherSummaryRow({ formId, page, realHref }: { formId: string, page: AddAnotherPage, realHref?: boolean }) {
     return (
         <GDSSummaryRow key={page.pageId} name={page.pageId}>
             <GDSSummaryQuestion text={page.answerLabel || "Untitled"} />
@@ -81,7 +80,7 @@ export default function GDSMoJAddAnotherSummaryRow({ formId, page }: { formId: s
                 ))}
             </GDSSummaryAnswer>
             <GDSSummaryActions>
-                <GDSLink href={`/form/${formId}/change/${page.pageId}`}>Change<span className="govuk-visually-hidden">{page.answerKey}</span></GDSLink>
+                <GDSLink href={realHref ? `/form/${formId}/change/${page.pageId}` : '#'}>Change<span className="govuk-visually-hidden">{page.answerKey}</span></GDSLink>
             </GDSSummaryActions>
         </GDSSummaryRow>
     )
