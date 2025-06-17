@@ -64,7 +64,8 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                     endDateId: z.string().optional(),
                 })
             )
-            .optional()
+            .optional(),
+        dateName: z.string().min(1, { message: "Date name cannot be empty" })
     });
 
     const getDefaultValues = () => {
@@ -79,7 +80,8 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
         if (component.type === "dateParts") {
             return {
                 ...baseValues,
-                dateValidationRules: (component as DateComponent)?.dateValidationRules || []
+                dateValidationRules: (component as DateComponent)?.dateValidationRules || [],
+                dateName: (component as DateComponent)?.dateName || ""
             };
         }
 
@@ -114,6 +116,7 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                 labelIsPageTitle: component?.labelIsPageTitle || false,
                 options: component.options?.map((opt) => ({ id: opt.id, label: opt.label, value: opt.value })) || [],
                 dateValidationRules: (component as DateComponent)?.dateValidationRules || [],
+                dateName: (component as DateComponent)?.dateName || ""
             });
         }
         form.trigger();
@@ -128,7 +131,8 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                     component.hint !== values.hint ||
                     component.labelIsPageTitle !== values.labelIsPageTitle ||
                     JSON.stringify(component.options) !== JSON.stringify(values.options) ||
-                    JSON.stringify((component as DateComponent)?.dateValidationRules) !== JSON.stringify(values.dateValidationRules);
+                    JSON.stringify((component as DateComponent)?.dateValidationRules) !== JSON.stringify(values.dateValidationRules) ||
+                    (component.type === "dateParts" && (component as DateComponent)?.dateName !== values.dateName);
 
                 if (isDifferent) {
                     updatePageComponent(
@@ -145,7 +149,8 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                               value: opt?.value || ""
                             })) || [],
                             ...(component.type === "dateParts" && {
-                                dateValidationRules: values.dateValidationRules
+                                dateValidationRules: values.dateValidationRules,
+                                dateName: values.dateName
                             }),
                         }
                     );
@@ -256,6 +261,28 @@ export default forwardRef(function InputFieldEditor({ component }: { component: 
                                 </FormItem>
                             )}
                         />
+                        { component.type === "dateParts" && (
+                            <FormField
+                                control={form.control}
+                                name="dateName"
+                                render={({ field }) => (
+                                    <FormItem className="py-4">
+                                        <FormLabel>Date Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Date Name" 
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e); // Ensure input can still be typed in
+                                                    form.trigger("dateName");
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
                         </CollapsibleContent>
                     </Collapsible>
                     {(component.type === "radio" || component.type === "select" || component.type === "checkbox") && (
