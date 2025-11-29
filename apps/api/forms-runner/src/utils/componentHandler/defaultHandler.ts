@@ -13,7 +13,7 @@ export class DefaultComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
         
         if (!component.name) {
-            throw new Error('Component name is required for DefaultComponentHandler');
+            throw new Error('Component name is required');
         }   
 
         const input = data[component.name];
@@ -36,10 +36,9 @@ export class DefaultComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): any {
-        if (component.name) {
-            // For components with a name, return the value from data
-            return data[component.name] || "";
+        if (!component.name) {
+            throw new Error('Component name is required');
         }
-        return "";
+        return data[component.name];
     }
 }

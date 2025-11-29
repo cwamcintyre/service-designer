@@ -1,22 +1,18 @@
-'use server';
-
 import { type Page, type Component } from '@model/formTypes';
 
-import GDSInput from '@gds/GDSInput';
-import GDSTextarea from '@gds/GDSTextarea';
-import GDSRadio from '@gds/GDSRadio';
-import GDSSelect from '@gds/GDSSelect';
-import GDSCheckbox from '@gds/GDSCheckbox';
-import GDSYesNo from '@gds/GDSYesNo';
-import GDSUKAddress from '@gds/GDSUKAddress';
-import GDSDateParts from '@gds/GDSDateParts';
+import GDSInput from '../GDSInput';
+import GDSTextarea from '../GDSTextarea';
+import GDSRadio from '../GDSRadio';
+import GDSSelect from '../GDSSelect';
+import GDSCheckbox from '../GDSCheckbox';
+import GDSYesNo from '../GDSYesNo';
+import GDSUKAddress from '../GDSUKAddress';
+import GDSDateParts from '../GDSDateParts';
 
-export default async function GDSFormPage({ page, backLink }: { page: Page, backLink: string }) {
+export default function GDSComponentBlock({ components }: { components: Component[] }) {
     return (
         <>
-            { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }
-            {page?.title ? <h1 className="govuk-heading-xl">{page?.title}</h1> : null }
-            {page?.components && page?.components.map((component: Component) => {
+            {components.map((component: Component) => {
                 switch (component.type) {
                     case 'text':    
                         return (                        

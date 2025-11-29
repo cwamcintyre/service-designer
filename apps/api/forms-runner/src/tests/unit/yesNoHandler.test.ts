@@ -15,6 +15,16 @@ describe('YesNoComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new YesNoComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return an error if no option is selected and field is not optional', async () => {
             const mockComponent: Component = {
                 name: 'optionField',
@@ -43,6 +53,22 @@ describe('YesNoComponentHandler', () => {
 
             expect(errors).toEqual([]);
         });       
+
+        it('should return an error if validation rules fail', async () => {
+            const mockComponent: Component = {
+                name: 'optionField',
+                questionId: 'q1',
+                labelIsPageTitle: false,
+                validationRules: [
+                    { id: 'rule1', expression: 'data.optionField.value === "yes"', errorMessage: 'Invalid option selected' } as ValidationRule,
+                ],
+            };
+
+            const handler = new YesNoComponentHandler();
+            const errors = await handler.Validate(mockComponent, { optionField: { id: 'no', value: 'no', label: "no" } });
+
+            expect(errors).toEqual(['Invalid option selected']);
+        });
 
         it('should return an empty array if all validation rules pass', async () => {
             const mockComponent: Component = {
@@ -98,6 +124,15 @@ describe('YesNoComponentHandler', () => {
 
             const handler = new YesNoComponentHandler();
             expect(() => handler.Convert(mockComponent, { optionField: 'option3' })).toThrow(`No matching option found or invalid option type for value: option3 in component: optionField`);
+        });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new YesNoComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
         });
     });
 });

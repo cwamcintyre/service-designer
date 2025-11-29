@@ -37,7 +37,7 @@ export class StartApplicationUseCase implements requestResponse<StartApplication
             await this.applicationStore.updateApplication(application);
 
             console.log(`Application with ID ${request.formId} has been started for applicant ${request.applicantId}.`);
-            return { startPageId: application.startPage, extraData: ""};
+            return { startPageId: application.startPage, extraData: "", formTitle: form.title };
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(`Error starting application with ID ${request.formId}: ${error.message}`);

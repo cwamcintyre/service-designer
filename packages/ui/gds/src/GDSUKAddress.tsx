@@ -35,7 +35,10 @@ export default function GDSUKAddress({ name, label, hint, labelIsPageTitle, answ
                     <div className="govuk-error-summary">
                         {generalErrors.map((error, index) => (
                             <p key={index} className="govuk-error-message">
-                                <span className="govuk-visually-hidden">Error:</span> {error}
+                                <span className="govuk-visually-hidden">Error:</span>
+                                {generalErrors.map((error, index) => (
+                                    <><span key={index}>{error}</span><br /></>
+                                ))}
                             </p>
                         ))}
                     </div>

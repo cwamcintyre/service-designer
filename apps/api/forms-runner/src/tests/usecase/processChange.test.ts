@@ -7,6 +7,7 @@ const mockApplication: Application = require('@/tests/data/change-answer-valid.j
 const mockApplicationWithErrors: Application = require('@/tests/data/change-answer-invalid-and-blank.json') as Application;
 const mockApplicationWithErrorsAgain: Application = require('@/tests/data/change-answer-invalid-and-blank-branch-b.json') as Application;
 const mockApplicationWithInvalidDateAfter: Application = require('@/tests/data/change-date-after-becomes-invalid.json') as Application;
+const mockMultipleComponentsApplication: Application = require('@/tests/data/multiple-components-one-page.json') as Application;
 
 describe('ProcessApplicationChangeUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -25,6 +26,23 @@ describe('ProcessApplicationChangeUseCase', () => {
         await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Application with ID 123 not found.');
     });
 
+    it('should throw an error if the page is not found in the application', async () => {
+        applicationStore.withGetApplicationReturning(mockApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'non-existent-page', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Page with ID non-existent-page not found in application 123.');
+    });
+
+    it('should throw an error if the page type is undefined', async () => {
+        const invalidPageApplication = { ...mockApplication, pages: [{ ...mockApplication.pages[0], pageType: undefined }] };
+        applicationStore.withGetApplicationReturning(invalidPageApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'what-is-your-name', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow('Page type is undefined for page ID what-is-your-name in application 123.');
+    });
+
     it('should handle errors thrown by the application store', async () => {
         const error = new Error('Database error');
         applicationStore.withGetApplicationThrowing(error);
@@ -32,6 +50,15 @@ describe('ProcessApplicationChangeUseCase', () => {
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
 
         await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: ${error.message}`);
+    });
+    
+    it('should handle unknown errors thrown by the application store', async () => {
+        const error = 'Database error';
+        applicationStore.withGetApplicationThrowingAny(error);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
+
+        await expect(processApplicationChangeUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: Unknown error occurred.`);
     });
 
     it('should process an application change successfully and walk to the summary page', async () => {
@@ -64,6 +91,25 @@ describe('ProcessApplicationChangeUseCase', () => {
         expect(response.nextPageId).toEqual('what-is-your-name');
     });
 
+    it('should store multiple validation errors and the answer in the application if there are errors and multiple components', async () => {
+        applicationStore.withGetApplicationReturning(mockMultipleComponentsApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { full_name: 'BOB', "date_of_birth-day": "", "date_of_birth-month": "1", "date_of_birth-year": "2000" } };
+        const response: ProcessApplicationResponse = await processApplicationChangeUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+
+        const fullNameComponent = applicationArg.pages.find(p => p.pageId === 'test-component')?.components.find(c => c.name === 'full_name');
+        expect(fullNameComponent?.errors).toEqual(['YOUR NAME IS NOT BOB']);
+        expect(fullNameComponent?.answer).toEqual('BOB');
+
+        const dobComponent = applicationArg.pages.find(p => p.pageId === 'test-component')?.components.find(c => c.name === 'date_of_birth');
+        expect(dobComponent?.errors).toEqual(["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"]);
+        expect(dobComponent?.answer).toEqual({ day: '', month: '1', year: '2000' });
+
+        expect(response.nextPageId).toEqual('test-component');
+    });    
+
     it('should process an application change and walk to the next invalid page', async () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithErrors);
 
@@ -75,6 +121,14 @@ describe('ProcessApplicationChangeUseCase', () => {
 
         expect(component?.errors).toEqual([]);
         expect(component?.answer).toEqual({ id: 'yes', value: 'yes', label: 'Yes' });
+
+        const invalidComponentOne = applicationArg.pages.find(p => p.pageId === 'branch-a')?.components.find(c => c.name === 'what_do_you_think_of_branch_a');
+        expect(invalidComponentOne?.errors).toEqual(["Thats not right."]);
+        expect(invalidComponentOne?.answer).toEqual("INVALID");
+
+        const invalidComponentTwo = applicationArg.pages.find(p => p.pageId === 'branch-a')?.components.find(c => c.name === 'this_is_invalid_too');
+        expect(invalidComponentTwo?.errors).toEqual(["Thats not right."]);
+        expect(invalidComponentTwo?.answer).toEqual("INVALID TOO");
 
         expect(response.nextPageId).toEqual('branch-a');
     });

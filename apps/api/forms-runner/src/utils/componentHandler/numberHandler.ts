@@ -14,7 +14,7 @@ export class NumberComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
 
         if (!component.name) {
-            throw new Error('Component name is required for NumberComponentHandler');
+            throw new Error('Component name is required');
         }
 
         const number = data[component.name];
@@ -44,10 +44,11 @@ export class NumberComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): string | undefined{
-        if (component.name) {
-            // For components with a name, return the value from data
-            return data[component.name] || "";
+        if (!component.name) {
+            throw new Error('Component name is required');
         }
-        return "";
+
+        // For components with a name, return the value from data
+        return data[component.name];
     }
 }

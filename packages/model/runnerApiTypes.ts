@@ -7,6 +7,7 @@ export type StartApplicationRequest = {
 
 export type StartApplicationResponse = {
     startPageId: string;
+    formTitle?: string;
     extraData?: string;
 }
 
@@ -34,4 +35,18 @@ export type ProcessApplicationResponse = {
     nextPageId?: string;
     nextPageType?: string;
     extraData?: string;
+}
+
+export type MoJAddAnotherRequest = {
+    applicantId: string;
+    pageId: string;
+    numberOfItems: number;
+    formData: Record<string, any>;
+}
+
+export type MoJRemoveRequest = {
+    applicantId: string;
+    pageId: string;
+    itemIndex: number;
+    formData: Record<string, any>;
 }

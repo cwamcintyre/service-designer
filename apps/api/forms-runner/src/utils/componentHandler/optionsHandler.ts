@@ -18,8 +18,6 @@ export class OptionsComponentHandler implements ComponentHandler {
 
         const option = data[component.name];
         
-        console.log(`Validating component: ${component.name}, option: ${option}, optional: ${component.optional}`);
-
         if (component.optional && !option) {
             return validationResult; // If the field is optional and no input, skip validation
         }
@@ -38,17 +36,19 @@ export class OptionsComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): any {
-        if (component.name) {
-            // For components with a name, return the matching option from component.options
-            const selectedValue = data[component.name];
-            const matchingOption = component.options?.find(option => option.value == selectedValue);
-
-            // if no matching option, the field is not optional and there is a value set, throw an error..
-            if (!matchingOption && !component.optional && data[component.name]) {
-                throw new Error(`No matching option found or invalid option type for value: ${selectedValue} in component: ${component.name}`);
-            }
-            return matchingOption || "";
+        if (!component.name) {
+            throw new Error('Component name is required for OptionsComponentHandler');
         }
-        return "";
+
+        // For components with a name, return the matching option from component.options
+        const selectedValue = data[component.name];
+        const matchingOption = component.options?.find(option => option.value == selectedValue);
+
+        // if no matching option, the field is not optional and there is a value set, throw an error..
+        if (!matchingOption && !component.optional && data[component.name]) {
+            throw new Error(`No matching option found or invalid option type for value: ${selectedValue} in component: ${component.name}`);
+        }
+        
+        return matchingOption || "";
     }
 }

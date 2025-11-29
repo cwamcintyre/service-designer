@@ -14,7 +14,7 @@ export class PhoneNumberComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
 
         if (!component.name) {
-            throw new Error('Component name is required for PhoneNumberComponentHandler');
+            throw new Error('Component name is required');
         }
 
         const phoneNumber = data[component.name];
@@ -43,11 +43,12 @@ export class PhoneNumberComponentHandler implements ComponentHandler {
         return validationResult;
     }
 
-    Convert(component: Component, data: { [key: string]: any }): string | undefined{
-        if (component.name) {
-            // For components with a name, return the value from data
-            return data[component.name] || "";
+    Convert(component: Component, data: { [key: string]: any }): string | undefined {
+        if (!component.name) {
+            throw new Error('Component name is required');
         }
-        return "";
+
+        // For components with a name, return the value from data
+        return data[component.name];
     }
 }

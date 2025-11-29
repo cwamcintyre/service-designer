@@ -12,6 +12,15 @@
             "title": "",
             "components": [
                 {
+                    "questionId": "html-content",
+                    "validationRules": [],
+                    "labelIsPageTitle": false,
+                    "name": "Enter data name...",
+                    "label": "Enter label...",
+                    "type": "html",
+                    "content": "<p class=\"govuk-body\">This is some HTML</p>"
+                },
+                {
                     "questionId": "1",
                     "type": "text",
                     "label": "What is your name?",

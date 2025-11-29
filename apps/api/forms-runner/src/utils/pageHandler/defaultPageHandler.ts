@@ -8,6 +8,7 @@ export class DefaultPageHandler implements PageHandler {
 
     async Process(application: Application, pageId: string, data: { [key: string]: any; }): Promise<boolean> {
         const page = application.pages.find(p => p.pageId === pageId);
+        
         if (!page) {
             throw new Error(`Page with ID ${pageId} not found.`);
         }
@@ -30,19 +31,15 @@ export class DefaultPageHandler implements PageHandler {
                 throw new Error(`No handler found for component type ${component.type}.`);
             }
 
-            console.log(componentHandler);
-
             // update the component answer..
             if (component.name) {
                 const convertedAnswer = componentHandler.Convert(component, data);
-                console.log(`Converted answer for component ${component.name}:`, convertedAnswer);
                 component.answer = convertedAnswer;
             } else {
                 throw new Error(`Component name is undefined for component ID ${component.questionId}.`);
             }
 
             const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
-            console.log(`Validation result for component ${component.questionId}:`, validationResult);
             if (validationResult.length > 0) {
                 hasErrors = true;
                 component.errors = validationResult;
@@ -79,6 +76,7 @@ export class DefaultPageHandler implements PageHandler {
             throw new Error(`Page with ID ${currentPageId} not found.`);
         }
 
+        let hasErrors = false;
         for (const component of page.components) {
         
             if (!component.type) {
@@ -91,6 +89,8 @@ export class DefaultPageHandler implements PageHandler {
             }
 
             // check whether the answer is empty. If so, we need to stop here.
+            // note we're not checking for whether the component is optional - that should be handled by the user, and this is possibly
+            // the first time they have seen this page.
             if (component.answer === undefined || component.answer === null || component.answer === "") {
                 return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
             }
@@ -102,9 +102,13 @@ export class DefaultPageHandler implements PageHandler {
 
             const validationResult = await componentHandler.Validate(component, getAllDataFromApplication(application));
             if (validationResult.length > 0) {
+                hasErrors = true;
                 component.errors = validationResult;
-                return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
             }
+        }
+
+        if (hasErrors) {
+            return { pageId: currentPageId, pageType: page.pageType || "", stop: true };
         }
 
         const nextPageResult = await this.GetNextPageId(application, currentPageId);

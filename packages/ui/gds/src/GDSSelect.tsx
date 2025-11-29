@@ -24,7 +24,10 @@ export default function GDSSelect({ name, label, hint, labelIsPageTitle, options
             {hint && <div id={`${name}-hint`} className="govuk-hint">{hint}</div>}
             {hasError ? (
                     <p id={errorId} className="govuk-error-message">
-                        <span className="govuk-visually-hidden">Error:</span> {errors[0]}
+                        <span className="govuk-visually-hidden">Error:</span>
+                        {errors.map((error, index) => (
+                            <><span key={index}>{error}</span><br /></>
+                        ))}
                     </p>
                 ) : null}
             <select 

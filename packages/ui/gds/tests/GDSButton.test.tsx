@@ -58,4 +58,17 @@ describe('GDSButton Component', () => {
         const results = await axe(container);
         expect(results).toHaveNoViolations();
     });
+
+    it('renders the button with the correct name and value attributes', () => {
+        render(<GDSButton text="Click Me" name="testName" value="testValue" />);
+        const button = screen.getByRole('button');
+        expect(button).toHaveAttribute('name', 'testName');
+        expect(button).toHaveAttribute('value', 'testValue');
+    });
+
+    it('applies additional class names correctly', () => {
+        render(<GDSButton text="Click Me" additionalClassNames="extra-class" />);
+        const button = screen.getByRole('button');
+        expect(button).toHaveClass('extra-class');
+    });
 });

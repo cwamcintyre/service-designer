@@ -77,7 +77,7 @@ describe('GDSRadio Component', () => {
         expect(legend).toHaveTextContent(/choose an option/i);
     });
 
-it('should not have any accessibility violations', async () => {
+    it('should not have any accessibility violations', async () => {
         const options = [
             { value: 'option1', label: 'Option 1' },
             { value: 'option2', label: 'Option 2' },

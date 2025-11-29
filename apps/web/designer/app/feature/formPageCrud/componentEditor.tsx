@@ -22,6 +22,12 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { ChevronsUpDown } from "lucide-react"
 
 import InputFieldEditor from "./inputFieldEditor";
 import HtmlContentEditor from './htmlContentEditor';
@@ -156,13 +162,24 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
             {form.watch("type") !== "html" && form.watch("type") !== "summary" && form.watch("type") !== "stop" ? (
             <Form {...form}>
                 <form className="space-y-4 pt-4">
-                    <div>
-                        <h3>Validation Rules</h3>
+                    <Collapsible>
+                        <div className="flex items-center gap-4">
+                            <h4 className="text-sm font-semibold">
+                                Validation Rules
+                            </h4>
+                            <CollapsibleTrigger asChild>
+                                <Button variant="ghost" size="icon" className="size-8">
+                                    <ChevronsUpDown />
+                                    <span className="sr-only">Toggle</span>
+                                </Button>
+                            </CollapsibleTrigger>
+                        </div>
+                        <CollapsibleContent>
                         {fields.map((field, index) => (
                             <div key={`validationRules.${index}`} className="space-y-2 border p-2">
                                 <FormField
                                     control={form.control}
-                                    name={`validationRules.${index}.expression` as const}
+                                    name={`validationRules.${index}.expression`}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Expression</FormLabel>
@@ -175,7 +192,7 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
                                 />
                                 <FormField
                                     control={form.control}
-                                    name={`validationRules.${index}.errorMessage` as const}
+                                    name={`validationRules.${index}.errorMessage`}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Error Message</FormLabel>
@@ -194,7 +211,8 @@ export default forwardRef(function ComponentEditor({ controlIndex, component, pa
                         <Button id={`add-validation-rule-${controlIndex}`} className="mt-4 cursor-pointer" type="button" onClick={() => append({ id: Date.now().toString(), expression: "", errorMessage: "" })}>
                             Add Validation Rule
                         </Button>
-                    </div>
+                        </CollapsibleContent>
+                    </Collapsible>
                 </form>
             </Form>                    
         ) : null }

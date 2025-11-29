@@ -17,6 +17,16 @@ describe('OptionsComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new OptionsComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return an error if no option is selected and field is not optional', async () => {
             const mockComponent: Component = {
                 name: 'optionField',
@@ -28,6 +38,9 @@ describe('OptionsComponentHandler', () => {
                     { id: 'opt1', value: 'option1', label: 'Option 1' },
                     { id: 'opt2', value: 'option2', label: 'Option 2' },
                 ],
+                validationRules: [
+                    { id: 'rule1', expression: 'data.optionField.value === "option1" || data.optionField.value === "option2"', errorMessage: 'Invalid option selected' } as ValidationRule,
+                ]                
             };
 
             const handler = new OptionsComponentHandler();
@@ -125,5 +138,14 @@ describe('OptionsComponentHandler', () => {
             const handler = new OptionsComponentHandler();
             expect(() => handler.Convert(mockComponent, { optionField: 'option3' })).toThrow(`No matching option found or invalid option type for value: option3 in component: optionField`);
         });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new OptionsComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
+        });        
     });
 });

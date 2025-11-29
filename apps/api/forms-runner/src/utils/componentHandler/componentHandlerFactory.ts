@@ -1,3 +1,8 @@
+/* istanbul ignore file */
+
+/* the functionality for the component handler files is covered by their respective unit tests. A test here is only checking that the
+   factory is calling all the handlers which does not feel necessary */
+
 import { ComponentHandler } from '@/utils/componentHandler/interfaces';
 import { DefaultComponentHandler } from '@/utils/componentHandler/defaultHandler';
 import { UKAddressComponentHandler } from '@/utils/componentHandler/ukAddressHandler';

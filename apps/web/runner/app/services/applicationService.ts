@@ -1,12 +1,17 @@
 import { cookies } from 'next/headers';
-import { GetApplicationResponse, ProcessApplicationResponse } from '@model/runnerApiTypes';
+import { GetApplicationResponse, ProcessApplicationResponse, StartApplicationResponse } from '@model/runnerApiTypes';
+import MoJAddAnotherPage from '../components/MoJAddAnotherPage';
 
 const applicationService = {
     getApplicationId: async () => {
         const cookieStore = await cookies();
         return cookieStore.get('applicationId')?.value || "";
     },
-    startApplication: async (applicantId: string, formId: string): Promise<string> => {
+    getApplicationTitle: async () => {
+        const cookieStore = await cookies();
+        return cookieStore.get('formTitle')?.value || "";
+    },
+    startApplication: async (applicantId: string, formId: string): Promise<StartApplicationResponse> => {
         const result = await fetch(`${process.env.FORM_API}/application/start`, {
             method: 'PUT',
             headers: {
@@ -24,7 +29,7 @@ const applicationService = {
         }
         else {
             const data = await result.json();
-            return data.startPageId;
+            return data;
         }
     },
     getApplication: async (applicationId: string, pageId: string, extraData: string, onlyCurrentPage?: boolean): Promise<GetApplicationResponse> => {
@@ -89,6 +94,50 @@ const applicationService = {
             const data = await result.json();
             return data;
         }
+    },
+    moJAddAnother: async (applicantId: string, pageId: string, numberOfItems: number, formData: Record<string, any>) => {
+        const result = await fetch(`${process.env.FORM_API}/application/moj-add-another`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                applicantId,
+                pageId,
+                numberOfItems,
+                formData
+            }),
+        });
+
+        if (result.status !== 200) {
+            console.log(`MoJAddAnotherPage: ${result.status}`);
+            throw new Error('Failed to process MoJ Add Another Page');
+        }
+
+        const data = await result.json();
+        return data;
+    },
+    mojRemoveFromAddAnother: async (applicantId: string, pageId: string, itemIndex: number, formData: Record<string, any>) => {
+        const result = await fetch(`${process.env.FORM_API}/application/moj-remove-from-add-another`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                applicantId,
+                pageId,
+                itemIndex,
+                formData
+            }),
+        });
+
+        if (result.status !== 200) {
+            console.log(`MoJRemoveFromAddAnother: ${result.status}`);
+            throw new Error('Failed to process MoJ Remove From Add Another');
+        }
+
+        const data = await result.json();
+        return data;
     }
 }
 

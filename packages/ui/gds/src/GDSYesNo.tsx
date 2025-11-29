@@ -22,7 +22,10 @@ export default function GDSYesNo({ name, label, hint, labelIsPageTitle, answer, 
                 {hint ? <div id={`${name}-hint`} className="govuk-hint">{hint}</div> : null}
                 {hasError ? (
                     <p id={errorId} className="govuk-error-message">
-                        <span className="govuk-visually-hidden">Error:</span> {errors[0]}
+                        <span className="govuk-visually-hidden">Error:</span>
+                        {errors.map((error, index) => (
+                            <span key={index}>{error}<br /></span>
+                        ))}
                     </p>
                 ) : null}
                 <div className="govuk-radios govuk-radios--inline" data-module="govuk-radios">

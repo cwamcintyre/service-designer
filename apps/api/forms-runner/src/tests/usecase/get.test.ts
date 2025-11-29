@@ -7,6 +7,7 @@ const mockBasicApplication: Application = require('@/tests/data/test-text-compon
 const mockBasicApplicationWithBranchA: Application = require('@/tests/data/previous-link-branch-a.json') as Application;
 const mockBasicApplicationWithBranchB: Application = require('@/tests/data/previous-link-branch-b.json') as Application;
 const mockBasicApplicationAtStart: Application = require('@/tests/data/no-previous-link.json') as Application;
+const mockMisconfiguredForm: Application = require('@/tests/data/misconfigured-form.json') as Application;
 
 describe('GetApplicationUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -45,6 +46,15 @@ describe('GetApplicationUseCase', () => {
         await expect(getApplicationUseCase.execute(request)).rejects.toThrow(`Error getting application with ID 123: ${error.message}`);
     });
 
+    it('should handle unknown errors thrown by the application store', async () => {
+        const error = 'Database error';
+        applicationStore.withGetApplicationThrowingAny(error);
+
+        const request: GetApplicationRequest = { applicantId: '123', pageId: 'page1', extraData: 'extra' };
+
+        await expect(getApplicationUseCase.execute(request)).rejects.toThrow(`Error getting application with ID 123: Unknown error occurred.`);
+    });
+
     it('should return an empty previous page when at the start of the form', async () => {
         applicationStore.withGetApplicationReturning(mockBasicApplicationAtStart);
 
@@ -53,7 +63,7 @@ describe('GetApplicationUseCase', () => {
 
         expect(response.previousPageId).toEqual('');
         expect(response.previousExtraData).toEqual('');
-    })
+    });
 
     it('should return the correct previous page when conditions are met', async () => {
         applicationStore.withGetApplicationReturning(mockBasicApplicationWithBranchB);
@@ -63,7 +73,7 @@ describe('GetApplicationUseCase', () => {
 
         expect(response.previousPageId).toEqual('branch-b');
         expect(response.previousExtraData).toEqual('');
-    })
+    });
 
     it('should return the correct previous page when conditions are not met', async () => {
         applicationStore.withGetApplicationReturning(mockBasicApplicationWithBranchA);
@@ -73,5 +83,22 @@ describe('GetApplicationUseCase', () => {
 
         expect(response.previousPageId).toEqual('do-you-want-branch-a');
         expect(response.previousExtraData).toEqual('');
-    })
+    });
+
+    it ('should only return the current page when requested', async () => {
+        applicationStore.withGetApplicationReturning(mockBasicApplication);
+
+        const request: GetApplicationRequest = { applicantId: '123', pageId: 'text-component', extraData: '', onlyCurrentPage: true };
+        const response: GetApplicationResponse = await getApplicationUseCase.execute(request);
+
+        expect(response.application.pages.length).toBe(1);
+        expect(response.application.pages[0].pageId).toBe('text-component');
+    });
+
+    it('should throw an error when calculating the previous page when the form does not have a valid route through', async () => {
+        applicationStore.withGetApplicationReturning(mockMisconfiguredForm);
+        const request: GetApplicationRequest = { applicantId: '123', pageId: 'summary', extraData: '' };
+
+        await expect(getApplicationUseCase.execute(request)).rejects.toThrow(`Next page with ID does-not-exist not found.`);
+    });
 });

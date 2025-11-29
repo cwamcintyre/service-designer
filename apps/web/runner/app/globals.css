@@ -35,6 +35,21 @@ a {
   text-decoration: none;
 }
 
+.moj-repeat-section__item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.moj-repeat-summary-section__item {
+  margin-bottom: 15px;
+}
+
+button.moj-repeat-section__remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

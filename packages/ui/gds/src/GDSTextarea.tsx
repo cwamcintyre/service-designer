@@ -27,7 +27,10 @@ export default function GDSTextarea({ name, label, hint, labelIsPageTitle, answe
             ) : null}
             {hasError ? (
                 <p id={errorId} className="govuk-error-message">
-                    <span className="govuk-visually-hidden">Error:</span> {errors[0]}
+                    <span className="govuk-visually-hidden">Error:</span>
+                    {errors.map((error, index) => (
+                        <><span key={index}>{error}</span><br /></>
+                    ))}
                 </p>
             ) : null}
             <textarea 

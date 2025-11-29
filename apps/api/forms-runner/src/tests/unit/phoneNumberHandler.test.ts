@@ -14,6 +14,16 @@ describe('PhoneNumberComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new PhoneNumberComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+        
         it('should return an error for each invalid phone number format', async () => {
             const mockComponent: Component = { name: 'phoneNumberField', questionId: 'q1', labelIsPageTitle: false };
 
@@ -122,13 +132,13 @@ describe('PhoneNumberComponentHandler', () => {
             expect(result).toBe('+447729900982');
         });
 
-        it('should return an empty string for an unnamed component', () => {
-            const mockComponent: Component = { questionId: 'q1', labelIsPageTitle: false };
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
             const handler = new PhoneNumberComponentHandler();
-
-            const result = handler.Convert(mockComponent, {});
-
-            expect(result).toBe('');
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
         });
     });
 });

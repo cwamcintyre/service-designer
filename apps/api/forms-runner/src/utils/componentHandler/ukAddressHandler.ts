@@ -13,12 +13,10 @@ export class UKAddressComponentHandler implements ComponentHandler {
         const validationResult: string[] = [];
 
         if (!component.name) {
-            throw new Error('Component name is required for UKAddressComponentHandler');
+            throw new Error('Component name is required');
         }
 
         const ukAddress: UKAddress = data[component.name];
-
-        console.log('UKAddressComponentHandler Validate', ukAddress, component.optional);
 
         // if the field is optional and no fields have been filled out, ignore..
         if (component.optional && !ukAddress.addressLine1 && !ukAddress.town && !ukAddress.postcode && !ukAddress.addressLine2 && !ukAddress.county) {
@@ -52,6 +50,10 @@ export class UKAddressComponentHandler implements ComponentHandler {
     }
 
     Convert(component: Component, data: { [key: string]: any }): UKAddress {
+        if (!component.name) {
+            throw new Error('Component name is required');
+        }
+
         const ukAddress: UKAddress = {
             addressLine1: data[`${component.name}-addressLine1`]?.trim(),
             addressLine2: data[`${component.name}-addressLine2`]?.trim(),
@@ -59,6 +61,7 @@ export class UKAddressComponentHandler implements ComponentHandler {
             county: data[`${component.name}-addressCounty`]?.trim(),
             postcode: data[`${component.name}-addressPostcode`]?.trim()
         };
+        
         return ukAddress;
     }
 }

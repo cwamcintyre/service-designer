@@ -39,7 +39,7 @@ export default function GDSInput({name, label, hint, labelIsPageTitle, errors, v
             <p id={`${name}-error`} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>
                 {(errors ?? []).map((error, index) => (
-                    <span key={index}>{error}</span>
+                    <><span key={index}>{error}</span><br /></>
                 ))}
             </p>
             : null}

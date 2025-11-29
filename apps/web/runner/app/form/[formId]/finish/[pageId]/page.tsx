@@ -3,7 +3,7 @@
 import { LogHandler } from '@/app/utils/logging/logHandler';
 import { setSharedState } from '@/app/utils/sharedState';
 import applicationService from '@/app/services/applicationService';
-import GDSSummaryComponent from '@/app/components/GDSSummaryComponent';
+import GDSSummaryComponent from '@gds/forms/GDSSummaryComponent';
 import GDSButtonLink from '@gds/GDSButtonLink';
 
 export default async function FormPage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>, searchParams: Promise<Record<string, string>> }) {

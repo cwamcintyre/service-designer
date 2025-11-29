@@ -14,6 +14,16 @@ describe('UKAddressComponentHandler', () => {
     });
 
     describe('Validate', () => {
+
+        it('should throw an error if the component name is not provided', async () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new UKAddressComponentHandler();
+            await expect(handler.Validate(mockComponent, {})).rejects.toThrow('Component name is required');
+        });
+
         it('should return errors for missing required fields if the component is not optional', async () => {
             const mockComponent: Component = {
                 name: 'addressField',
@@ -145,6 +155,15 @@ describe('UKAddressComponentHandler', () => {
                 county: 'Greater London',
                 postcode: 'SW1A 2AA',
             });
+        });
+
+        it('should throw an error if the component name is not provided', () => {
+            const mockComponent: Component = {
+                questionId: 'q1',
+                labelIsPageTitle: false
+            };
+            const handler = new UKAddressComponentHandler();
+            expect(() => handler.Convert(mockComponent, {})).toThrow('Component name is required');
         });
     });
 });

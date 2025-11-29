@@ -1,6 +1,3 @@
-import { GetApplicationController } from "~/adapters/controllers/get";
-import { StartApplicationUseCase } from "~/usecase/start";
-
 export const AppTypes = {
     FormStore: "FormStore",
     ApplicationStore: "ApplicationStore",
@@ -11,5 +8,9 @@ export const AppTypes = {
     GetApplicationController: "GetApplicationController",
     ProcessController: "ProcessController",
     StartApplicationController: "StartApplicationController",
-    ProcessChangeController: "ProcessChangeController"
+    ProcessChangeController: "ProcessChangeController",
+    MojAddAnotherUseCase: "MojAddAnotherUseCase",
+    MojAddAnotherController: "MojAddAnotherController",
+    MojRemoveFromAddAnotherUseCase: "MojRemoveFromAddAnotherUseCase",
+    MojRemoveFromAddAnotherController: "MojRemoveFromAddAnotherController",
 };

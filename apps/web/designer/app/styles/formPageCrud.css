@@ -51,3 +51,18 @@
 .ql-editor p {
   margin-bottom: 20px !important;
 }
+
+.moj-repeat-section__item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.moj-repeat-summary-section__item {
+  margin-bottom: 15px;
+}
+
+.moj-repeat-section__item button.moj-repeat-section__remove-button {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}

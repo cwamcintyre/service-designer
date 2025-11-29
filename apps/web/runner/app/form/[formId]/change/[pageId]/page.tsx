@@ -1,11 +1,11 @@
 'use server';
 
-import { type Page } from '@model/formTypes';
 import { LogHandler } from '@/app/utils/logging/logHandler';
-import { setSharedState } from '@/app/utils/sharedState';
-import GDSFormPage from '@/app/components/GDSFormPage';
+import GDSFormPage from '@gds/forms/GDSFormPage';
 import applicationService from '@/app/services/applicationService';
 import GDSButton from '@gds/GDSButton';
+import { Page, PageTypes, AddAnotherPage } from '@model/formTypes';
+import MoJAddAnotherPage from '@gds/forms/MoJAddAnotherPage';
 
 export default async function FormChangePage({ params, searchParams }: { params: Promise<{ formId: string, pageId: string }>, searchParams: Promise<Record<string, string>> }) {
         
@@ -33,18 +33,20 @@ export default async function FormChangePage({ params, searchParams }: { params:
     // back link is always empty for the change page.
     const backLink = ""
 
-    setSharedState({ serviceTitle: applicationResponse.application.title });
-    LogHandler.debug("Form Title: ", applicationResponse.application.title);
-
     return (
         <>
+            { backLink ? <a href={backLink} className="govuk-back-link">Back</a> : null }
             <form action={`/api/formChange`} method="POST" className="govuk-form-group">
                 
                 <input type="hidden" name="formId" value={formId} />
                 <input type="hidden" name="pageId" value={pageId} />
                 <input type="hidden" name="extraData" value={JSON.stringify({ step })} />
 
-                <GDSFormPage page={page} backLink={backLink} />
+                {page.pageType === PageTypes.MoJAddAnother ? (
+                    <MoJAddAnotherPage page={page as AddAnotherPage} />
+                ) : (
+                    <GDSFormPage page={page} />
+                )}
 
                 <div className="govuk-button-group">
                     <GDSButton type="submit" text="Change" />

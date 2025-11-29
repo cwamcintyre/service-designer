@@ -2,7 +2,9 @@ import {
     type Form, 
     type Page, 
     type Component, 
-    type Condition
+    type Condition,
+    type AddAnotherPage,
+    PageTypes
 } from '@model/formTypes';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
@@ -145,7 +147,11 @@ const useStore = createWithEqualityFn<FormState>((set, get) => ({
     updatePage: (updatedPage: Page) => {
         if (get().isLoaded) {
             set((state) => {
-                const update = { ...state.selectedPage, ...updatedPage };             
+                const update = { ...state.selectedPage, ...updatedPage };  
+                if (update.pageType === PageTypes.MoJAddAnother) {
+                    const addAnotherPage = update as AddAnotherPage;
+                    addAnotherPage.numberOfItems = addAnotherPage.numberOfItemsToStartWith || 1;
+                }           
                 return { selectedPage: update, isFormDirty: true };
             });
         }

@@ -1,13 +1,14 @@
 import { ProcessApplicationUseCase } from '@/usecase/process';
 import ApplicationStoreTestDouble from '@/tests/doubles/applicationStore.testdouble';
 import { ProcessApplicationRequest, ProcessApplicationResponse } from '@model/runnerApiTypes';
-import { Application } from '@model/formTypes';
+import { AddAnotherPage, Application } from '@model/formTypes';
 
 const mockApplication: Application = require('@/tests/data/test-text-component.json') as Application;
 const mockApplicationWithErrors: Application = require('@/tests/data/test-errors-component.json') as Application;
 const mockApplicationWithErrorInAnswer = require('@/tests/data/test-errors-component-with-error-in-answer.json') as Application;
 const mockApplicationWithUnknownPageType: Application = require('@/tests/data/undefined-page-type.json') as Application;
 const mockApplicationWithCondition: Application = require('@/tests/data/next-page-condition.json') as Application;
+const mockMultipleComponentsApplication: Application = require('@/tests/data/multiple-components-one-page.json') as Application;
 
 describe('ProcessApplicationUseCase', () => {
     let applicationStore: ApplicationStoreTestDouble;
@@ -33,6 +34,15 @@ describe('ProcessApplicationUseCase', () => {
         const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
 
         await expect(processApplicationUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: ${error.message}`);
+    });
+
+    it('should handle unknown errors thrown by the application store', async () => {
+        const error = 'Database error';
+        applicationStore.withGetApplicationThrowingAny(error);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'page1', formData: {} };
+
+        await expect(processApplicationUseCase.execute(request)).rejects.toThrow(`Error processing form for applicant 123: Unknown error occurred.`);
     });
 
     it('should throw an error if the page is not found', async () => {
@@ -91,6 +101,25 @@ describe('ProcessApplicationUseCase', () => {
         expect(response.nextPageId).toEqual('text-component');
     });
 
+    it('should store multiple validation errors and the answer in the application if there are errors and multiple components', async () => {
+        applicationStore.withGetApplicationReturning(mockMultipleComponentsApplication);
+
+        const request: ProcessApplicationRequest = { applicantId: '123', pageId: 'test-component', formData: { full_name: 'BOB', "date_of_birth-day": "", "date_of_birth-month": "1", "date_of_birth-year": "2000" } };
+        const response: ProcessApplicationResponse = await processApplicationUseCase.execute(request);
+
+        const applicationArg = applicationStore.getUpdateApplicationSpy().mock.calls[0][0];
+
+        const fullNameComponent = applicationArg.pages.find(p => p.pageId === 'test-component')?.components.find(c => c.name === 'full_name');
+        expect(fullNameComponent?.errors).toEqual(['YOUR NAME IS NOT BOB']);
+        expect(fullNameComponent?.answer).toEqual('BOB');
+
+        const dobComponent = applicationArg.pages.find(p => p.pageId === 'test-component')?.components.find(c => c.name === 'date_of_birth');
+        expect(dobComponent?.errors).toEqual(["{\"errorMessage\":\"date must include a day\",\"dayError\":true,\"monthError\":false,\"yearError\":false}"]);
+        expect(dobComponent?.answer).toEqual({ day: '', month: '1', year: '2000' });
+
+        expect(response.nextPageId).toEqual('test-component');
+    });
+
     it('should clear the errors if the user gives a valid answer after an invalid answer', async () => {
         applicationStore.withGetApplicationReturning(mockApplicationWithErrorInAnswer);
 
@@ -134,5 +163,5 @@ describe('ProcessApplicationUseCase', () => {
 
         expect(response.nextPageId).toEqual('summary');
         expect(response.nextPageType).toEqual('summary');
-    });
+    });    
 });
